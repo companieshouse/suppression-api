@@ -1,0 +1,28 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "An API for processing personal data suppression requests",
+    "version": "0.0.1",
+    "title": "Companies House Suppressions API"
+  },
+  "host": "api.companieshouse.gov.uk",
+  "basePath": "",
+  "schemes": [ "https" ],
+  "tags": [
+    {
+      "name": "Suppressions"
+    }
+  ],
+  "paths": {},
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "example": "error description"
+        }
+      }
+    }
+  }
+}

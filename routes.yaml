@@ -1,0 +1,5 @@
+app_name: suppression-api
+group: internalapi
+weight: 900
+routes:
+  1: ^/
