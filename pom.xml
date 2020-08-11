@@ -37,14 +37,6 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>${version.springdoc.openapi}</version>
         </dependency>
-
-        <!-- Other -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-            <version>${version.lombok}</version>
-            <scope>provided</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
