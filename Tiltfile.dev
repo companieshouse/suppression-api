@@ -1,5 +1,5 @@
 local_resource(
-  name = 'dev:suppression-api-build',
+  name = 'dev:suppression-api:build',
   cmd = 'mvn compile',
   deps = ['src']
 )
