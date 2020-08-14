@@ -2,6 +2,6 @@ version: "3.8"
 
 services:
   suppression-api:
-    image: suppression-api:latest
+    image:
     expose:
       - 9000
