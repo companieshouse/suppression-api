@@ -20,3 +20,10 @@ dev: clean
 	mvn package -DskipTests=true
 	cp target/$(artifact_name)-unversioned.jar $(artifact_name).jar
 
+.PHONY: sonar
+sonar:	sonar:
+ 	mvn sonar:sonar
+
+.PHONY: sonar-pr-analysis
+sonar-pr-analysis:	sonar-pr-analysis:
+ 	mvn sonar:sonar	-P sonar-pr-analysis
