@@ -9,11 +9,21 @@ API for the 'Suppress My Details' service
 
 ## How to run
 
-### Run Spring boot
+### Run with Spring boot
 
 1. `mvn clean install spring-boot:run`
 
 2. Navigate to the running app in a browser: 
+
+    `http://localhost:9000`
+
+### Run with Docker
+
+1. `mvn compile jib:dockerBuild -Dimage=169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/suppression-api`
+
+2. `docker run -p 9000:9000 -d 169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/suppression-api`
+
+3. Navigate to the running app in a browser: 
 
     `http://localhost:9000`
 
