@@ -2,6 +2,6 @@ version: "3.8"
 
 services:
   suppression-api:
-    image: suppression-api:latest
+    image: 169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/suppression-api:latest
     expose:
       - 9000
