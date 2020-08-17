@@ -7,25 +7,25 @@ API for the 'Suppress My Details' service
 - [Spring Boot](https://spring.io/projects/spring-boot)
 - [Swagger OpenAPI](https://swagger.io/docs/specification/about/)
 
-## How to run
+## Running locally
 
-### Run with Spring boot
+1. Clone [Docker CHS Development](https://github.com/companieshouse/docker-chs-development) and follow the steps in the README.
 
-1. `mvn clean install spring-boot:run`
+2. Enable the `platform` module
 
-2. Navigate to the running app in a browser: 
+3. Enable the `suppression` module
 
-    `http://localhost:9000`
+4. Navigate to `http://api.chs.local:9000`
 
-### Run with Docker
+### To make local changes
 
-1. `mvn compile jib:dockerBuild -Dimage=169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/suppression-api`
+Development mode is available for this service in [Docker CHS Development](https://github.com/companieshouse/docker-chs-development).
 
-2. `docker run -p 9000:9000 -d 169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/suppression-api`
+    ./bin/chs-dev development enable suppression-api
 
-3. Navigate to the running app in a browser: 
+### To build the Docker container
 
-    `http://localhost:9000`
+    mvn compile jib:dockerBuild -Dimage=169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/suppression-api
 
 
 ## Useful Endpoints
@@ -33,3 +33,4 @@ API for the 'Suppress My Details' service
 ### Health
 
 http://localhost:9000/actuator/health
+
