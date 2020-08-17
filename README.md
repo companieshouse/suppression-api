@@ -31,6 +31,5 @@ Development mode is available for this service in [Docker CHS Development](https
 ## Useful Endpoints
 
 ### Health
-
-http://localhost:9000/actuator/health
+`/actuator/health`
 
