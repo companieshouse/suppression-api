@@ -1,0 +1,59 @@
+package uk.gov.companieshouse.mapper;
+
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.companieshouse.database.entity.AddressEntity;
+import uk.gov.companieshouse.model.Address;
+
+import static uk.gov.companieshouse.TestData.Suppression.Address.line1;
+import static uk.gov.companieshouse.TestData.Suppression.Address.line2;
+import static uk.gov.companieshouse.TestData.Suppression.Address.town;
+import static uk.gov.companieshouse.TestData.Suppression.Address.county;
+import static uk.gov.companieshouse.TestData.Suppression.Address.postcode;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+@ExtendWith(SpringExtension.class)
+public class AddressMapperTest {
+    private final AddressMapper mapper = new AddressMapper();
+
+    @Nested
+    class ToEntityMappingTest {
+        @Test
+        void shouldReturnNullWhenValueIsNull() {
+            assertNull(mapper.map((Address) null));
+        }
+
+        @Test
+        void shouldMapValueWhenValueIsNotNull() {
+            AddressEntity mapped = mapper.map(new Address(line1, line2, town, county, postcode));
+
+            assertEquals(line1, mapped.getLine1());
+            assertEquals(line2, mapped.getLine2());
+            assertEquals(town, mapped.getTown());
+            assertEquals(county, mapped.getCounty());
+            assertEquals(postcode, mapped.getPostcode());
+        }
+    }
+
+    @Nested
+    class FromEntityMappingTest {
+        @Test
+        void shouldReturnNullWhenValueIsNull() {
+            assertNull(mapper.map((AddressEntity) null));
+        }
+
+        @Test
+        void shouldMapValueWhenValueIsNotNull() {
+            Address mapped = mapper.map(new AddressEntity(line1, line2, town, county, postcode));
+
+            assertEquals(line1, mapped.getLine1());
+            assertEquals(line2, mapped.getLine2());
+            assertEquals(town, mapped.getTown());
+            assertEquals(county, mapped.getCounty());
+            assertEquals(postcode, mapped.getPostcode());
+        }
+    }
+}

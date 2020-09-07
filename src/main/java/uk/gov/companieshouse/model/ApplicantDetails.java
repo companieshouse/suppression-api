@@ -6,11 +6,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.companieshouse.database.entity.AddressEntity;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 public class ApplicantDetails {
 
-    @NotBlank(message = "full name must not be blank")
+    @NotEmpty(message = "full name must not be blank")
     private String fullName;
 
     @NotBlank(message = "email address must not be blank")

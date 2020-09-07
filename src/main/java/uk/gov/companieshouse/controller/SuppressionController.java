@@ -29,12 +29,12 @@ public class SuppressionController {
 
     @Operation(summary = "Create a new suppression", tags = "Suppression")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Appeal resource created", headers = {
+        @ApiResponse(responseCode = "201", description = "Suppression resource created", headers = {
             @Header(name = "location")
         }),
         @ApiResponse(responseCode = "400", description = "Bad request"),
         @ApiResponse(responseCode = "401", description = "Unauthorised request"),
-        @ApiResponse(responseCode = "422", description = "Invalid appeal data"),
+        @ApiResponse(responseCode = "422", description = "Invalid suppression data"),
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping(value = "/suppressions", consumes = MediaType.APPLICATION_JSON_VALUE)
