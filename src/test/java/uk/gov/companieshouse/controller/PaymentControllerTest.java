@@ -3,8 +3,7 @@ package uk.gov.companieshouse.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -15,23 +14,22 @@ import uk.gov.companieshouse.service.PaymentService;
 
 import java.util.Collections;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(PaymentController.class)
 public class PaymentControllerTest {
 
     private final String SUPPRESSIONS_PAYMENT_URI = "/suppressions/{suppression-id}/payment";
     private final String TEST_SUPPRESSION_ID = "123";
 
-    @MockBean
-    private PaymentService paymentService;
-
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private PaymentService paymentService;
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -40,7 +38,7 @@ public class PaymentControllerTest {
 
         Payment paymentDetails = getPaymentDetails();
 
-        when(paymentService.getPaymentDetails(TEST_SUPPRESSION_ID)).thenReturn(paymentDetails);
+        given(paymentService.getPaymentDetails(TEST_SUPPRESSION_ID)).willReturn(paymentDetails);
 
         mockMvc.perform(get(SUPPRESSIONS_PAYMENT_URI, TEST_SUPPRESSION_ID)
             .contentType(MediaType.APPLICATION_JSON_VALUE))
