@@ -1,4 +1,8 @@
 {
+  "applicantDetails": {
+    "fullName": "Andy Trail",
+    "emailAddress": "andy@gmail.com"
+  },
   "documentDetails": {
     "companyName": "A Company",
     "companyNumber": "",

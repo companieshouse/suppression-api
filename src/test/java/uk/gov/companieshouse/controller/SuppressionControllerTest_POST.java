@@ -71,7 +71,19 @@ public class SuppressionControllerTest_POST {
             .headers(createHttpHeaders())
             .content(invalidSuppression))
             .andExpect(status().isUnprocessableEntity())
-            .andExpect(content().json("{'penaltyIdentifier':'penaltyIdentifier must not be null'}"));
+            .andExpect(
+                content().json("{\"documentDetails.companyNumber\":\"companyNumber must not be blank\",\"addressToRemove\":\"addressToRemove must not be null\"}")
+            );
+    }
+
+    @Test
+    public void whenEmptyInput_return400() throws Exception {
+
+        mockMvc.perform(post(SUPPRESSION_URI)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .headers(createHttpHeaders())
+            .content(""))
+            .andExpect(status().isBadRequest());
     }
 
 
