@@ -74,7 +74,7 @@ public class PaymentControllerTest {
         item.setKind("suppression-request#payment-details");
         item.setResourceKind("suppression-request#suppression-request");
 
-        payment.setEtag("");
+        payment.setEtag("I_AM_AN_ETAG");
         payment.setKind("suppression-request#payment");
         payment.setLinks(links);
         payment.setItems(Collections.singletonList(item));

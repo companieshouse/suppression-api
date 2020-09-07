@@ -26,12 +26,13 @@ public class PaymentController {
     @Operation(summary = "Get suppression payment details by ID", tags = "Payment")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Suppression payment details retrieved successfully"),
-        @ApiResponse(responseCode = "404", description = "Suppression payment details not found"),
-        @ApiResponse(responseCode = "500", description = "Internal server error")
+        @ApiResponse(responseCode = "404", description = "Suppression payment details not found")
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Payment> getPaymentDetails(@PathVariable("suppression-id") final String suppressionId) {
 
+        // get suppression from mongodb, return 404 if does not exist
+        
         Payment payment = paymentService.getPaymentDetails(suppressionId);
         
         return ResponseEntity.status(HttpStatus.OK).body(payment);

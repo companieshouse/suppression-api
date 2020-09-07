@@ -20,6 +20,7 @@
         <java.version>11</java.version>
         <version.spring.boot>2.3.3.RELEASE</version.spring.boot>
         <version.springdoc.openapi>1.4.6</version.springdoc.openapi>
+        <version.api-helper-java>1.4.3</version.api-helper-java>
 	</properties>
 
     <repositories>
@@ -57,6 +58,20 @@
                     <groupId>com.fasterxml.jackson.core</groupId>
                     <artifactId>jackson-annotations</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- CH -->
+        <dependency>
+            <groupId>uk.gov.companieshouse</groupId>
+            <artifactId>api-helper-java</artifactId>
+            <version>${version.api-helper-java}</version>
+            <exclusions>
+                <!-- exclude conflicting jackson core library -->
                 <exclusion>
                     <groupId>com.fasterxml.jackson.core</groupId>
                     <artifactId>jackson-core</artifactId>

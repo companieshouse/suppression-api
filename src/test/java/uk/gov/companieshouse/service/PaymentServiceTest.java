@@ -11,6 +11,7 @@ import uk.gov.companieshouse.model.payment.Payment;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 public class PaymentServiceTest {
@@ -32,7 +33,7 @@ public class PaymentServiceTest {
 
         Payment payment = paymentService.getPaymentDetails(TEST_SUPPRESSION_ID);
 
-        assertEquals("", payment.getEtag());
+        assertNotNull(payment.getEtag());
         assertEquals(PAYMENT_KIND, payment.getKind());
 
         Item item = payment.getItems().get(0);

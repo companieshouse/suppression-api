@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.service;
 
 import org.springframework.stereotype.Service;
+import uk.gov.companieshouse.GenerateEtagUtil;
 import uk.gov.companieshouse.model.payment.Item;
 import uk.gov.companieshouse.model.payment.Links;
 import uk.gov.companieshouse.model.payment.Payment;
@@ -21,11 +22,9 @@ public class PaymentService {
     public Payment getPaymentDetails(String suppressionId) {
 
         Payment payment = new Payment();
-
-        payment.setEtag("");
-
+        
+        payment.setEtag(GenerateEtagUtil.generateEtag());
         payment.setItems(Collections.singletonList(createPaymentItem()));
-
         payment.setKind(PAYMENT_KIND);
 
         Links links = new Links();
