@@ -48,6 +48,7 @@ public class SuppressionControllerTest_POST {
 
         validSuppression = asJsonString("src/test/resources/data/validSuppression.json");
 
+
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
@@ -61,8 +62,9 @@ public class SuppressionControllerTest_POST {
     @Test
     public void whenInvalidInput_return422() throws Exception {
 
-        final String invalidSuppression = asJsonString
-            ("src/test/resources/data/invalidSuppression.json");
+        final String invalidSuppression = asJsonString("src/test/resources/data/invalidSuppression.json");
+
+        System.out.println(invalidSuppression);
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)

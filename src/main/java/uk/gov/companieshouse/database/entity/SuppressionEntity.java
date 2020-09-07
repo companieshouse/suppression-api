@@ -4,17 +4,18 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.data.annotation.AccessType;
-import uk.gov.companieshouse.model.Address;
-import uk.gov.companieshouse.model.ApplicantDetails;
-import uk.gov.companieshouse.model.DocumentDetails;
-import uk.gov.companieshouse.model.Suppression;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Document(collection = "suppression")
 @AccessType(AccessType.Type.PROPERTY)
 public class SuppressionEntity implements Serializable {
 
+    @Id
+    @SuppressWarnings("FieldMayBeFinal") // Non final field is required by Spring Data
     private final String id;
     private final LocalDateTime createdAt;
     private final ApplicantDetailsEntity applicantDetails;

@@ -4,8 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +19,11 @@ import java.net.URI;
 @RestController
 public class SuppressionController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SuppressionController.class);
-
     private final SuppressionService suppressionService;
 
     public SuppressionController(SuppressionService suppressionService){ this.suppressionService = suppressionService; }
 
-    @Operation(summary = "Create a new suppression", tags = "Suppression")
+    @Operation(summary = "Create a new suppression", tags = "suppression")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Suppression resource created", headers = {
             @Header(name = "location")
@@ -38,8 +34,7 @@ public class SuppressionController {
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping(value = "/suppressions", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> submitSuppression(@Valid @RequestBody final Suppression suppression){
-
+    public ResponseEntity<String> submitSuppression(@Valid @RequestBody final Suppression suppression) {
 
         try {
             final String id = suppressionService.saveSuppression(suppression);
