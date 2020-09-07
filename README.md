@@ -33,3 +33,6 @@ Development mode is available for this service in [Docker CHS Development](https
 ### Health
 `/actuator/health`
 
+### API Documentation (Swagger)
+`/swagger-ui.html`
+
