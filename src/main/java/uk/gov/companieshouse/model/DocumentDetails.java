@@ -3,10 +3,8 @@ package uk.gov.companieshouse.model;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import uk.gov.companieshouse.database.entity.AddressEntity;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Objects;
 
 public class DocumentDetails {
 

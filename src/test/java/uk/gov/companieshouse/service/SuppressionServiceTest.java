@@ -1,6 +1,5 @@
 package uk.gov.companieshouse.service;
 
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,8 +16,7 @@ import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.model.DocumentDetails;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.repository.SuppressionRepository;
-
-import java.time.format.DateTimeFormatter;
+import uk.gov.companieshouse.service.suppression.SuppressionService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,7 +24,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SuppressionServiceTest {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @InjectMocks
     private SuppressionService suppressionService;
@@ -40,16 +37,16 @@ public class SuppressionServiceTest {
     @Test
     public void testCreateSuppression_returnsResourceId() {
 
-        when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity(null));
-        when(suppressionRepository.insert(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.id));
+        when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity("reference#01"));
+        when(suppressionRepository.insert(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.applicationReference));
 
-        assertEquals(TestData.Suppression.id, suppressionService.saveSuppression(createSuppression(null)));
+        assertEquals(TestData.Suppression.applicationReference, suppressionService.saveSuppression(createSuppression("reference#01")));
     }
 
-    private Suppression createSuppression(String id) {
+    private Suppression createSuppression(String applicationReference) {
         return new Suppression(
-            id,
             TestData.Suppression.createdAt,
+            applicationReference,
             new ApplicantDetails(
                 TestData.Suppression.ApplicantDetails.fullName,
                 TestData.Suppression.ApplicantDetails.fullName

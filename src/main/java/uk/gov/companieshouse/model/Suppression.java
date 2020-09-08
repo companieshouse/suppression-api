@@ -12,10 +12,9 @@ import java.time.LocalDateTime;
 public class Suppression {
 
     @JsonIgnore
-    private String id;
-
-    @JsonIgnore
     private LocalDateTime createdAt;
+
+    private String applicationReference;
 
     @Valid
     @NotNull(message = "applicant details must not be null")
@@ -33,26 +32,24 @@ public class Suppression {
         this(null, null, null, null, null);
     }
 
-    public Suppression(String id,
-                       LocalDateTime createdAt,
+    public Suppression(LocalDateTime createdAt,
+                       String applicationReference,
                        ApplicantDetails applicantDetails,
                        Address addressToRemove,
                        DocumentDetails documentDetails) {
 
-        this.id = id;
         this.createdAt = createdAt;
+        this.applicationReference = applicationReference;
         this.applicantDetails = applicantDetails;
         this.addressToRemove = addressToRemove;
         this.documentDetails = documentDetails;
     }
 
-    public String getId() {
-        return this.id;
-    }
-
     public LocalDateTime getCreatedAt() {
         return this.createdAt;
     }
+
+    public String getApplicationReference() { return this.applicationReference; }
 
     public ApplicantDetails getApplicantDetails() { return this.applicantDetails; }
 
@@ -60,13 +57,12 @@ public class Suppression {
 
     public DocumentDetails getDocumentDetails() { return this.documentDetails; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    public void setApplicationReference(String applicationReference) { this.applicationReference = applicationReference; }
 
     public void setApplicantDetails(ApplicantDetails applicantDetails) { this.applicantDetails = applicantDetails; }
 
@@ -83,8 +79,8 @@ public class Suppression {
         Suppression that = (Suppression) o;
 
         return new EqualsBuilder()
-            .append(id, that.id)
             .append(createdAt, that.createdAt)
+            .append(applicationReference, that.applicationReference)
             .append(applicantDetails, that.applicantDetails)
             .append(addressToRemove, that.addressToRemove)
             .append(documentDetails, that.documentDetails)
@@ -94,8 +90,8 @@ public class Suppression {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-            .append(id)
             .append(createdAt)
+            .append(applicationReference)
             .append(applicantDetails)
             .append(addressToRemove)
             .append(documentDetails)
@@ -105,8 +101,8 @@ public class Suppression {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-            .append("id", id)
             .append("createdAt", createdAt)
+            .append("applicationReference", applicationReference)
             .append("applicantDetails", applicantDetails)
             .append("addressToRemove", addressToRemove)
             .append("documentDetails", documentDetails)

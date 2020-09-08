@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import uk.gov.companieshouse.model.Suppression;
-import uk.gov.companieshouse.service.SuppressionService;
+import uk.gov.companieshouse.service.suppression.SuppressionService;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -39,18 +39,32 @@ public class SuppressionController {
     @PostMapping(value = "/suppressions", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> submitSuppression(@Valid @RequestBody final Suppression suppression) {
 
+
+        if (suppression.getApplicationReference().isEmpty()) {
+
+            String generatedReference = suppressionService.generateUniqueSuppressionReference();
+            suppression.setApplicationReference(generatedReference);
+
+        } else if (suppressionService.isExistingSuppressionID(suppression.getApplicationReference())) {
+
+            suppressionService.deleteSuppressionByReference(suppression.getApplicationReference());
+
+        }
+
         try {
+
             final String id = suppressionService.saveSuppression(suppression);
 
             final URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
+                .path("/{applicationReference}")
                 .buildAndExpand(id)
                 .toUri();
 
             return ResponseEntity.created(location).body(id);
 
         } catch (Exception ex) {
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 

@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 public interface TestData {
     interface Suppression {
-        String id = "SUPPRESSION#99";
         LocalDateTime createdAt = LocalDateTime.of(2010, 12, 31, 23, 59);
+        String applicationReference = "reference#1";
         interface ApplicantDetails {
             String fullName = "USER#1";
             String emailAddress = "user@example.com";

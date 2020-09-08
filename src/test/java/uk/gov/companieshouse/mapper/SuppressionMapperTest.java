@@ -34,7 +34,7 @@ public class SuppressionMapperTest {
         void shouldMapValueWhenValueIsNotNull() {
             SuppressionEntity mapped = mapper.map(new Suppression(
                 null,
-                null,
+                TestData.Suppression.applicationReference,
                 new ApplicantDetails(
                     TestData.Suppression.ApplicantDetails.fullName,
                     TestData.Suppression.ApplicantDetails.emailAddress
@@ -53,8 +53,9 @@ public class SuppressionMapperTest {
                     TestData.Suppression.DocumentDetails.date
                 )
             ));
-            assertNull(mapped.getId());
             assertNull(mapped.getCreatedAt());
+            assertEquals(TestData.Suppression.applicationReference, mapped.getId());
+
             assertEquals(TestData.Suppression.ApplicantDetails.fullName, mapped.getApplicantDetails().getFullName());
             assertEquals(TestData.Suppression.ApplicantDetails.emailAddress, mapped.getApplicantDetails().getEmailAddress());
 
@@ -81,7 +82,7 @@ public class SuppressionMapperTest {
         @Test
         void shouldMapValueWhenValueIsNotNull() {
             Suppression mapped = mapper.map(new SuppressionEntity(
-                TestData.Suppression.id,
+                TestData.Suppression.applicationReference,
                 TestData.Suppression.createdAt,
                 new ApplicantDetailsEntity(
                     TestData.Suppression.ApplicantDetails.fullName,
@@ -101,7 +102,7 @@ public class SuppressionMapperTest {
                     TestData.Suppression.DocumentDetails.date
                 )
             ));
-            assertEquals(TestData.Suppression.id, mapped.getId());
+            assertEquals(TestData.Suppression.applicationReference, mapped.getApplicationReference());
             assertEquals(TestData.Suppression.createdAt, mapped.getCreatedAt());
             assertEquals(TestData.Suppression.ApplicantDetails.fullName, mapped.getApplicantDetails().getFullName());
             assertEquals(TestData.Suppression.ApplicantDetails.emailAddress, mapped.getApplicantDetails().getEmailAddress());

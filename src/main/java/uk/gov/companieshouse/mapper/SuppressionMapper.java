@@ -27,7 +27,7 @@ public class SuppressionMapper implements Mapper<SuppressionEntity, Suppression>
             return null;
         }
         return new SuppressionEntity(
-            value.getId(),
+            value.getApplicationReference(),
             value.getCreatedAt(),
             applicantDetailsMapper.map(value.getApplicantDetails()),
             addressMapper.map(value.getAddressToRemove()),
@@ -41,8 +41,8 @@ public class SuppressionMapper implements Mapper<SuppressionEntity, Suppression>
             return null;
         }
         return new Suppression(
-            value.getId(),
             value.getCreatedAt(),
+            value.getId(),
             applicantDetailsMapper.map(value.getApplicantDetails()),
             addressMapper.map(value.getAddressToRemove()),
             documentDetailsMapper.map(value.getDocumentDetails())
