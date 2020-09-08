@@ -4,4 +4,4 @@ server:
 spring:
   data:
     mongodb:
-      uri: "mongodb://localhost/test"
+      uri: ${SUPPRESSIONS_API_MONGODB_URL}
