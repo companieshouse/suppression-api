@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import uk.gov.companieshouse.model.Suppression;
-import uk.gov.companieshouse.service.suppression.SuppressionService;
+import uk.gov.companieshouse.service.SuppressionService;
 
 import javax.validation.Valid;
 import java.net.URI;

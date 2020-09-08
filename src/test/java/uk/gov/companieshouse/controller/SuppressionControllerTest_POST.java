@@ -11,7 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.companieshouse.model.Suppression;
-import uk.gov.companieshouse.service.suppression.SuppressionService;
+import uk.gov.companieshouse.service.SuppressionService;
 
 import java.io.File;
 import java.util.function.Function;

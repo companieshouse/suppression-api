@@ -1,11 +1,11 @@
-package uk.gov.companieshouse.service.suppression;
+package uk.gov.companieshouse.service;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.companieshouse.mapper.SuppressionMapper;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.repository.SuppressionRepository;
+import uk.gov.companieshouse.utils.RandomReferenceSequence;
 
 import java.time.LocalDateTime;
 
@@ -22,9 +22,7 @@ public class SuppressionService {
     }
 
     public String saveSuppression(Suppression suppression) {
-
         suppression.setCreatedAt(LocalDateTime.now());
-
         return createSuppressionInMongoDB(suppression);
     }
 
@@ -37,26 +35,14 @@ public class SuppressionService {
     }
 
     public String generateUniqueSuppressionReference(){
-
-        String randomReference = generateRandomSequence();
+        String randomReference = RandomReferenceSequence.generate();
         while(isExistingSuppressionID(randomReference)) {
-            randomReference = generateRandomSequence();
+            randomReference = RandomReferenceSequence.generate();
         }
-
         return randomReference;
     }
 
     private String createSuppressionInMongoDB(Suppression suppression) {
         return suppressionRepository.insert(this.suppressionMapper.map(suppression)).getId();
-    }
-
-    private String generateRandomSequence() {
-
-        StringBuilder builder = new StringBuilder();
-        return builder
-            .append(RandomStringUtils.random(5, true, true).toUpperCase())
-            .append('-')
-            .append(RandomStringUtils.random(5, true, true).toUpperCase())
-            .toString();
     }
 }
