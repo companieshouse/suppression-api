@@ -30,10 +30,6 @@ public class SuppressionService {
         return suppressionRepository.findById(applicationReference).isPresent();
     }
 
-    public void deleteSuppressionByReference(String applicationReference) {
-        suppressionRepository.deleteById(applicationReference);
-    }
-
     public String generateUniqueSuppressionReference(){
         String randomReference = ReferenceGenerator.generate();
         while(isExistingSuppressionID(randomReference)) {
