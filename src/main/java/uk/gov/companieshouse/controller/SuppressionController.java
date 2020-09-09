@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import uk.gov.companieshouse.model.Suppression;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/suppressions")
 public class SuppressionController {
 
     private final SuppressionService suppressionService;
@@ -40,7 +42,7 @@ public class SuppressionController {
         @ApiResponse(responseCode = "422", description = "Invalid suppression data"),
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @PostMapping(value = "/suppressions", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> submitSuppression(@Valid @RequestBody final Suppression suppression) {
 
         if (suppression.getApplicationReference().isBlank()) {
