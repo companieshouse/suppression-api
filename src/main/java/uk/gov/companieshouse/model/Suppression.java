@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 public class Suppression {
@@ -14,6 +15,7 @@ public class Suppression {
     @JsonIgnore
     private LocalDateTime createdAt;
 
+    @Pattern(regexp = "([A-Z1-9]{5}-[A-Z1-9]{5})?", message = "applicationReference format is invalid")
     private String applicationReference;
 
     @Valid
