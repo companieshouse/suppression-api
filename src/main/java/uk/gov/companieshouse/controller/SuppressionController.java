@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.controller;
 
+import io.micrometer.core.instrument.util.StringUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import uk.gov.companieshouse.model.Suppression;
@@ -47,7 +49,12 @@ public class SuppressionController {
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> submitSuppression(@Valid @RequestBody final Suppression suppression) {
+    public ResponseEntity<String> submitSuppression(@RequestHeader("ERIC-identity") String userId,
+                                                    @Valid @RequestBody final Suppression suppression) {
+
+        if (StringUtils.isBlank(userId)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
         if (suppression.getApplicationReference().isBlank()) {
 

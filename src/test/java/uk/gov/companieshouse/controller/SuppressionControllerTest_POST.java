@@ -26,6 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SuppressionControllerTest_POST {
 
     private static final String SUPPRESSION_URI = "/suppressions";
+    private static final String IDENTITY_HEADER = "ERIC-identity";
+    private static final String TEST_USER_ID = "1234";
     private static final String TEST_RESOURCE_ID = "1";
 
     @MockBean
@@ -98,6 +100,9 @@ public class SuppressionControllerTest_POST {
     }
 
     private HttpHeaders createHttpHeaders() {
-        return new HttpHeaders();
+
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(IDENTITY_HEADER, TEST_USER_ID);
+        return httpHeaders;
     }
 }
