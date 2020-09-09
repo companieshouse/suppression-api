@@ -23,7 +23,7 @@ public class SuppressionService {
 
     public String saveSuppression(Suppression suppression) {
         suppression.setCreatedAt(LocalDateTime.now());
-        return createSuppressionInMongoDB(suppression);
+        return saveSuppressionInMongoDB(suppression);
     }
 
     public boolean isExistingSuppressionID(String applicationReference) {
@@ -42,7 +42,7 @@ public class SuppressionService {
         return randomReference;
     }
 
-    private String createSuppressionInMongoDB(Suppression suppression) {
-        return suppressionRepository.insert(this.suppressionMapper.map(suppression)).getId();
+    private String saveSuppressionInMongoDB(Suppression suppression) {
+        return suppressionRepository.save(this.suppressionMapper.map(suppression)).getId();
     }
 }

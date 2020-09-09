@@ -37,7 +37,7 @@ public class SuppressionServiceTest {
     public void testCreateSuppression_returnsResourceId() {
 
         when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity("reference#01"));
-        when(suppressionRepository.insert(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.applicationReference));
+        when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.applicationReference));
 
         assertEquals(TestData.Suppression.applicationReference, suppressionService.saveSuppression(createSuppression("reference#01")));
     }

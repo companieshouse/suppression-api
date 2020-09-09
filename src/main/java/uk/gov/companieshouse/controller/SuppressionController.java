@@ -47,11 +47,6 @@ public class SuppressionController {
 
             String generatedReference = suppressionService.generateUniqueSuppressionReference();
             suppression.setApplicationReference(generatedReference);
-
-        } else if (suppressionService.isExistingSuppressionID(suppression.getApplicationReference())) {
-
-            suppressionService.deleteSuppressionByReference(suppression.getApplicationReference());
-
         }
 
         try {

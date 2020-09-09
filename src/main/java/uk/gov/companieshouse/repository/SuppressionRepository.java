@@ -9,10 +9,6 @@ import java.util.Optional;
 @Repository
 public interface SuppressionRepository extends MongoRepository<SuppressionEntity, String> {
 
-    SuppressionEntity insert(SuppressionEntity suppression);
-
     Optional<SuppressionEntity> findById(String applicationReference);
-
-    void deleteById(String applicationReference);
 
 }
