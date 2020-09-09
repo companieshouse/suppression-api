@@ -55,7 +55,7 @@ public class AddressEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
+        return new HashCodeBuilder()
             .append(line1)
             .append(line2)
             .append(town)

@@ -64,7 +64,7 @@ public class SuppressionEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
+        return new HashCodeBuilder()
             .append(id)
             .append(createdAt)
             .append(applicantDetails)
