@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,8 @@ import java.util.Map;
 @RequestMapping("/suppressions")
 public class SuppressionController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SuppressionController.class);
+
     private final SuppressionService suppressionService;
 
     public SuppressionController(SuppressionService suppressionService){ this.suppressionService = suppressionService; }
@@ -51,6 +55,8 @@ public class SuppressionController {
             suppression.setApplicationReference(generatedReference);
         }
 
+        LOGGER.info("POST /suppressions with application reference {}", suppression.getApplicationReference());
+
         try {
 
             final String id = suppressionService.saveSuppression(suppression);
@@ -64,6 +70,8 @@ public class SuppressionController {
             return ResponseEntity.created(location).body(id);
 
         } catch (Exception ex) {
+
+            LOGGER.error("Unable to create suppression for application reference {}", suppression.getApplicationReference(), ex);
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
