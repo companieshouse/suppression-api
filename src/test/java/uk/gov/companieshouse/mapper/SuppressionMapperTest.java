@@ -9,8 +9,10 @@ import uk.gov.companieshouse.database.entity.SuppressionEntity;
 import uk.gov.companieshouse.database.entity.AddressEntity;
 import uk.gov.companieshouse.database.entity.ApplicantDetailsEntity;
 import uk.gov.companieshouse.database.entity.DocumentDetailsEntity;
-import uk.gov.companieshouse.model.*;
+import uk.gov.companieshouse.model.Suppression;
+import uk.gov.companieshouse.model.Address;
 import uk.gov.companieshouse.model.ApplicantDetails;
+import uk.gov.companieshouse.model.DocumentDetails;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;

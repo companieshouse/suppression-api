@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -19,10 +18,11 @@ import java.util.function.Function;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(SuppressionController.class)
 public class SuppressionControllerTest_POST {
 
     private static final String SUPPRESSION_URI = "/suppressions";
@@ -35,18 +35,16 @@ public class SuppressionControllerTest_POST {
     private MockMvc mockMvc;
 
     private final ObjectMapper mapper = new ObjectMapper();
-    private String validSuppression;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         when(suppressionService.saveSuppression(any(Suppression.class))).thenReturn(TEST_RESOURCE_ID);
     }
 
     @Test
     public void whenValidInput_return201() throws Exception {
 
-        validSuppression = asJsonString("src/test/resources/data/validSuppression.json");
-
+        final String validSuppression = asJsonString("src/test/resources/data/validSuppression.json");
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)

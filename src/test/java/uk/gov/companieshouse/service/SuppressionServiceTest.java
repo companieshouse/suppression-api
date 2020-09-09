@@ -39,13 +39,13 @@ public class SuppressionServiceTest {
         when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity("reference#01"));
         when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.applicationReference));
 
-        assertEquals(TestData.Suppression.applicationReference, suppressionService.saveSuppression(createSuppression("reference#01")));
+        assertEquals(TestData.Suppression.applicationReference, suppressionService.saveSuppression(createSuppression()));
     }
 
-    private Suppression createSuppression(String applicationReference) {
+    private Suppression createSuppression() {
         return new Suppression(
             TestData.Suppression.createdAt,
-            applicationReference,
+            "reference#01",
             new ApplicantDetails(
                 TestData.Suppression.ApplicantDetails.fullName,
                 TestData.Suppression.ApplicantDetails.fullName

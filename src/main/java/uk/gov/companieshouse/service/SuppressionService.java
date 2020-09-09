@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.companieshouse.mapper.SuppressionMapper;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.repository.SuppressionRepository;
-import uk.gov.companieshouse.utils.RandomReferenceSequence;
+import uk.gov.companieshouse.utils.ReferenceGenerator;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +23,7 @@ public class SuppressionService {
 
     public String saveSuppression(Suppression suppression) {
         suppression.setCreatedAt(LocalDateTime.now());
-        return saveSuppressionInMongoDB(suppression);
+        return suppressionRepository.save(this.suppressionMapper.map(suppression)).getId();
     }
 
     public boolean isExistingSuppressionID(String applicationReference) {
@@ -35,14 +35,10 @@ public class SuppressionService {
     }
 
     public String generateUniqueSuppressionReference(){
-        String randomReference = RandomReferenceSequence.generate();
+        String randomReference = ReferenceGenerator.generate();
         while(isExistingSuppressionID(randomReference)) {
-            randomReference = RandomReferenceSequence.generate();
+            randomReference = ReferenceGenerator.generate();
         }
         return randomReference;
-    }
-
-    private String saveSuppressionInMongoDB(Suppression suppression) {
-        return suppressionRepository.save(this.suppressionMapper.map(suppression)).getId();
     }
 }
