@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.companieshouse.TestData;
 import uk.gov.companieshouse.database.entity.SuppressionEntity;
 import uk.gov.companieshouse.database.entity.AddressEntity;
 import uk.gov.companieshouse.database.entity.ApplicantDetailsEntity;
@@ -16,6 +15,23 @@ import uk.gov.companieshouse.model.DocumentDetails;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+
+import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
+import static uk.gov.companieshouse.TestData.Suppression.createdAt;
+
+import static uk.gov.companieshouse.TestData.Suppression.ApplicantDetails.fullName;
+import static uk.gov.companieshouse.TestData.Suppression.ApplicantDetails.emailAddress;
+
+import static uk.gov.companieshouse.TestData.Suppression.Address.line1;
+import static uk.gov.companieshouse.TestData.Suppression.Address.line2;
+import static uk.gov.companieshouse.TestData.Suppression.Address.town;
+import static uk.gov.companieshouse.TestData.Suppression.Address.county;
+import static uk.gov.companieshouse.TestData.Suppression.Address.postcode;
+
+import static uk.gov.companieshouse.TestData.Suppression.DocumentDetails.companyName;
+import static uk.gov.companieshouse.TestData.Suppression.DocumentDetails.companyNumber;
+import static uk.gov.companieshouse.TestData.Suppression.DocumentDetails.description;
+import static uk.gov.companieshouse.TestData.Suppression.DocumentDetails.date;
 
 @ExtendWith(SpringExtension.class)
 public class SuppressionMapperTest {
@@ -34,43 +50,29 @@ public class SuppressionMapperTest {
 
         @Test
         void shouldMapValueWhenValueIsNotNull() {
-            SuppressionEntity mapped = mapper.map(new Suppression(
-                null,
-                TestData.Suppression.applicationReference,
-                new ApplicantDetails(
-                    TestData.Suppression.ApplicantDetails.fullName,
-                    TestData.Suppression.ApplicantDetails.emailAddress
-                ),
-                new Address(
-                    TestData.Suppression.Address.line1,
-                    TestData.Suppression.Address.line2,
-                    TestData.Suppression.Address.town,
-                    TestData.Suppression.Address.county,
-                    TestData.Suppression.Address.postcode
-                ),
-                new DocumentDetails(
-                    TestData.Suppression.DocumentDetails.companyName,
-                    TestData.Suppression.DocumentDetails.companyNumber,
-                    TestData.Suppression.DocumentDetails.description,
-                    TestData.Suppression.DocumentDetails.date
-                )
+
+            SuppressionEntity mapped = mapper.map(new Suppression(null, applicationReference,
+                new ApplicantDetails(fullName, emailAddress),
+                new Address(line1, line2, town, county, postcode),
+                new DocumentDetails(companyName, companyNumber, description, date)
             ));
+
             assertNull(mapped.getCreatedAt());
-            assertEquals(TestData.Suppression.applicationReference, mapped.getId());
+            assertEquals(applicationReference, mapped.getId());
 
-            assertEquals(TestData.Suppression.ApplicantDetails.fullName, mapped.getApplicantDetails().getFullName());
-            assertEquals(TestData.Suppression.ApplicantDetails.emailAddress, mapped.getApplicantDetails().getEmailAddress());
+            assertEquals(fullName, mapped.getApplicantDetails().getFullName());
+            assertEquals(emailAddress, mapped.getApplicantDetails().getEmailAddress());
 
-            assertEquals(TestData.Suppression.Address.line1, mapped.getAddressToRemove().getLine1());
-            assertEquals(TestData.Suppression.Address.line2, mapped.getAddressToRemove().getLine2());
-            assertEquals(TestData.Suppression.Address.town, mapped.getAddressToRemove().getTown());
-            assertEquals(TestData.Suppression.Address.county, mapped.getAddressToRemove().getCounty());
-            assertEquals(TestData.Suppression.Address.postcode, mapped.getAddressToRemove().getPostcode());
+            assertEquals(line1, mapped.getAddressToRemove().getLine1());
+            assertEquals(line2, mapped.getAddressToRemove().getLine2());
+            assertEquals(town, mapped.getAddressToRemove().getTown());
+            assertEquals(county, mapped.getAddressToRemove().getCounty());
+            assertEquals(postcode, mapped.getAddressToRemove().getPostcode());
 
-            assertEquals(TestData.Suppression.DocumentDetails.companyName, mapped.getDocumentDetails().getCompanyName());
-            assertEquals(TestData.Suppression.DocumentDetails.companyNumber, mapped.getDocumentDetails().getCompanyNumber());
-            assertEquals(TestData.Suppression.DocumentDetails.description, mapped.getDocumentDetails().getDescription());
-            assertEquals(TestData.Suppression.DocumentDetails.date, mapped.getDocumentDetails().getDate());
+            assertEquals(companyName, mapped.getDocumentDetails().getCompanyName());
+            assertEquals(companyNumber, mapped.getDocumentDetails().getCompanyNumber());
+            assertEquals(description, mapped.getDocumentDetails().getDescription());
+            assertEquals(date, mapped.getDocumentDetails().getDate());
         }
     }
 
@@ -83,42 +85,26 @@ public class SuppressionMapperTest {
 
         @Test
         void shouldMapValueWhenValueIsNotNull() {
-            Suppression mapped = mapper.map(new SuppressionEntity(
-                TestData.Suppression.applicationReference,
-                TestData.Suppression.createdAt,
-                new ApplicantDetailsEntity(
-                    TestData.Suppression.ApplicantDetails.fullName,
-                    TestData.Suppression.ApplicantDetails.emailAddress
-                ),
-                new AddressEntity(
-                    TestData.Suppression.Address.line1,
-                    TestData.Suppression.Address.line2,
-                    TestData.Suppression.Address.town,
-                    TestData.Suppression.Address.county,
-                    TestData.Suppression.Address.postcode
-                ),
-                new DocumentDetailsEntity(
-                    TestData.Suppression.DocumentDetails.companyName,
-                    TestData.Suppression.DocumentDetails.companyNumber,
-                    TestData.Suppression.DocumentDetails.description,
-                    TestData.Suppression.DocumentDetails.date
-                )
+            Suppression mapped = mapper.map(new SuppressionEntity(applicationReference, createdAt,
+                new ApplicantDetailsEntity(fullName, emailAddress),
+                new AddressEntity(line1, line2, town, county, postcode),
+                new DocumentDetailsEntity(companyName, companyNumber, description, date)
             ));
-            assertEquals(TestData.Suppression.applicationReference, mapped.getApplicationReference());
-            assertEquals(TestData.Suppression.createdAt, mapped.getCreatedAt());
-            assertEquals(TestData.Suppression.ApplicantDetails.fullName, mapped.getApplicantDetails().getFullName());
-            assertEquals(TestData.Suppression.ApplicantDetails.emailAddress, mapped.getApplicantDetails().getEmailAddress());
+            assertEquals(applicationReference, mapped.getApplicationReference());
+            assertEquals(createdAt, mapped.getCreatedAt());
+            assertEquals(fullName, mapped.getApplicantDetails().getFullName());
+            assertEquals(emailAddress, mapped.getApplicantDetails().getEmailAddress());
 
-            assertEquals(TestData.Suppression.Address.line1, mapped.getAddressToRemove().getLine1());
-            assertEquals(TestData.Suppression.Address.line2, mapped.getAddressToRemove().getLine2());
-            assertEquals(TestData.Suppression.Address.town, mapped.getAddressToRemove().getTown());
-            assertEquals(TestData.Suppression.Address.county, mapped.getAddressToRemove().getCounty());
-            assertEquals(TestData.Suppression.Address.postcode, mapped.getAddressToRemove().getPostcode());
+            assertEquals(line1, mapped.getAddressToRemove().getLine1());
+            assertEquals(line2, mapped.getAddressToRemove().getLine2());
+            assertEquals(town, mapped.getAddressToRemove().getTown());
+            assertEquals(county, mapped.getAddressToRemove().getCounty());
+            assertEquals(postcode, mapped.getAddressToRemove().getPostcode());
 
-            assertEquals(TestData.Suppression.DocumentDetails.companyName, mapped.getDocumentDetails().getCompanyName());
-            assertEquals(TestData.Suppression.DocumentDetails.companyNumber, mapped.getDocumentDetails().getCompanyNumber());
-            assertEquals(TestData.Suppression.DocumentDetails.description, mapped.getDocumentDetails().getDescription());
-            assertEquals(TestData.Suppression.DocumentDetails.date, mapped.getDocumentDetails().getDate());
+            assertEquals(companyName, mapped.getDocumentDetails().getCompanyName());
+            assertEquals(companyNumber, mapped.getDocumentDetails().getCompanyNumber());
+            assertEquals(description, mapped.getDocumentDetails().getDescription());
+            assertEquals(date, mapped.getDocumentDetails().getDate());
         }
     }
 }
