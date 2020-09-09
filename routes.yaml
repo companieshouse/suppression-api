@@ -1,5 +1,5 @@
 app_name: supression-api
-group: api
+group: internalapi
 weight: 900
 routes:
   1: ^/suppressions/.*
