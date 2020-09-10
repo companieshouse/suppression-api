@@ -56,12 +56,6 @@ public class SuppressionController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        if (StringUtils.isBlank(suppression.getApplicationReference())) {
-
-            String generatedReference = suppressionService.generateUniqueSuppressionReference();
-            suppression.setApplicationReference(generatedReference);
-        }
-
         LOGGER.info("POST /suppressions with application reference {}", suppression.getApplicationReference());
 
         try {
