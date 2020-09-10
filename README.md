@@ -11,11 +11,9 @@ API for the 'Suppress My Details' service
 
 1. Clone [Docker CHS Development](https://github.com/companieshouse/docker-chs-development) and follow the steps in the README.
 
-2. Enable the `platform` module
+2. Enable the `suppression` module
 
-3. Enable the `suppression` module
-
-4. Navigate to `http://api.chs.local:9000`
+3. Navigate to `http://api.chs.local:9000`
 
 ### To make local changes
 
@@ -32,4 +30,7 @@ Development mode is available for this service in [Docker CHS Development](https
 
 ### Health
 `/actuator/health`
+
+### API Documentation (Swagger)
+http://localhost:9000/swagger-ui.html
 
