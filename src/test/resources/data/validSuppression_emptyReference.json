@@ -1,12 +1,12 @@
 {
-  "applicationReference": "11111-11111",
+  "applicationReference": "",
   "applicantDetails": {
     "fullName": "Andy",
     "emailAddress": "andy@gmail.com"
   },
   "addressToRemove": {
     "line1": "Handy Street",
-    "line2": "",
+    "line2": "Dandy Square",
     "town": "Cardiff",
     "county": "Greater Cardiff",
     "postcode": "CC123"

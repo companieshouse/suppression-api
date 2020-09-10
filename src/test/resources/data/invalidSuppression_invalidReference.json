@@ -1,0 +1,20 @@
+{
+  "applicationReference": "123123",
+  "applicantDetails": {
+    "fullName": "Andy",
+    "emailAddress": "andy@gmail.com"
+  },
+  "addressToRemove": {
+    "line1": "Handy Street",
+    "line2": "",
+    "town": "Cardiff",
+    "county": "Greater Cardiff",
+    "postcode": "CC123"
+  },
+  "documentDetails": {
+    "companyName": "A Company",
+    "companyNumber": "NI123123",
+    "description": "a document",
+    "date": "10/12/2010"
+  }
+}
