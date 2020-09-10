@@ -56,12 +56,24 @@ public class SuppressionServiceTest {
     }
 
     @Test
-    public void testCreateSuppression_returnsResourceId() {
+    public void testSaveSuppression_returnsResourceReference() {
 
         when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity("reference#01"));
         when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.applicationReference));
 
-        assertEquals(TestData.Suppression.applicationReference, suppressionService.saveSuppression(createSuppression()));
+        assertEquals(TestData.Suppression.applicationReference, suppressionService.saveSuppression(createSuppression("reference#01")));
+    }
+
+    @Test
+    public void testSaveSuppressionWithEmptyReference_returnsResourceReference() {
+
+        when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity("reference#01"));
+        when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.applicationReference));
+
+        String expectedReference = suppressionService.saveSuppression(createSuppression(""));
+
+        verify(suppressionRepository, times(1)).findById(any(String.class));
+        assertEquals(TestData.Suppression.applicationReference, expectedReference);
     }
 
     @Test
@@ -90,10 +102,10 @@ public class SuppressionServiceTest {
         verify(suppressionRepository, times(4)).findById(any(String.class));
     }
 
-    private Suppression createSuppression() {
+    private Suppression createSuppression(String reference) {
         return new Suppression(
             TestData.Suppression.createdAt,
-            "reference#01",
+            reference,
             new ApplicantDetails(
                 TestData.Suppression.ApplicantDetails.fullName,
                 TestData.Suppression.ApplicantDetails.fullName
