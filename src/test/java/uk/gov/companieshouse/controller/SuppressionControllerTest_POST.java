@@ -28,7 +28,7 @@ public class SuppressionControllerTest_POST {
     private static final String SUPPRESSION_URI = "/suppressions";
     private static final String IDENTITY_HEADER = "ERIC-identity";
     private static final String TEST_USER_ID = "1234";
-    private static final String TEST_RESOURCE_ID = "1";
+    private static final String TEST_RESOURCE_ID = "11111-11111";
 
     @MockBean
     private SuppressionService suppressionService;
@@ -38,24 +38,46 @@ public class SuppressionControllerTest_POST {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
+    private String validSuppression;
+
     @BeforeEach
     public void setUp() {
+
         when(suppressionService.saveSuppression(any(Suppression.class))).thenReturn(TEST_RESOURCE_ID);
+
+        validSuppression = asJsonString("src/test/resources/data/validSuppression.json");
     }
 
     @Test
     public void whenValidInput_return201() throws Exception {
 
-        final String validSuppression = asJsonString("src/test/resources/data/validSuppression.json");
+        mockMvc.perform(post(SUPPRESSION_URI)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .headers(createHttpHeaders(TEST_USER_ID))
+            .content(validSuppression))
+            .andExpect(status().isCreated())
+            .andExpect(content().string(TEST_RESOURCE_ID))
+            .andExpect(header().string(HttpHeaders.LOCATION, "http://localhost/suppressions/" + TEST_RESOURCE_ID));
+    }
+
+    @Test
+    public void whenEmptyInput_return400() throws Exception {
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .headers(createHttpHeaders())
+            .headers(createHttpHeaders(TEST_USER_ID))
+            .content(""))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void whenInvalidHeader_return401() throws Exception {
+
+        mockMvc.perform(post(SUPPRESSION_URI)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .headers(createHttpHeaders(" "))
             .content(validSuppression))
-            .andExpect(status().isCreated())
-            .andExpect(content().json(TEST_RESOURCE_ID))
-            .andExpect(header().string(HttpHeaders.LOCATION, "http://localhost/suppressions/"
-                + TEST_RESOURCE_ID));
+            .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -63,11 +85,9 @@ public class SuppressionControllerTest_POST {
 
         final String invalidSuppression = asJsonString("src/test/resources/data/invalidSuppression.json");
 
-        System.out.println(invalidSuppression);
-
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .headers(createHttpHeaders())
+            .headers(createHttpHeaders(TEST_USER_ID))
             .content(invalidSuppression))
             .andExpect(status().isUnprocessableEntity())
             .andExpect(
@@ -76,13 +96,15 @@ public class SuppressionControllerTest_POST {
     }
 
     @Test
-    public void whenEmptyInput_return400() throws Exception {
+    public void whenExceptionFromService_return500() throws Exception {
+
+        when(suppressionService.saveSuppression(any(Suppression.class))).thenThrow(new RuntimeException());
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .headers(createHttpHeaders())
-            .content(""))
-            .andExpect(status().isBadRequest());
+            .headers(createHttpHeaders(TEST_USER_ID))
+            .content(validSuppression))
+            .andExpect(status().isInternalServerError());
     }
 
 
@@ -99,10 +121,9 @@ public class SuppressionControllerTest_POST {
         return asJsonString(pathname, Function.identity());
     }
 
-    private HttpHeaders createHttpHeaders() {
-
+    private HttpHeaders createHttpHeaders(String testUserId) {
         final HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(IDENTITY_HEADER, TEST_USER_ID);
+        httpHeaders.add(IDENTITY_HEADER,testUserId);
         return httpHeaders;
     }
 }

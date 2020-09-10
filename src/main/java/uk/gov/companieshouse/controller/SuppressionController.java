@@ -1,6 +1,6 @@
 package uk.gov.companieshouse.controller;
 
-import io.micrometer.core.instrument.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -56,7 +56,7 @@ public class SuppressionController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        if (suppression.getApplicationReference().isBlank()) {
+        if (StringUtils.isBlank(suppression.getApplicationReference())) {
 
             String generatedReference = suppressionService.generateUniqueSuppressionReference();
             suppression.setApplicationReference(generatedReference);
