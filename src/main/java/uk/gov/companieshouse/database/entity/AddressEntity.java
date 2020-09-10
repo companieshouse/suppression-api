@@ -5,9 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.data.annotation.AccessType;
 
-
 import java.io.Serializable;
-
 
 @AccessType(AccessType.Type.PROPERTY)
 public class AddressEntity implements Serializable {

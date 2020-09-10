@@ -2,11 +2,10 @@ package uk.gov.companieshouse.utils;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.regex.Matcher;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ReferenceGeneratorTest {
 
@@ -25,11 +24,16 @@ public class ReferenceGeneratorTest {
     @Test
     public void testGeneration_returnsCorrectFormat() {
 
-        String sequence = ReferenceGenerator.generate();
+        String regexExpression = "[A-Z0-9]{5}-[A-Z0-9]{5}";
+        ArrayList<Boolean> results = new ArrayList<>();
+        boolean [] expected = new boolean[10];
 
-        Pattern regexPattern = Pattern.compile("[A-Z1-9]{5}-[A-Z1-9]{5}");
-        Matcher matcher = regexPattern.matcher(sequence);
+        for(int i = 0; i < 10; i++){
+            String sequence = ReferenceGenerator.generate();
+            Pattern regexPattern = Pattern.compile(regexExpression);
+            results.add(regexPattern.matcher(sequence).find());
+        }
 
-        assertTrue(matcher.find());
+        assertFalse(results.contains(false));
     }
 }

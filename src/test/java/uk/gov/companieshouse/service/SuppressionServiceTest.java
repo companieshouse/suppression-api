@@ -17,9 +17,15 @@ import uk.gov.companieshouse.model.DocumentDetails;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.repository.SuppressionRepository;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 public class SuppressionServiceTest {
@@ -34,12 +40,54 @@ public class SuppressionServiceTest {
     private SuppressionRepository suppressionRepository;
 
     @Test
+    public void isExistingSuppressionID_returnsFalse() {
+
+        String existingID = "reference#01";
+        when(suppressionRepository.findById(existingID)).thenReturn(Optional.empty());
+        assertFalse(suppressionService.isExistingSuppressionID(existingID));
+    }
+
+    @Test
+    public void isExistingSuppressionID_returnsTrue() {
+
+        String nonExistingID = "reference#01";
+        when(suppressionRepository.findById(nonExistingID)).thenReturn(Optional.of(createSuppressionEntity(nonExistingID)));
+        assertTrue(suppressionService.isExistingSuppressionID(nonExistingID));
+    }
+
+    @Test
     public void testCreateSuppression_returnsResourceId() {
 
         when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity("reference#01"));
         when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.applicationReference));
 
         assertEquals(TestData.Suppression.applicationReference, suppressionService.saveSuppression(createSuppression()));
+    }
+
+    @Test
+    public void generateUniqueSuppressionsReference_noDuplicatesPresent() {
+
+        when(suppressionRepository.findById(any(String.class))).thenReturn(Optional.empty());
+
+        suppressionService.generateUniqueSuppressionReference();
+
+        verify(suppressionRepository, times(1)).findById(any(String.class));
+    }
+
+    @Test
+    public void generateUniqueSuppressionsReference_duplicatesPresent() {
+
+        SuppressionEntity suppressionEntity = createSuppressionEntity(TestData.Suppression.applicationReference);
+
+        when(suppressionRepository.findById(any(String.class)))
+            .thenReturn(Optional.of(suppressionEntity))
+            .thenReturn(Optional.of(suppressionEntity))
+            .thenReturn(Optional.of(suppressionEntity))
+            .thenReturn(Optional.empty());
+
+        suppressionService.generateUniqueSuppressionReference();
+
+        verify(suppressionRepository, times(4)).findById(any(String.class));
     }
 
     private Suppression createSuppression() {
