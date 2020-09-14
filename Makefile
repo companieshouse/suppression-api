@@ -46,6 +46,15 @@ endif
 .PHONY: dist
 dist: clean build package
 
+
+.PHONY: docker-build-ci
+docker-build-ci:
+	mvn compile jib:buildTar
+
+.PHONY: docker-build
+docker-build:
+	mvn compile jib:dockerBuild -Dimage=169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/$(artifact_name):latest
+
 .PHONY: sonar
 sonar:
 	mvn sonar:sonar
