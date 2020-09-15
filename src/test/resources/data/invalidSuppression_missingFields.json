@@ -1,0 +1,13 @@
+{
+  "applicationReference": "",
+  "applicantDetails": {
+    "fullName": "Andy Trail",
+    "emailAddress": "andy@gmail.com"
+  },
+  "documentDetails": {
+    "companyName": "A Company",
+    "companyNumber": "",
+    "description": "a document",
+    "date": "10/12/2010"
+  }
+}
