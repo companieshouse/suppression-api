@@ -1,7 +1,6 @@
 package uk.gov.companieshouse.service;
 
 import org.springframework.stereotype.Service;
-import uk.gov.companieshouse.GenerateEtagUtil;
 import uk.gov.companieshouse.model.payment.Item;
 import uk.gov.companieshouse.model.payment.Links;
 import uk.gov.companieshouse.model.payment.Payment;
