@@ -5,11 +5,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 public class ApplicantDetails {
 
-    @NotEmpty(message = "full name must not be blank")
+    @NotBlank(message = "full name must not be blank")
     private String fullName;
 
     @NotBlank(message = "email address must not be blank")
