@@ -1,18 +1,17 @@
 package uk.gov.companieshouse.model.payment;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
 import java.util.Objects;
 
 public class Payment {
-    
-    @JsonProperty("Etag")
+
     private String etag;
 
     private String kind;
     private Links links;
-    private List<Item> items;
+    private List<PaymentItem> paymentItems;
 
     public String getEtag() {
         return etag;
@@ -38,12 +37,12 @@ public class Payment {
         this.links = links;
     }
 
-    public List<Item> getItems() {
-        return items;
+    public List<PaymentItem> getPaymentItems() {
+        return paymentItems;
     }
 
-    public void setItems(List<Item> items) {
-        this.items = items;
+    public void setPaymentItems(List<PaymentItem> paymentItems) {
+        this.paymentItems = paymentItems;
     }
 
     @Override
@@ -54,21 +53,21 @@ public class Payment {
         return Objects.equals(etag, payment.etag) &&
             Objects.equals(kind, payment.kind) &&
             Objects.equals(links, payment.links) &&
-            Objects.equals(items, payment.items);
+            Objects.equals(paymentItems, payment.paymentItems);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(etag, kind, links, items);
+        return Objects.hash(etag, kind, links, paymentItems);
     }
 
     @Override
     public String toString() {
-        return "Payment{" +
-            "etag='" + etag + '\'' +
-            ", kind='" + kind + '\'' +
-            ", links=" + links +
-            ", items=" + items +
-            '}';
+        return new ToStringBuilder(this)
+            .append("etag", etag)
+            .append("kind", kind)
+            .append("links", links)
+            .append("paymentItems", paymentItems)
+            .toString();
     }
 }

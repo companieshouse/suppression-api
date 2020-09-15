@@ -1,12 +1,13 @@
 package uk.gov.companieshouse.model.payment;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class Item {
+public class PaymentItem {
     
     private String description;
     
@@ -108,7 +109,7 @@ public class Item {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Item that = (Item) o;
+        PaymentItem that = (PaymentItem) o;
         return Objects.equals(description, that.description) &&
             Objects.equals(descriptionIdentifier, that.descriptionIdentifier) &&
             Objects.equals(descriptionValues, that.descriptionValues) &&
@@ -127,16 +128,16 @@ public class Item {
 
     @Override
     public String toString() {
-        return "PaymentItem{" +
-            "description='" + description + '\'' +
-            ", descriptionIdentifier='" + descriptionIdentifier + '\'' +
-            ", descriptionValues=" + descriptionValues +
-            ", productType='" + productType + '\'' +
-            ", amount='" + amount + '\'' +
-            ", availablePaymentMethods=" + availablePaymentMethods +
-            ", classOfPayment=" + classOfPayment +
-            ", kind='" + kind + '\'' +
-            ", resourceKind='" + resourceKind + '\'' +
-            '}';
+        return new ToStringBuilder(this)
+            .append("description", description)
+            .append("descriptionIdentifier", descriptionIdentifier)
+            .append("descriptionValues", descriptionValues)
+            .append("productType", productType)
+            .append("amount", amount)
+            .append("availablePaymentMethods", availablePaymentMethods)
+            .append("classOfPayment", classOfPayment)
+            .append("kind", kind)
+            .append("resourceKind", resourceKind)
+            .toString();
     }
 }

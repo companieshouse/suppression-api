@@ -8,7 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.companieshouse.model.Suppression;
-import uk.gov.companieshouse.model.payment.Item;
+import uk.gov.companieshouse.model.payment.PaymentItem;
 import uk.gov.companieshouse.model.payment.Links;
 import uk.gov.companieshouse.model.payment.Payment;
 import uk.gov.companieshouse.service.PaymentService;
@@ -82,21 +82,21 @@ public class PaymentControllerTest_POST {
         links.setSelf("/suppressions/" + TEST_SUPPRESSION_ID);
         links.setPayment("/suppressions/" + TEST_SUPPRESSION_ID + "/payment");
 
-        Item item = new Item();
-        item.setDescription("Suppression application");
-        item.setDescriptionIdentifier("Suppression application");
-        item.setDescriptionValues(Collections.emptyMap());
-        item.setProductType("Suppression application");
-        item.setAmount("32");
-        item.setAvailablePaymentMethods(Collections.singletonList("credit-card"));
-        item.setClassOfPayment(Collections.singletonList("data-maintenance"));
-        item.setKind("suppression-request#payment-details");
-        item.setResourceKind("suppression-request#suppression-request");
+        PaymentItem paymentItem = new PaymentItem();
+        paymentItem.setDescription("Suppression application");
+        paymentItem.setDescriptionIdentifier("Suppression application");
+        paymentItem.setDescriptionValues(Collections.emptyMap());
+        paymentItem.setProductType("Suppression application");
+        paymentItem.setAmount("32");
+        paymentItem.setAvailablePaymentMethods(Collections.singletonList("credit-card"));
+        paymentItem.setClassOfPayment(Collections.singletonList("data-maintenance"));
+        paymentItem.setKind("suppression-request#payment-details");
+        paymentItem.setResourceKind("suppression-request#suppression-request");
 
         payment.setEtag(TEST_ETAG);
         payment.setKind("suppression-request#payment");
         payment.setLinks(links);
-        payment.setItems(Collections.singletonList(item));
+        payment.setPaymentItems(Collections.singletonList(paymentItem));
         return payment;
     }
 

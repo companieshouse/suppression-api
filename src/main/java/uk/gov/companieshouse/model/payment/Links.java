@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.model.payment;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
 
@@ -43,9 +44,9 @@ public class Links {
 
     @Override
     public String toString() {
-        return "PaymentLinks{" +
-            "self='" + self + '\'' +
-            ", payment='" + payment + '\'' +
-            '}';
+        return new ToStringBuilder(this)
+            .append("self", self)
+            .append("payment", payment)
+            .toString();
     }
 }

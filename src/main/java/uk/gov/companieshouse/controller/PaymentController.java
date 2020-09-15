@@ -51,8 +51,8 @@ public class PaymentController {
         
         final String etag = suppression.get().getEtag();
         
-        Payment payment = paymentService.getPaymentDetails(suppressionId, etag);
+        final Payment paymentDetails = paymentService.getPaymentDetails(suppressionId, etag);
         
-        return ResponseEntity.status(HttpStatus.OK).body(payment);
+        return ResponseEntity.status(HttpStatus.OK).body(paymentDetails);
     }
 }

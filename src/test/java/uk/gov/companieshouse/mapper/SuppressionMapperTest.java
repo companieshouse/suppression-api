@@ -54,7 +54,8 @@ public class SuppressionMapperTest {
             SuppressionEntity mapped = mapper.map(new Suppression(null, applicationReference,
                 new ApplicantDetails(fullName, emailAddress),
                 new Address(line1, line2, town, county, postcode),
-                new DocumentDetails(companyName, companyNumber, description, date), etag
+                new DocumentDetails(companyName, companyNumber, description, date),
+                etag
             ));
 
             assertNull(mapped.getCreatedAt());
@@ -88,7 +89,8 @@ public class SuppressionMapperTest {
             Suppression mapped = mapper.map(new SuppressionEntity(applicationReference, createdAt,
                 new ApplicantDetailsEntity(fullName, emailAddress),
                 new AddressEntity(line1, line2, town, county, postcode),
-                new DocumentDetailsEntity(companyName, companyNumber, description, date), etag
+                new DocumentDetailsEntity(companyName, companyNumber, description, date),
+                etag
             ));
             assertEquals(applicationReference, mapped.getApplicationReference());
             assertEquals(createdAt, mapped.getCreatedAt());

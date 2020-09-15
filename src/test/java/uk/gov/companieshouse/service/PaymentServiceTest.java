@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import uk.gov.companieshouse.model.payment.Item;
+import uk.gov.companieshouse.model.payment.PaymentItem;
 import uk.gov.companieshouse.model.payment.Links;
 import uk.gov.companieshouse.model.payment.Payment;
 
@@ -36,16 +36,16 @@ public class PaymentServiceTest {
         assertNotNull(payment.getEtag());
         assertEquals(PAYMENT_KIND, payment.getKind());
 
-        Item item = payment.getItems().get(0);
-        assertEquals(PAYMENT_AMOUNT, item.getAmount());
-        assertEquals(AVAILABLE_PAYMENT_METHOD, item.getAvailablePaymentMethods().get(0));
-        assertEquals(CLASS_OF_PAYMENT, item.getClassOfPayment().get(0));
-        assertEquals(PAYMENT_DESCRIPTION, item.getDescription());
-        assertEquals(PAYMENT_DESCRIPTION, item.getDescriptionIdentifier());
-        assertEquals(Collections.emptyMap(), item.getDescriptionValues());
-        assertEquals(PAYMENT_ITEM_KIND, item.getKind());
-        assertEquals(PAYMENT_DESCRIPTION, item.getProductType());
-        assertEquals(PAYMENT_RESOURCE_KIND, item.getResourceKind());
+        PaymentItem paymentItem = payment.getPaymentItems().get(0);
+        assertEquals(PAYMENT_AMOUNT, paymentItem.getAmount());
+        assertEquals(AVAILABLE_PAYMENT_METHOD, paymentItem.getAvailablePaymentMethods().get(0));
+        assertEquals(CLASS_OF_PAYMENT, paymentItem.getClassOfPayment().get(0));
+        assertEquals(PAYMENT_DESCRIPTION, paymentItem.getDescription());
+        assertEquals(PAYMENT_DESCRIPTION, paymentItem.getDescriptionIdentifier());
+        assertEquals(Collections.emptyMap(), paymentItem.getDescriptionValues());
+        assertEquals(PAYMENT_ITEM_KIND, paymentItem.getKind());
+        assertEquals(PAYMENT_DESCRIPTION, paymentItem.getProductType());
+        assertEquals(PAYMENT_RESOURCE_KIND, paymentItem.getResourceKind());
 
         Links links = payment.getLinks();
         assertEquals("/suppressions/" + TEST_SUPPRESSION_ID + "/payment", links.getPayment());
