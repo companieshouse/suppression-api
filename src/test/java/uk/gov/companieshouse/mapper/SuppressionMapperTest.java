@@ -16,9 +16,6 @@ import uk.gov.companieshouse.model.DocumentDetails;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
-import static uk.gov.companieshouse.TestData.Suppression.createdAt;
-
 import static uk.gov.companieshouse.TestData.Suppression.ApplicantDetails.fullName;
 import static uk.gov.companieshouse.TestData.Suppression.ApplicantDetails.emailAddress;
 
@@ -32,6 +29,9 @@ import static uk.gov.companieshouse.TestData.Suppression.DocumentDetails.company
 import static uk.gov.companieshouse.TestData.Suppression.DocumentDetails.companyNumber;
 import static uk.gov.companieshouse.TestData.Suppression.DocumentDetails.description;
 import static uk.gov.companieshouse.TestData.Suppression.DocumentDetails.date;
+import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
+import static uk.gov.companieshouse.TestData.Suppression.createdAt;
+import static uk.gov.companieshouse.TestData.Suppression.etag;
 
 @ExtendWith(SpringExtension.class)
 public class SuppressionMapperTest {
@@ -54,7 +54,7 @@ public class SuppressionMapperTest {
             SuppressionEntity mapped = mapper.map(new Suppression(null, applicationReference,
                 new ApplicantDetails(fullName, emailAddress),
                 new Address(line1, line2, town, county, postcode),
-                new DocumentDetails(companyName, companyNumber, description, date)
+                new DocumentDetails(companyName, companyNumber, description, date), etag
             ));
 
             assertNull(mapped.getCreatedAt());
@@ -88,7 +88,7 @@ public class SuppressionMapperTest {
             Suppression mapped = mapper.map(new SuppressionEntity(applicationReference, createdAt,
                 new ApplicantDetailsEntity(fullName, emailAddress),
                 new AddressEntity(line1, line2, town, county, postcode),
-                new DocumentDetailsEntity(companyName, companyNumber, description, date)
+                new DocumentDetailsEntity(companyName, companyNumber, description, date), etag
             ));
             assertEquals(applicationReference, mapped.getApplicationReference());
             assertEquals(createdAt, mapped.getCreatedAt());

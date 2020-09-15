@@ -19,11 +19,11 @@ public class PaymentService {
     private static final String AVAILABLE_PAYMENT_METHOD = "credit-card";
     private static final String CLASS_OF_PAYMENT = "data-maintenance";
 
-    public Payment getPaymentDetails(String suppressionId) {
+    public Payment getPaymentDetails(String suppressionId, String etag) {
 
         Payment payment = new Payment();
         
-        payment.setEtag(GenerateEtagUtil.generateEtag());
+        payment.setEtag(etag);
         payment.setItems(Collections.singletonList(createPaymentItem()));
         payment.setKind(PAYMENT_KIND);
 

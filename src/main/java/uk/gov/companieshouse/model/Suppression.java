@@ -29,22 +29,27 @@ public class Suppression {
     @Valid
     @NotNull(message = "document details must not be null")
     private DocumentDetails documentDetails;
+    
+    @JsonIgnore
+    private String etag;
 
     public Suppression() {
-        this(null, null, null, null, null);
+        this(null, null, null, null, null, null);
     }
 
     public Suppression(LocalDateTime createdAt,
                        String applicationReference,
                        ApplicantDetails applicantDetails,
                        Address addressToRemove,
-                       DocumentDetails documentDetails) {
+                       DocumentDetails documentDetails,
+                       String etag) {
 
         this.createdAt = createdAt;
         this.applicationReference = applicationReference;
         this.applicantDetails = applicantDetails;
         this.addressToRemove = addressToRemove;
         this.documentDetails = documentDetails;
+        this.etag = etag;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -72,6 +77,14 @@ public class Suppression {
 
     public void setDocumentDetails(DocumentDetails documentDetails) { this.documentDetails = documentDetails; }
 
+    public String getEtag() {
+        return etag;
+    }
+
+    public void setEtag(String etag) {
+        this.etag = etag;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,6 +99,7 @@ public class Suppression {
             .append(applicantDetails, that.applicantDetails)
             .append(addressToRemove, that.addressToRemove)
             .append(documentDetails, that.documentDetails)
+            .append(etag, that.etag)
             .isEquals();
     }
 
@@ -97,6 +111,7 @@ public class Suppression {
             .append(applicantDetails)
             .append(addressToRemove)
             .append(documentDetails)
+            .append(etag)
             .toHashCode();
     }
 
@@ -108,6 +123,7 @@ public class Suppression {
             .append("applicantDetails", applicantDetails)
             .append("addressToRemove", addressToRemove)
             .append("documentDetails", documentDetails)
+            .append("etag", etag)
             .toString();
     }
 }

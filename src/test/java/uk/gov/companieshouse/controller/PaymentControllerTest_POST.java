@@ -7,29 +7,37 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.payment.Item;
 import uk.gov.companieshouse.model.payment.Links;
 import uk.gov.companieshouse.model.payment.Payment;
 import uk.gov.companieshouse.service.PaymentService;
+import uk.gov.companieshouse.service.SuppressionService;
 
 import java.util.Collections;
+import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PaymentController.class)
-public class PaymentControllerTest {
+public class PaymentControllerTest_POST {
 
     private final String SUPPRESSIONS_PAYMENT_URI = "/suppressions/{suppression-id}/payment";
     private final String TEST_SUPPRESSION_ID = "123";
+    private final String TEST_ETAG = "I_AM_AN_ETAG";
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private PaymentService paymentService;
+    
+    @MockBean
+    private SuppressionService suppressionService;
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -38,12 +46,25 @@ public class PaymentControllerTest {
 
         Payment paymentDetails = getPaymentDetails();
 
-        given(paymentService.getPaymentDetails(TEST_SUPPRESSION_ID)).willReturn(paymentDetails);
+        given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(getSuppression()));
+        given(paymentService.getPaymentDetails(TEST_SUPPRESSION_ID, TEST_ETAG)).willReturn(paymentDetails);
+
+        String jsonContent = asJsonString(paymentDetails);
 
         mockMvc.perform(get(SUPPRESSIONS_PAYMENT_URI, TEST_SUPPRESSION_ID)
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
-            .andExpect(content().json(asJsonString(paymentDetails)));
+            .andExpect(content().json(jsonContent));
+    }
+
+    @Test
+    public void whenSuppressionResourceNotFound_return404() throws Exception {
+
+        given(suppressionService.getSuppression(anyString())).willReturn(Optional.empty());
+
+        mockMvc.perform(get(SUPPRESSIONS_PAYMENT_URI, TEST_SUPPRESSION_ID)
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isNotFound());
     }
 
     private <T> String asJsonString(T body) {
@@ -72,10 +93,16 @@ public class PaymentControllerTest {
         item.setKind("suppression-request#payment-details");
         item.setResourceKind("suppression-request#suppression-request");
 
-        payment.setEtag("I_AM_AN_ETAG");
+        payment.setEtag(TEST_ETAG);
         payment.setKind("suppression-request#payment");
         payment.setLinks(links);
         payment.setItems(Collections.singletonList(item));
         return payment;
+    }
+
+    private Suppression getSuppression() {
+        Suppression suppression = new Suppression();
+        suppression.setEtag(TEST_ETAG);
+        return suppression;
     }
 }

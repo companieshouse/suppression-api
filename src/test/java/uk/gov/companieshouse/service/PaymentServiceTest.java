@@ -31,7 +31,7 @@ public class PaymentServiceTest {
     @Test
     public void testGetPaymentDetails_returnsPaymentDetails() {
 
-        Payment payment = paymentService.getPaymentDetails(TEST_SUPPRESSION_ID);
+        Payment payment = paymentService.getPaymentDetails(TEST_SUPPRESSION_ID, "1");
 
         assertNotNull(payment.getEtag());
         assertEquals(PAYMENT_KIND, payment.getKind());

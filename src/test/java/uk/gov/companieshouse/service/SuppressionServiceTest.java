@@ -122,7 +122,8 @@ public class SuppressionServiceTest {
                 TestData.Suppression.DocumentDetails.companyNumber,
                 TestData.Suppression.DocumentDetails.description,
                 TestData.Suppression.DocumentDetails.date
-            )
+            ),
+            TestData.Suppression.etag
         );
     }
 
@@ -146,7 +147,8 @@ public class SuppressionServiceTest {
                 TestData.Suppression.DocumentDetails.companyNumber,
                 TestData.Suppression.DocumentDetails.description,
                 TestData.Suppression.DocumentDetails.date
-            )
+            ),
+            TestData.Suppression.etag
         );
     }
 
