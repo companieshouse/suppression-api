@@ -10,7 +10,6 @@ import uk.gov.companieshouse.config.PaymentConfig;
 import uk.gov.companieshouse.model.payment.PaymentItem;
 import uk.gov.companieshouse.model.payment.Links;
 import uk.gov.companieshouse.model.payment.Payment;
-
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,9 +20,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class PaymentServiceTest {
 
-    @InjectMocks
-    private PaymentService paymentService;
-
     private static final String TEST_SUPPRESSION_ID = "123";
     private static final String PAYMENT_KIND = "suppression-request#payment";
     private static final String PAYMENT_ITEM_KIND = "suppression-request#payment-details";
@@ -32,6 +28,9 @@ public class PaymentServiceTest {
     private static final String PAYMENT_AMOUNT = "32";
     private static final String AVAILABLE_PAYMENT_METHOD = "credit-card";
     private static final String CLASS_OF_PAYMENT = "data-maintenance";
+
+    @InjectMocks
+    private PaymentService paymentService;
 
     @Mock
     private PaymentConfig paymentConfig;

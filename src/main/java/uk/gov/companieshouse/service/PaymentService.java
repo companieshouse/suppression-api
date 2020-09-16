@@ -5,12 +5,11 @@ import uk.gov.companieshouse.config.PaymentConfig;
 import uk.gov.companieshouse.model.payment.PaymentItem;
 import uk.gov.companieshouse.model.payment.Links;
 import uk.gov.companieshouse.model.payment.Payment;
-
 import java.util.Collections;
 
 @Service
 public class PaymentService {
-    
+
     private static final String PAYMENT_KIND = "suppression-request#payment";
     private static final String PAYMENT_ITEM_KIND = "suppression-request#payment-details";
     private static final String PAYMENT_RESOURCE_KIND = "suppression-request#suppression-request";
@@ -20,14 +19,14 @@ public class PaymentService {
 
     private final PaymentConfig paymentConfig;
 
-    public PaymentService(PaymentConfig paymentConfig) {
+    public PaymentService(final PaymentConfig paymentConfig) {
         this.paymentConfig = paymentConfig;
     }
 
-    public Payment getPaymentDetails(String suppressionId, String etag) {
+    public Payment getPaymentDetails(final String suppressionId, final String etag) {
 
         Payment payment = new Payment();
-        
+
         payment.setEtag(etag);
         payment.setPaymentItems(Collections.singletonList(createPaymentItem()));
         payment.setKind(PAYMENT_KIND);

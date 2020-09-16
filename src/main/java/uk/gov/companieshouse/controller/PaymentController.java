@@ -16,7 +16,6 @@ import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.payment.Payment;
 import uk.gov.companieshouse.service.PaymentService;
 import uk.gov.companieshouse.service.SuppressionService;
-
 import java.util.Optional;
 
 @RestController
@@ -28,7 +27,7 @@ public class PaymentController {
     private final PaymentService paymentService;
     private final SuppressionService suppressionService;
     
-    public PaymentController(PaymentService paymentService, SuppressionService suppressionService) {
+    public PaymentController(final PaymentService paymentService, final SuppressionService suppressionService) {
         this.paymentService = paymentService;
         this.suppressionService = suppressionService;
     }

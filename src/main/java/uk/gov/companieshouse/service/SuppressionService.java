@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.companieshouse.GenerateEtagUtil;
-import uk.gov.companieshouse.controller.SuppressionController;
 import uk.gov.companieshouse.mapper.SuppressionMapper;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.repository.SuppressionRepository;

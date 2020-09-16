@@ -13,7 +13,6 @@ import uk.gov.companieshouse.model.payment.Links;
 import uk.gov.companieshouse.model.payment.Payment;
 import uk.gov.companieshouse.service.PaymentService;
 import uk.gov.companieshouse.service.SuppressionService;
-
 import java.util.Collections;
 import java.util.Optional;
 
