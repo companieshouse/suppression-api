@@ -3,7 +3,10 @@ package uk.gov.companieshouse.service;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.TestPropertySource;
+import uk.gov.companieshouse.config.PaymentConfig;
 import uk.gov.companieshouse.model.payment.PaymentItem;
 import uk.gov.companieshouse.model.payment.Links;
 import uk.gov.companieshouse.model.payment.Payment;
@@ -12,7 +15,9 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
+@TestPropertySource
 @ExtendWith(MockitoExtension.class)
 public class PaymentServiceTest {
 
@@ -28,15 +33,21 @@ public class PaymentServiceTest {
     private static final String AVAILABLE_PAYMENT_METHOD = "credit-card";
     private static final String CLASS_OF_PAYMENT = "data-maintenance";
 
+    @Mock
+    private PaymentConfig paymentConfig;
+
     @Test
     public void testGetPaymentDetails_returnsPaymentDetails() {
 
+        when(paymentConfig.getAmount()).thenReturn(PAYMENT_AMOUNT);
+        
         Payment payment = paymentService.getPaymentDetails(TEST_SUPPRESSION_ID, "1");
 
         assertNotNull(payment.getEtag());
         assertEquals(PAYMENT_KIND, payment.getKind());
 
         PaymentItem paymentItem = payment.getPaymentItems().get(0);
+        
         assertEquals(PAYMENT_AMOUNT, paymentItem.getAmount());
         assertEquals(AVAILABLE_PAYMENT_METHOD, paymentItem.getAvailablePaymentMethods().get(0));
         assertEquals(CLASS_OF_PAYMENT, paymentItem.getClassOfPayment().get(0));

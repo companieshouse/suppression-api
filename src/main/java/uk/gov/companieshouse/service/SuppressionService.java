@@ -20,7 +20,7 @@ public class SuppressionService {
 
     private final SuppressionMapper suppressionMapper;
     private final SuppressionRepository suppressionRepository;
-    private static final Logger LOGGER = LoggerFactory.getLogger(SuppressionController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SuppressionService.class);
 
     @Autowired
     public SuppressionService(SuppressionMapper suppressionMapper, SuppressionRepository suppressionRepository) {
