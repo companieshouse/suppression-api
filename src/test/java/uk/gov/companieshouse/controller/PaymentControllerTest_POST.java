@@ -95,7 +95,7 @@ public class PaymentControllerTest_POST {
         payment.setEtag(TEST_ETAG);
         payment.setKind("suppression-request#payment");
         payment.setLinks(links);
-        payment.setPaymentItems(Collections.singletonList(paymentItem));
+        payment.setItems(Collections.singletonList(paymentItem));
         return payment;
     }
 

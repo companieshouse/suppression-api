@@ -28,7 +28,7 @@ public class PaymentService {
         Payment payment = new Payment();
 
         payment.setEtag(etag);
-        payment.setPaymentItems(Collections.singletonList(createPaymentItem()));
+        payment.setItems(Collections.singletonList(createPaymentItem()));
         payment.setKind(PAYMENT_KIND);
 
         Links links = new Links();

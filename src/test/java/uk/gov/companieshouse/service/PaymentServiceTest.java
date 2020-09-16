@@ -45,7 +45,7 @@ public class PaymentServiceTest {
         assertNotNull(payment.getEtag());
         assertEquals(PAYMENT_KIND, payment.getKind());
 
-        PaymentItem paymentItem = payment.getPaymentItems().get(0);
+        PaymentItem paymentItem = payment.getItems().get(0);
         
         assertEquals(PAYMENT_AMOUNT, paymentItem.getAmount());
         assertEquals(AVAILABLE_PAYMENT_METHOD, paymentItem.getAvailablePaymentMethods().get(0));

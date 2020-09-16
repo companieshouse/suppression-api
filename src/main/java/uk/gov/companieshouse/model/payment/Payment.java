@@ -11,7 +11,7 @@ public class Payment {
 
     private String kind;
     private Links links;
-    private List<PaymentItem> paymentItems;
+    private List<PaymentItem> items;
 
     public String getEtag() {
         return etag;
@@ -37,12 +37,12 @@ public class Payment {
         this.links = links;
     }
 
-    public List<PaymentItem> getPaymentItems() {
-        return paymentItems;
+    public List<PaymentItem> getItems() {
+        return items;
     }
 
-    public void setPaymentItems(List<PaymentItem> paymentItems) {
-        this.paymentItems = paymentItems;
+    public void setItems(List<PaymentItem> items) {
+        this.items = items;
     }
 
     @Override
@@ -53,12 +53,12 @@ public class Payment {
         return Objects.equals(etag, payment.etag) &&
             Objects.equals(kind, payment.kind) &&
             Objects.equals(links, payment.links) &&
-            Objects.equals(paymentItems, payment.paymentItems);
+            Objects.equals(items, payment.items);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(etag, kind, links, paymentItems);
+        return Objects.hash(etag, kind, links, items);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class Payment {
             .append("etag", etag)
             .append("kind", kind)
             .append("links", links)
-            .append("paymentItems", paymentItems)
+            .append("items", items)
             .toString();
     }
 }
