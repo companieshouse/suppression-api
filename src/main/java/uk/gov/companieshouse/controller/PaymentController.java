@@ -1,6 +1,8 @@
 package uk.gov.companieshouse.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
@@ -34,8 +36,9 @@ public class PaymentController {
 
     @Operation(summary = "Get suppression payment details by ID", tags = "Payment")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Suppression payment details retrieved successfully"),
-        @ApiResponse(responseCode = "404", description = "Suppression payment details not found")
+        @ApiResponse(responseCode = "200", description = "Suppression payment details retrieved successfully",
+            content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Payment.class)) }),
+        @ApiResponse(responseCode = "404", description = "Suppression payment details not found", content = @Content)
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Payment> getPaymentDetails(@PathVariable("suppression-id") final String suppressionId) {
@@ -51,7 +54,7 @@ public class PaymentController {
         final String etag = suppression.get().getEtag();
         
         final Payment paymentDetails = paymentService.getPaymentDetails(suppressionId, etag);
-        
+
         return ResponseEntity.status(HttpStatus.OK).body(paymentDetails);
     }
 }
