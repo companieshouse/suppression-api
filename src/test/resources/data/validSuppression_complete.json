@@ -11,6 +11,13 @@
     "county": "Greater Cardiff",
     "postcode": "CC123"
   },
+  "serviceAddress": {
+    "line1": "Handy Street 2",
+    "line2": "Dandy Square 2",
+    "town": "Cardiff",
+    "county": "Greater Cardiff",
+    "postcode": "CC123"
+  },
   "documentDetails": {
     "companyName": "A Company",
     "companyNumber": "NI123123",

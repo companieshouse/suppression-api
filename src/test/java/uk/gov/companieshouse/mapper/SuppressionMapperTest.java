@@ -54,6 +54,7 @@ public class SuppressionMapperTest {
             SuppressionEntity mapped = mapper.map(new Suppression(null, applicationReference,
                 new ApplicantDetails(fullName, emailAddress),
                 new Address(line1, line2, town, county, postcode),
+                new Address(line1, line2, town, county, postcode),
                 new DocumentDetails(companyName, companyNumber, description, date),
                 etag
             ));
@@ -70,10 +71,18 @@ public class SuppressionMapperTest {
             assertEquals(county, mapped.getAddressToRemove().getCounty());
             assertEquals(postcode, mapped.getAddressToRemove().getPostcode());
 
+            assertEquals(line1, mapped.getServiceAddress().getLine1());
+            assertEquals(line2, mapped.getServiceAddress().getLine2());
+            assertEquals(town, mapped.getServiceAddress().getTown());
+            assertEquals(county, mapped.getServiceAddress().getCounty());
+            assertEquals(postcode, mapped.getServiceAddress().getPostcode());
+
             assertEquals(companyName, mapped.getDocumentDetails().getCompanyName());
             assertEquals(companyNumber, mapped.getDocumentDetails().getCompanyNumber());
             assertEquals(description, mapped.getDocumentDetails().getDescription());
             assertEquals(date, mapped.getDocumentDetails().getDate());
+
+            assertEquals(etag, mapped.getEtag());
         }
     }
 
@@ -89,6 +98,7 @@ public class SuppressionMapperTest {
             Suppression mapped = mapper.map(new SuppressionEntity(applicationReference, createdAt,
                 new ApplicantDetailsEntity(fullName, emailAddress),
                 new AddressEntity(line1, line2, town, county, postcode),
+                new AddressEntity(line1, line2, town, county, postcode),
                 new DocumentDetailsEntity(companyName, companyNumber, description, date),
                 etag
             ));
@@ -103,10 +113,18 @@ public class SuppressionMapperTest {
             assertEquals(county, mapped.getAddressToRemove().getCounty());
             assertEquals(postcode, mapped.getAddressToRemove().getPostcode());
 
+            assertEquals(line1, mapped.getServiceAddress().getLine1());
+            assertEquals(line2, mapped.getServiceAddress().getLine2());
+            assertEquals(town, mapped.getServiceAddress().getTown());
+            assertEquals(county, mapped.getServiceAddress().getCounty());
+            assertEquals(postcode, mapped.getServiceAddress().getPostcode());
+
             assertEquals(companyName, mapped.getDocumentDetails().getCompanyName());
             assertEquals(companyNumber, mapped.getDocumentDetails().getCompanyNumber());
             assertEquals(description, mapped.getDocumentDetails().getDescription());
             assertEquals(date, mapped.getDocumentDetails().getDate());
+
+            assertEquals(etag, mapped.getEtag());
         }
     }
 }
