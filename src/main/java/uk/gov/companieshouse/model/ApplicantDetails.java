@@ -48,7 +48,7 @@ public class ApplicantDetails {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
+        return new HashCodeBuilder()
             .append(fullName)
             .append(emailAddress)
             .toHashCode();
