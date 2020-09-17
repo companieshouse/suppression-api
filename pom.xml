@@ -18,10 +18,11 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Versions -->
+        <java.version>11</java.version>
         <version.spring.boot>2.3.3.RELEASE</version.spring.boot>
-		<java.version>11</java.version>
         <version.springdoc.openapi>1.4.6</version.springdoc.openapi>
-	</properties>
+        <version.api-helper-java>1.4.3</version.api-helper-java>
+    </properties>
 
     <repositories>
         <repository>
@@ -75,12 +76,33 @@
             </exclusions>
         </dependency>
 
+        <!-- CH -->
+        <dependency>
+            <groupId>uk.gov.companieshouse</groupId>
+            <artifactId>api-helper-java</artifactId>
+            <version>${version.api-helper-java}</version>
+            <exclusions>
+                <!-- exclude conflicting jackson core library -->
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <version>${version.spring.boot}</version>
             <scope>test</scope>
+            <exclusions>
+                <!-- exclude JUnit4 support -->
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 	</dependencies>
 

@@ -21,18 +21,21 @@ public class SuppressionEntity implements Serializable {
     private final ApplicantDetailsEntity applicantDetails;
     private final AddressEntity addressToRemove;
     private final DocumentDetailsEntity documentDetails;
+    private final String etag;
 
     public SuppressionEntity(String id,
                              LocalDateTime createdAt,
                              ApplicantDetailsEntity applicantDetails,
                              AddressEntity addressToRemove,
-                             DocumentDetailsEntity documentDetails) {
+                             DocumentDetailsEntity documentDetails,
+                             String etag) {
 
         this.id = id;
         this.createdAt = createdAt;
         this.applicantDetails = applicantDetails;
         this.addressToRemove = addressToRemove;
         this.documentDetails = documentDetails;
+        this.etag = etag;
     }
 
     public String getId() { return this.id; }
@@ -44,6 +47,10 @@ public class SuppressionEntity implements Serializable {
     public AddressEntity getAddressToRemove() { return this.addressToRemove; }
 
     public DocumentDetailsEntity getDocumentDetails() { return this.documentDetails; }
+
+    public String getEtag() {
+        return this.etag;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -59,6 +66,7 @@ public class SuppressionEntity implements Serializable {
             .append(applicantDetails, that.applicantDetails)
             .append(addressToRemove, that.addressToRemove)
             .append(documentDetails, that.documentDetails)
+            .append(etag, that.etag)
             .isEquals();
     }
 
@@ -70,6 +78,7 @@ public class SuppressionEntity implements Serializable {
             .append(applicantDetails)
             .append(addressToRemove)
             .append(documentDetails)
+            .append(etag)
             .toHashCode();
     }
 
@@ -81,6 +90,7 @@ public class SuppressionEntity implements Serializable {
             .append("applicantDetails", applicantDetails)
             .append("addressToRemove", addressToRemove)
             .append("documentDetails", documentDetails)
+            .append("etag", etag)
             .toString();
     }
 }

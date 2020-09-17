@@ -5,3 +5,7 @@ spring:
   data:
     mongodb:
       uri: ${SUPPRESSIONS_API_MONGODB_URL}
+
+suppression:
+  payment:
+    amount: ${SUPPRESSIONS_PAYMENT_AMOUNT}
