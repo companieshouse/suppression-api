@@ -26,6 +26,8 @@ public class Suppression {
     @NotNull(message = "addressToRemove must not be null")
     private Address addressToRemove;
 
+    private Address serviceAddress;
+
     @Valid
     @NotNull(message = "document details must not be null")
     private DocumentDetails documentDetails;
@@ -34,48 +36,72 @@ public class Suppression {
     private String etag;
 
     public Suppression() {
-        this(null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null);
     }
 
     public Suppression(LocalDateTime createdAt,
                        String applicationReference,
                        ApplicantDetails applicantDetails,
                        Address addressToRemove,
+                       Address serviceAddress,
                        DocumentDetails documentDetails,
                        String etag) {
-
         this.createdAt = createdAt;
         this.applicationReference = applicationReference;
         this.applicantDetails = applicantDetails;
         this.addressToRemove = addressToRemove;
+        this.serviceAddress = serviceAddress;
         this.documentDetails = documentDetails;
         this.etag = etag;
     }
 
     public LocalDateTime getCreatedAt() {
-        return this.createdAt;
+        return createdAt;
     }
-
-    public String getApplicationReference() { return this.applicationReference; }
-
-    public ApplicantDetails getApplicantDetails() { return this.applicantDetails; }
-
-    public Address getAddressToRemove() { return this.addressToRemove; }
-
-    public DocumentDetails getDocumentDetails() { return this.documentDetails; }
-
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public void setApplicationReference(String applicationReference) { this.applicationReference = applicationReference; }
+    public String getApplicationReference() {
+        return applicationReference;
+    }
 
-    public void setApplicantDetails(ApplicantDetails applicantDetails) { this.applicantDetails = applicantDetails; }
+    public void setApplicationReference(String applicationReference) {
+        this.applicationReference = applicationReference;
+    }
 
-    public void setAddressToRemove(Address addressToRemove) { this.addressToRemove = addressToRemove; }
+    public ApplicantDetails getApplicantDetails() {
+        return applicantDetails;
+    }
 
-    public void setDocumentDetails(DocumentDetails documentDetails) { this.documentDetails = documentDetails; }
+    public void setApplicantDetails(ApplicantDetails applicantDetails) {
+        this.applicantDetails = applicantDetails;
+    }
+
+    public Address getAddressToRemove() {
+        return addressToRemove;
+    }
+
+    public void setAddressToRemove(Address addressToRemove) {
+        this.addressToRemove = addressToRemove;
+    }
+
+    public Address getServiceAddress() {
+        return serviceAddress;
+    }
+
+    public void setServiceAddress(Address serviceAddress) {
+        this.serviceAddress = serviceAddress;
+    }
+
+    public DocumentDetails getDocumentDetails() {
+        return documentDetails;
+    }
+
+    public void setDocumentDetails(DocumentDetails documentDetails) {
+        this.documentDetails = documentDetails;
+    }
 
     public String getEtag() {
         return etag;
@@ -98,6 +124,7 @@ public class Suppression {
             .append(applicationReference, that.applicationReference)
             .append(applicantDetails, that.applicantDetails)
             .append(addressToRemove, that.addressToRemove)
+            .append(serviceAddress, that.serviceAddress)
             .append(documentDetails, that.documentDetails)
             .append(etag, that.etag)
             .isEquals();
@@ -110,6 +137,7 @@ public class Suppression {
             .append(applicationReference)
             .append(applicantDetails)
             .append(addressToRemove)
+            .append(serviceAddress)
             .append(documentDetails)
             .append(etag)
             .toHashCode();
@@ -122,6 +150,7 @@ public class Suppression {
             .append("applicationReference", applicationReference)
             .append("applicantDetails", applicantDetails)
             .append("addressToRemove", addressToRemove)
+            .append("serviceAddress", serviceAddress)
             .append("documentDetails", documentDetails)
             .append("etag", etag)
             .toString();

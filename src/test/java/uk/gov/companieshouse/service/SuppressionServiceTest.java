@@ -118,6 +118,14 @@ public class SuppressionServiceTest {
                 TestData.Suppression.Address.postcode,
                 TestData.Suppression.Address.country
             ),
+            new Address(
+                TestData.Suppression.Address.line1,
+                TestData.Suppression.Address.line2,
+                TestData.Suppression.Address.town,
+                TestData.Suppression.Address.county,
+                TestData.Suppression.Address.postcode,
+                TestData.Suppression.Address.country
+            ),
             new DocumentDetails(
                 TestData.Suppression.DocumentDetails.companyName,
                 TestData.Suppression.DocumentDetails.companyNumber,
@@ -135,6 +143,14 @@ public class SuppressionServiceTest {
             new ApplicantDetailsEntity(
                 TestData.Suppression.ApplicantDetails.fullName,
                 TestData.Suppression.ApplicantDetails.emailAddress
+            ),
+            new AddressEntity(
+                TestData.Suppression.Address.line1,
+                TestData.Suppression.Address.line2,
+                TestData.Suppression.Address.town,
+                TestData.Suppression.Address.county,
+                TestData.Suppression.Address.postcode,
+                TestData.Suppression.Address.country
             ),
             new AddressEntity(
                 TestData.Suppression.Address.line1,
