@@ -22,16 +22,20 @@ public class Address {
     @NotBlank(message = "postcode must not be blank")
     private String postcode;
 
+    @NotBlank(message = "country must not be blank")
+    private String country;
+
     public Address() {
-        this(null, null, null, null, null);
+        this(null, null, null, null, null, null);
     }
 
-    public Address(String line1, String line2, String town, String county, String postcode){
+    public Address(String line1, String line2, String town, String county, String postcode, String country){
         this.line1 = line1;
         this.line2 = line2;
         this.town = town;
         this.county = county;
         this.postcode = postcode;
+        this.country = country;
     }
 
     public String getLine1() { return this.line1; }
@@ -44,6 +48,8 @@ public class Address {
 
     public String getPostcode() { return this.postcode; }
 
+    public String getCountry() { return this.country; }
+
     public void setLine1(String line1) { this.line1 = line1; }
 
     public void setLine2(String line2) { this.line2 = line2; }
@@ -53,6 +59,8 @@ public class Address {
     public void setCounty(String county) { this.county = county; }
 
     public void setPostcode(String postcode) { this.postcode = postcode; }
+
+    public void setCountry(String country) { this.country = country; }
 
     @Override
     public boolean equals(Object o) {
@@ -68,17 +76,19 @@ public class Address {
             .append(town, that.town)
             .append(county, that.county)
             .append(postcode, that.postcode)
+            .append(country, that.country)
             .isEquals();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
+        return new HashCodeBuilder()
             .append(line1)
             .append(line2)
             .append(town)
             .append(county)
             .append(postcode)
+            .append(country)
             .toHashCode();
     }
 
@@ -90,6 +100,7 @@ public class Address {
             .append("town", town)
             .append("county", county)
             .append("postcode", postcode)
+            .append("country", country)
             .toString();
     }
 

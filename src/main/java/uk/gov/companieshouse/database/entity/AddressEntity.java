@@ -15,13 +15,15 @@ public class AddressEntity implements Serializable {
     private final String town;
     private final String county;
     private final String postcode;
+    private final String country;
 
-    public AddressEntity(String line1, String line2, String town, String county, String postcode){
+    public AddressEntity(String line1, String line2, String town, String county, String postcode, String country){
         this.line1 = line1;
         this.line2 = line2;
         this.town = town;
         this.county = county;
         this.postcode = postcode;
+        this.country = country;
     }
 
     public String getLine1() { return this.line1; }
@@ -33,6 +35,8 @@ public class AddressEntity implements Serializable {
     public String getCounty() { return this.county; }
 
     public String getPostcode() { return this.postcode; }
+
+    public String getCountry() { return this.country; }
 
     @Override
     public boolean equals(Object o) {
@@ -48,6 +52,7 @@ public class AddressEntity implements Serializable {
             .append(town, that.town)
             .append(county, that.county)
             .append(postcode, that.postcode)
+            .append(country, that.country)
             .isEquals();
     }
 
@@ -59,6 +64,7 @@ public class AddressEntity implements Serializable {
             .append(town)
             .append(county)
             .append(postcode)
+            .append(country)
             .toHashCode();
     }
 
@@ -70,6 +76,7 @@ public class AddressEntity implements Serializable {
             .append("town", town)
             .append("county", county)
             .append("postcode", postcode)
+            .append("country", country)
             .toString();
     }
 }

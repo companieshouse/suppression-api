@@ -105,7 +105,7 @@ public class Suppression {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
+        return new HashCodeBuilder()
             .append(createdAt)
             .append(applicationReference)
             .append(applicantDetails)

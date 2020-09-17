@@ -115,7 +115,8 @@ public class SuppressionServiceTest {
                 TestData.Suppression.Address.line2,
                 TestData.Suppression.Address.town,
                 TestData.Suppression.Address.county,
-                TestData.Suppression.Address.postcode
+                TestData.Suppression.Address.postcode,
+                TestData.Suppression.Address.country
             ),
             new DocumentDetails(
                 TestData.Suppression.DocumentDetails.companyName,
@@ -140,7 +141,8 @@ public class SuppressionServiceTest {
                 TestData.Suppression.Address.line2,
                 TestData.Suppression.Address.town,
                 TestData.Suppression.Address.county,
-                TestData.Suppression.Address.postcode
+                TestData.Suppression.Address.postcode,
+                TestData.Suppression.Address.country
             ),
             new DocumentDetailsEntity(
                 TestData.Suppression.DocumentDetails.companyName,

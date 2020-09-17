@@ -12,6 +12,7 @@ import static uk.gov.companieshouse.TestData.Suppression.Address.line2;
 import static uk.gov.companieshouse.TestData.Suppression.Address.town;
 import static uk.gov.companieshouse.TestData.Suppression.Address.county;
 import static uk.gov.companieshouse.TestData.Suppression.Address.postcode;
+import static uk.gov.companieshouse.TestData.Suppression.Address.country;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -28,13 +29,14 @@ public class AddressMapperTest {
 
         @Test
         void shouldMapValueWhenValueIsNotNull() {
-            AddressEntity mapped = mapper.map(new Address(line1, line2, town, county, postcode));
+            AddressEntity mapped = mapper.map(new Address(line1, line2, town, county, postcode, country));
 
             assertEquals(line1, mapped.getLine1());
             assertEquals(line2, mapped.getLine2());
             assertEquals(town, mapped.getTown());
             assertEquals(county, mapped.getCounty());
             assertEquals(postcode, mapped.getPostcode());
+            assertEquals(country, mapped.getCountry());
         }
     }
 
@@ -47,13 +49,14 @@ public class AddressMapperTest {
 
         @Test
         void shouldMapValueWhenValueIsNotNull() {
-            Address mapped = mapper.map(new AddressEntity(line1, line2, town, county, postcode));
+            Address mapped = mapper.map(new AddressEntity(line1, line2, town, county, postcode, country));
 
             assertEquals(line1, mapped.getLine1());
             assertEquals(line2, mapped.getLine2());
             assertEquals(town, mapped.getTown());
             assertEquals(county, mapped.getCounty());
             assertEquals(postcode, mapped.getPostcode());
+            assertEquals(country, mapped.getCountry());
         }
     }
 }

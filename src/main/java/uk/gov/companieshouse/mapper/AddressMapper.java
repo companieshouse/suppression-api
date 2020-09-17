@@ -18,7 +18,8 @@ public class AddressMapper implements Mapper<AddressEntity, Address> {
             value.getLine2(),
             value.getTown(),
             value.getCounty(),
-            value.getPostcode()
+            value.getPostcode(),
+            value.getCountry()
         );
     }
 
@@ -32,7 +33,8 @@ public class AddressMapper implements Mapper<AddressEntity, Address> {
             value.getLine2(),
             value.getTown(),
             value.getCounty(),
-            value.getPostcode()
+            value.getPostcode(),
+            value.getCountry()
         );
     }
 }

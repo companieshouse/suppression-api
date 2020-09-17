@@ -24,6 +24,7 @@ import static uk.gov.companieshouse.TestData.Suppression.Address.line2;
 import static uk.gov.companieshouse.TestData.Suppression.Address.town;
 import static uk.gov.companieshouse.TestData.Suppression.Address.county;
 import static uk.gov.companieshouse.TestData.Suppression.Address.postcode;
+import static uk.gov.companieshouse.TestData.Suppression.Address.country;
 
 import static uk.gov.companieshouse.TestData.Suppression.DocumentDetails.companyName;
 import static uk.gov.companieshouse.TestData.Suppression.DocumentDetails.companyNumber;
@@ -53,7 +54,7 @@ public class SuppressionMapperTest {
 
             SuppressionEntity mapped = mapper.map(new Suppression(null, applicationReference,
                 new ApplicantDetails(fullName, emailAddress),
-                new Address(line1, line2, town, county, postcode),
+                new Address(line1, line2, town, county, postcode, country),
                 new DocumentDetails(companyName, companyNumber, description, date),
                 etag
             ));
@@ -69,6 +70,7 @@ public class SuppressionMapperTest {
             assertEquals(town, mapped.getAddressToRemove().getTown());
             assertEquals(county, mapped.getAddressToRemove().getCounty());
             assertEquals(postcode, mapped.getAddressToRemove().getPostcode());
+            assertEquals(country, mapped.getAddressToRemove().getCountry());
 
             assertEquals(companyName, mapped.getDocumentDetails().getCompanyName());
             assertEquals(companyNumber, mapped.getDocumentDetails().getCompanyNumber());
@@ -88,7 +90,7 @@ public class SuppressionMapperTest {
         void shouldMapValueWhenValueIsNotNull() {
             Suppression mapped = mapper.map(new SuppressionEntity(applicationReference, createdAt,
                 new ApplicantDetailsEntity(fullName, emailAddress),
-                new AddressEntity(line1, line2, town, county, postcode),
+                new AddressEntity(line1, line2, town, county, postcode, country),
                 new DocumentDetailsEntity(companyName, companyNumber, description, date),
                 etag
             ));
@@ -102,6 +104,7 @@ public class SuppressionMapperTest {
             assertEquals(town, mapped.getAddressToRemove().getTown());
             assertEquals(county, mapped.getAddressToRemove().getCounty());
             assertEquals(postcode, mapped.getAddressToRemove().getPostcode());
+            assertEquals(country, mapped.getAddressToRemove().getCountry());
 
             assertEquals(companyName, mapped.getDocumentDetails().getCompanyName());
             assertEquals(companyNumber, mapped.getDocumentDetails().getCompanyNumber());
