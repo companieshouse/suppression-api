@@ -18,6 +18,7 @@ public interface TestData {
             String town = "TOWN#1";
             String county = "COUNTY#1";
             String postcode = "POSTCODE#1";
+            String country = "COUNTRY#1";
         }
 
         interface DocumentDetails {

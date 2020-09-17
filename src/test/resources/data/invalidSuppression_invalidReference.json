@@ -9,7 +9,8 @@
     "line2": "",
     "town": "Cardiff",
     "county": "Greater Cardiff",
-    "postcode": "CC123"
+    "postcode": "CC123",
+    "country": "United Kingdom"
   },
   "serviceAddress": {
     "line1": "Handy Street 2",

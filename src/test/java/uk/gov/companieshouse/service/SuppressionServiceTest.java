@@ -115,7 +115,8 @@ public class SuppressionServiceTest {
                 TestData.Suppression.Address.line2,
                 TestData.Suppression.Address.town,
                 TestData.Suppression.Address.county,
-                TestData.Suppression.Address.postcode
+                TestData.Suppression.Address.postcode,
+                TestData.Suppression.Address.country
             ),
             new Address(
                 TestData.Suppression.Address.line1,
@@ -147,7 +148,8 @@ public class SuppressionServiceTest {
                 TestData.Suppression.Address.line2,
                 TestData.Suppression.Address.town,
                 TestData.Suppression.Address.county,
-                TestData.Suppression.Address.postcode
+                TestData.Suppression.Address.postcode,
+                TestData.Suppression.Address.country
             ),
             new AddressEntity(
                 TestData.Suppression.Address.line1,
