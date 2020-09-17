@@ -78,6 +78,7 @@ public class SuppressionMapperTest {
             assertEquals(town, mapped.getServiceAddress().getTown());
             assertEquals(county, mapped.getServiceAddress().getCounty());
             assertEquals(postcode, mapped.getServiceAddress().getPostcode());
+            assertEquals(country, mapped.getServiceAddress().getCountry());
 
             assertEquals(companyName, mapped.getDocumentDetails().getCompanyName());
             assertEquals(companyNumber, mapped.getDocumentDetails().getCompanyNumber());
@@ -121,6 +122,7 @@ public class SuppressionMapperTest {
             assertEquals(town, mapped.getServiceAddress().getTown());
             assertEquals(county, mapped.getServiceAddress().getCounty());
             assertEquals(postcode, mapped.getServiceAddress().getPostcode());
+            assertEquals(country, mapped.getServiceAddress().getCountry());
 
             assertEquals(companyName, mapped.getDocumentDetails().getCompanyName());
             assertEquals(companyNumber, mapped.getDocumentDetails().getCompanyNumber());

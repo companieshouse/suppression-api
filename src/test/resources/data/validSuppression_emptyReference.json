@@ -17,7 +17,8 @@
     "line2": "The Street",
     "town": "London",
     "county": "Greater London",
-    "postcode": "EC12123"
+    "postcode": "EC12123",
+    "country": "UK"
   },
   "documentDetails": {
     "companyName": "A Company",
