@@ -40,11 +40,11 @@ public class Suppression {
     }
 
     public Suppression(LocalDateTime createdAt,
-                       @Pattern(regexp = "([A-Z0-9]{5}-[A-Z0-9]{5})|^$", message = "applicationReference format is invalid") String applicationReference,
-                       @Valid @NotNull(message = "applicant details must not be null") ApplicantDetails applicantDetails,
-                       @Valid @NotNull(message = "addressToRemove must not be null") Address addressToRemove,
+                       String applicationReference,
+                       ApplicantDetails applicantDetails,
+                       Address addressToRemove,
                        Address serviceAddress,
-                       @Valid @NotNull(message = "document details must not be null") DocumentDetails documentDetails,
+                       DocumentDetails documentDetails,
                        String etag) {
         this.createdAt = createdAt;
         this.applicationReference = applicationReference;
