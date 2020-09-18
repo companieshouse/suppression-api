@@ -43,8 +43,6 @@ public class PaymentController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Payment> getPaymentDetails(@PathVariable("suppression-id") final String suppressionId) {
 
-        LOGGER.info("GET /suppressions/{}/payment", suppressionId);
-        
         final Optional<Suppression> suppression = suppressionService.getSuppression(suppressionId);
         if (suppression.isEmpty()) {
             LOGGER.error("Suppression resource not found for reference {}", suppressionId);
