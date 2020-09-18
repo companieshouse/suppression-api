@@ -42,9 +42,9 @@ public class SuppressionControllerTest_GET {
     @Test
     public void whenSuppressionResourceExistsForSuppressionID_return200() throws Exception {
 
-        Suppression suppressionResource = getSuppressionResource();
+        final Suppression suppressionResource = getSuppressionResource();
 
-        given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(getSuppressionResource()));
+        given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(suppressionResource));
 
         mockMvc.perform(get(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -56,8 +56,6 @@ public class SuppressionControllerTest_GET {
     @Test
     public void whenMissingEricIdentityHeader_return400() throws Exception {
 
-        given(suppressionService.getSuppression(anyString())).willReturn(Optional.empty());
-
         mockMvc.perform(get(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
@@ -65,8 +63,6 @@ public class SuppressionControllerTest_GET {
 
     @Test
     public void whenBlankEricIdentityHeader_return401() throws Exception {
-
-        given(suppressionService.getSuppression(anyString())).willReturn(Optional.empty());
 
         mockMvc.perform(get(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -77,8 +73,6 @@ public class SuppressionControllerTest_GET {
     @Test
     public void whenBlankSuppressionId_return404() throws Exception {
 
-        given(suppressionService.getSuppression(anyString())).willReturn(Optional.empty());
-
         mockMvc.perform(get(SUPPRESSION_URI, " ")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders()))
@@ -87,8 +81,6 @@ public class SuppressionControllerTest_GET {
 
     @Test
     public void whenInvalidSuppressionIdFormat_return404() throws Exception {
-
-        given(suppressionService.getSuppression(anyString())).willReturn(Optional.empty());
 
         mockMvc.perform(get(SUPPRESSION_URI, TEST_SUPPRESSION_ID + "-" + TEST_SUPPRESSION_ID)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
