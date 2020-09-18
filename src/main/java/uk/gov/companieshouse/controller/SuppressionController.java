@@ -1,5 +1,7 @@
 package uk.gov.companieshouse.controller;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.StringUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
@@ -11,14 +13,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.service.SuppressionService;
@@ -27,6 +31,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/suppressions")
@@ -36,9 +41,11 @@ public class SuppressionController {
 
     private final SuppressionService suppressionService;
 
-    public SuppressionController(SuppressionService suppressionService){ this.suppressionService = suppressionService; }
+    public SuppressionController(SuppressionService suppressionService) {
+        this.suppressionService = suppressionService;
+    }
 
-    @Operation(summary = "Create a new suppression", tags = "suppression")
+    @Operation(summary = "Create a new suppression", tags = "Suppression")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Suppression resource created", headers = {
             @Header(name = "location")
@@ -52,11 +59,11 @@ public class SuppressionController {
     public ResponseEntity<String> submitSuppression(@RequestHeader("ERIC-identity") String userId,
                                                     @Valid @RequestBody final Suppression suppression) {
 
+        LOGGER.info("POST /suppressions with application reference {}", suppression.getApplicationReference());
+        
         if (StringUtils.isBlank(userId)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
-        LOGGER.info("POST /suppressions with application reference {}", suppression.getApplicationReference());
 
         try {
 
@@ -77,6 +84,29 @@ public class SuppressionController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
+    }
+
+    @Operation(summary = "Get suppression by ID", tags = "Suppression")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Suppression resource retrieved successfully",
+            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Suppression.class))}),
+        @ApiResponse(responseCode = "401", description = "Unauthorised request", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Suppression resource not found", content = @Content)
+    })
+    @GetMapping(value = "/{suppression-id:^[A-Z0-9]{5}-[A-Z0-9]{5}}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Suppression> getSuppressionById(@RequestHeader("ERIC-identity") final String userId,
+                                                          @PathVariable("suppression-id") final String suppressionId) {
+
+        LOGGER.info("GET /suppressions/{}", suppressionId);
+
+        if (StringUtils.isBlank(userId)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        final Optional<Suppression> suppression = suppressionService.getSuppression(suppressionId);
+
+        return suppression.map(s -> ResponseEntity.status(HttpStatus.OK).body(s))
+            .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
