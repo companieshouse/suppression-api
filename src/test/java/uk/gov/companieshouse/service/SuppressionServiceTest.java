@@ -30,6 +30,8 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 public class SuppressionServiceTest {
 
+    private static final String TEST_SUPPRESSION_ID = "reference#01";
+
     @InjectMocks
     private SuppressionService suppressionService;
 
@@ -42,32 +44,50 @@ public class SuppressionServiceTest {
     @Test
     public void isExistingSuppressionID_returnsFalse() {
 
-        String existingID = "reference#01";
-        when(suppressionRepository.findById(existingID)).thenReturn(Optional.empty());
-        assertFalse(suppressionService.isExistingSuppressionID(existingID));
+        when(suppressionRepository.findById(TEST_SUPPRESSION_ID)).thenReturn(Optional.empty());
+        assertFalse(suppressionService.isExistingSuppressionID(TEST_SUPPRESSION_ID));
     }
 
     @Test
     public void isExistingSuppressionID_returnsTrue() {
 
-        String nonExistingID = "reference#01";
-        when(suppressionRepository.findById(nonExistingID)).thenReturn(Optional.of(createSuppressionEntity(nonExistingID)));
-        assertTrue(suppressionService.isExistingSuppressionID(nonExistingID));
+        when(suppressionRepository.findById(TEST_SUPPRESSION_ID)).thenReturn(Optional.of(createSuppressionEntity(TEST_SUPPRESSION_ID)));
+        assertTrue(suppressionService.isExistingSuppressionID(TEST_SUPPRESSION_ID));
     }
+
+    @Test
+    public void testGetExistingSuppression_returnsResource() {
+
+        final Suppression suppression = createSuppression(TEST_SUPPRESSION_ID);
+
+        when(suppressionMapper.map(any(SuppressionEntity.class))).thenReturn(suppression);
+        when(suppressionRepository.findById(TEST_SUPPRESSION_ID)).thenReturn(Optional.of(createSuppressionEntity(TEST_SUPPRESSION_ID)));
+
+        assertEquals(Optional.of(suppression), suppressionService.getSuppression(TEST_SUPPRESSION_ID));
+    }
+
+    @Test
+    public void testGetNonExistingSuppression_returnsEmptyResource() {
+
+        when(suppressionRepository.findById(TEST_SUPPRESSION_ID)).thenReturn(Optional.empty());
+
+        assertEquals(Optional.empty(), suppressionService.getSuppression(TEST_SUPPRESSION_ID));
+    }
+
 
     @Test
     public void testSaveSuppression_returnsResourceReference() {
 
-        when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity("reference#01"));
+        when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity(TEST_SUPPRESSION_ID));
         when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.applicationReference));
 
-        assertEquals(TestData.Suppression.applicationReference, suppressionService.saveSuppression(createSuppression("reference#01")));
+        assertEquals(TestData.Suppression.applicationReference, suppressionService.saveSuppression(createSuppression(TEST_SUPPRESSION_ID)));
     }
 
     @Test
     public void testSaveSuppressionWithEmptyReference_returnsResourceReference() {
 
-        when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity("reference#01"));
+        when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity(TEST_SUPPRESSION_ID));
         when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.applicationReference));
 
         String expectedReference = suppressionService.saveSuppression(createSuppression(""));

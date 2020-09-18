@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PaymentController.class)
-public class PaymentControllerTest_POST {
+public class PaymentControllerTest_GET {
 
     private final String SUPPRESSIONS_PAYMENT_URI = "/suppressions/{suppression-id}/payment";
     private final String TEST_SUPPRESSION_ID = "123";
