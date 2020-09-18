@@ -4,8 +4,8 @@ server:
 spring:
   data:
     mongodb:
-      uri: ${SUPPRESSIONS_API_MONGODB_URL}
+      uri: "mongodb://localhost/test"
 
 suppression:
   payment:
-    amount: ${SUPPRESSIONS_PAYMENT_AMOUNT}
+    amount: 32
