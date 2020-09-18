@@ -90,7 +90,7 @@ public class SuppressionControllerTest_GET {
 
         given(suppressionService.getSuppression(anyString())).willReturn(Optional.empty());
 
-        mockMvc.perform(get(SUPPRESSION_URI, "123")
+        mockMvc.perform(get(SUPPRESSION_URI, TEST_SUPPRESSION_ID + "-" + TEST_SUPPRESSION_ID)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders()))
             .andExpect(status().isNotFound());

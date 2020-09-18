@@ -41,7 +41,9 @@ public class SuppressionController {
 
     private final SuppressionService suppressionService;
 
-    public SuppressionController(SuppressionService suppressionService){ this.suppressionService = suppressionService; }
+    public SuppressionController(SuppressionService suppressionService) {
+        this.suppressionService = suppressionService;
+    }
 
     @Operation(summary = "Create a new suppression", tags = "Suppression")
     @ApiResponses(value = {
@@ -91,8 +93,8 @@ public class SuppressionController {
         @ApiResponse(responseCode = "401", description = "Unauthorised request", content = @Content),
         @ApiResponse(responseCode = "404", description = "Suppression resource not found", content = @Content)
     })
-    @GetMapping(value = "/{suppression-id:[A-Z0-9]{5}-[A-Z0-9]{5}}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Suppression> getSuppressionByID(@RequestHeader("ERIC-identity") final String userId,
+    @GetMapping(value = "/{suppression-id:^[A-Z0-9]{5}-[A-Z0-9]{5}}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Suppression> getSuppressionById(@RequestHeader("ERIC-identity") final String userId,
                                                           @PathVariable("suppression-id") final String suppressionId) {
 
         LOGGER.info("GET /suppressions/{}", suppressionId);
