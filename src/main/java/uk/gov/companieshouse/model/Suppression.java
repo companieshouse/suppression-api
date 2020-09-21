@@ -31,8 +31,7 @@ public class Suppression {
     @Valid
     @NotNull(message = "document details must not be null")
     private DocumentDetails documentDetails;
-    
-    @JsonIgnore
+
     private String etag;
 
     public Suppression() {
