@@ -11,23 +11,30 @@ public class ApplicantDetails {
     @NotBlank(message = "full name must not be blank")
     private String fullName;
 
+    private String previousName;
+
     @NotBlank(message = "email address must not be blank")
     private String emailAddress;
 
     public ApplicantDetails() {
-        this(null, null);
+        this(null, null, null);
     }
 
-    public ApplicantDetails(String fullName, String emailAddress){
+    public ApplicantDetails(String fullName, String previousName, String emailAddress){
         this.fullName = fullName;
         this.emailAddress = emailAddress;
+        this.previousName = previousName;
     }
 
     public String getFullName() { return this.fullName; }
 
+    public String getPreviousName() { return this.previousName; }
+
     public String getEmailAddress() { return this.emailAddress; }
 
     public void setFullName(String fullName) { this.fullName = fullName; }
+
+    public void setPreviousName(String previousName) { this.previousName = previousName; }
 
     public void setEmailAddress(String emailAddress) { this.emailAddress = emailAddress; }
 
@@ -42,6 +49,7 @@ public class ApplicantDetails {
 
         return new EqualsBuilder()
             .append(fullName, that.fullName)
+            .append(previousName, that.previousName)
             .append(emailAddress, that.emailAddress)
             .isEquals();
     }
@@ -50,6 +58,7 @@ public class ApplicantDetails {
     public int hashCode() {
         return new HashCodeBuilder()
             .append(fullName)
+            .append(previousName)
             .append(emailAddress)
             .toHashCode();
     }
@@ -58,6 +67,7 @@ public class ApplicantDetails {
     public String toString() {
         return new ToStringBuilder(this)
             .append("fullName", fullName)
+            .append("previousName", previousName)
             .append("emailAddress", emailAddress)
             .toString();
     }

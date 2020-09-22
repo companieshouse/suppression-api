@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import static uk.gov.companieshouse.TestData.Suppression.ApplicantDetails.fullName;
+import static uk.gov.companieshouse.TestData.Suppression.ApplicantDetails.previousName;
 import static uk.gov.companieshouse.TestData.Suppression.ApplicantDetails.emailAddress;
 
 import static uk.gov.companieshouse.TestData.Suppression.Address.line1;
@@ -53,7 +54,7 @@ public class SuppressionMapperTest {
         void shouldMapValueWhenValueIsNotNull() {
 
             SuppressionEntity mapped = mapper.map(new Suppression(null, applicationReference,
-                new ApplicantDetails(fullName, emailAddress),
+                new ApplicantDetails(fullName, previousName, emailAddress),
                 new Address(line1, line2, town, county, postcode, country),
                 new Address(line1, line2, town, county, postcode, country),
                 new DocumentDetails(companyName, companyNumber, description, date),
@@ -64,6 +65,7 @@ public class SuppressionMapperTest {
             assertEquals(applicationReference, mapped.getId());
 
             assertEquals(fullName, mapped.getApplicantDetails().getFullName());
+            assertEquals(previousName, mapped.getApplicantDetails().getPreviousName());
             assertEquals(emailAddress, mapped.getApplicantDetails().getEmailAddress());
 
             assertEquals(line1, mapped.getAddressToRemove().getLine1());
@@ -99,7 +101,7 @@ public class SuppressionMapperTest {
         @Test
         void shouldMapValueWhenValueIsNotNull() {
             Suppression mapped = mapper.map(new SuppressionEntity(applicationReference, createdAt,
-                new ApplicantDetailsEntity(fullName, emailAddress),
+                new ApplicantDetailsEntity(fullName, previousName, emailAddress),
                 new AddressEntity(line1, line2, town, county, postcode, country),
                 new AddressEntity(line1, line2, town, county, postcode, country),
                 new DocumentDetailsEntity(companyName, companyNumber, description, date),
@@ -107,7 +109,9 @@ public class SuppressionMapperTest {
             ));
             assertEquals(applicationReference, mapped.getApplicationReference());
             assertEquals(createdAt, mapped.getCreatedAt());
+
             assertEquals(fullName, mapped.getApplicantDetails().getFullName());
+            assertEquals(previousName, mapped.getApplicantDetails().getPreviousName());
             assertEquals(emailAddress, mapped.getApplicantDetails().getEmailAddress());
 
             assertEquals(line1, mapped.getAddressToRemove().getLine1());
