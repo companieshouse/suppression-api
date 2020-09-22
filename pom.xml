@@ -20,6 +20,8 @@
         <sonar.coverage.exclusions>
             **/database/entity/*,
             **/database/entity/**/*,
+            **/model/*,
+            **/model/**/*,
         </sonar.coverage.exclusions>
         <!-- Versions -->
         <java.version>11</java.version>
