@@ -29,15 +29,8 @@ public class AddressMapperTest {
 
         @Test
         void shouldMapValueWhenValueIsNotNull() {
-            Address address = new Address();
-            address.setLine1(line1);
-            address.setLine2(line2);
-            address.setTown(town);
-            address.setCounty(county);
-            address.setPostcode(postcode);
-            address.setCountry(country);
+            AddressEntity mapped = mapper.map(new Address(line1, line2, town, county, postcode, country));
 
-            AddressEntity mapped = mapper.map(address);
             assertEquals(line1, mapped.getLine1());
             assertEquals(line2, mapped.getLine2());
             assertEquals(town, mapped.getTown());
