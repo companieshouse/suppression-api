@@ -45,7 +45,6 @@ public class PaymentController {
 
         final Optional<Suppression> suppression = suppressionService.getSuppression(suppressionId);
         if (suppression.isEmpty()) {
-            LOGGER.error("Suppression resource not found for reference {}", suppressionId);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         
