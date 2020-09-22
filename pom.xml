@@ -17,6 +17,10 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sonar.coverage.exclusions>
+            src/main/java/uk/gov/companieshouse/database/entity/*,
+            src/main/java/uk/gov/companieshouse/database/model/*
+        </sonar.coverage.exclusions>
         <!-- Versions -->
         <java.version>11</java.version>
         <version.spring.boot>2.3.3.RELEASE</version.spring.boot>
