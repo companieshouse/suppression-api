@@ -2,6 +2,7 @@
   "applicationReference": "11111-11111",
   "applicantDetails": {
     "fullName": "Andy",
+    "previousName": "Dandy",
     "emailAddress": "andy@gmail.com"
   },
   "addressToRemove": {
@@ -9,7 +10,16 @@
     "line2": "Dandy Square",
     "town": "Cardiff",
     "county": "Greater Cardiff",
-    "postcode": "CC123"
+    "postcode": "CC123",
+    "country": "United Kingdom"
+  },
+  "serviceAddress": {
+    "line1": "1 Mandy",
+    "line2": "The Street",
+    "town": "London",
+    "county": "Greater London",
+    "postcode": "EC12123",
+    "country": "UK"
   },
   "documentDetails": {
     "companyName": "A Company",

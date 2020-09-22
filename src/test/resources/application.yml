@@ -5,3 +5,7 @@ spring:
   data:
     mongodb:
       uri: "mongodb://localhost/test"
+
+suppression:
+  payment:
+    amount: 32
