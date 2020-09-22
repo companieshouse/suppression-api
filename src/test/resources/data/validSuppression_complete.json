@@ -2,6 +2,7 @@
   "applicationReference": "11111-11111",
   "applicantDetails": {
     "fullName": "Andy",
+    "previousName": "Dandy",
     "emailAddress": "andy@gmail.com"
   },
   "addressToRemove": {

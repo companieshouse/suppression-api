@@ -128,6 +128,7 @@ public class SuppressionServiceTest {
             reference,
             new ApplicantDetails(
                 TestData.Suppression.ApplicantDetails.fullName,
+                TestData.Suppression.ApplicantDetails.previousName,
                 TestData.Suppression.ApplicantDetails.fullName
             ),
             new Address(
@@ -162,6 +163,7 @@ public class SuppressionServiceTest {
             TestData.Suppression.createdAt,
             new ApplicantDetailsEntity(
                 TestData.Suppression.ApplicantDetails.fullName,
+                TestData.Suppression.ApplicantDetails.previousName,
                 TestData.Suppression.ApplicantDetails.emailAddress
             ),
             new AddressEntity(

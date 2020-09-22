@@ -9,6 +9,7 @@ public interface TestData {
 
         interface ApplicantDetails {
             String fullName = "USER#1";
+            String previousName = "USER#2";
             String emailAddress = "user@example.com";
         }
 
