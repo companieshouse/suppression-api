@@ -11,6 +11,7 @@ public interface TestData {
             String fullName = "USER#1";
             String previousName = "USER#2";
             String emailAddress = "user@example.com";
+            String dateOfBirth = "1980-05-01";
         }
 
         interface Address {

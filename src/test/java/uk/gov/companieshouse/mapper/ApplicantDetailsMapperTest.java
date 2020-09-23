@@ -10,6 +10,7 @@ import uk.gov.companieshouse.model.ApplicantDetails;
 import static uk.gov.companieshouse.TestData.Suppression.ApplicantDetails.fullName;
 import static uk.gov.companieshouse.TestData.Suppression.ApplicantDetails.previousName;
 import static uk.gov.companieshouse.TestData.Suppression.ApplicantDetails.emailAddress;
+import static uk.gov.companieshouse.TestData.Suppression.ApplicantDetails.dateOfBirth;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -26,11 +27,14 @@ public class ApplicantDetailsMapperTest {
 
         @Test
         void shouldMapValueWhenValueIsNotNull() {
-            ApplicantDetailsEntity mapped = mapper.map(new ApplicantDetails(fullName, previousName, emailAddress));
+            ApplicantDetailsEntity mapped = mapper.map(
+                new ApplicantDetails(fullName, previousName, emailAddress, dateOfBirth)
+            );
 
             assertEquals(fullName, mapped.getFullName());
             assertEquals(previousName, mapped.getPreviousName());
             assertEquals(emailAddress, mapped.getEmailAddress());
+            assertEquals(dateOfBirth, mapped.getDateOfBirth());
         }
     }
 
@@ -43,11 +47,14 @@ public class ApplicantDetailsMapperTest {
 
         @Test
         void shouldMapValueWhenValueIsNotNull() {
-            ApplicantDetails mapped = mapper.map(new ApplicantDetailsEntity(fullName, previousName, emailAddress));
+            ApplicantDetails mapped = mapper.map(
+                new ApplicantDetailsEntity(fullName, previousName, emailAddress, dateOfBirth)
+            );
 
             assertEquals(fullName, mapped.getFullName());
             assertEquals(previousName, mapped.getPreviousName());
             assertEquals(emailAddress, mapped.getEmailAddress());
+            assertEquals(dateOfBirth, mapped.getDateOfBirth());
         }
     }
 }
