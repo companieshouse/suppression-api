@@ -40,13 +40,15 @@ public class PaymentController {
     public ResponseEntity<Payment> getPaymentDetails(@PathVariable("suppression-id") final String suppressionId) {
 
         final Optional<Suppression> suppression = suppressionService.getSuppression(suppressionId);
+
         if (suppression.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         
         final String etag = suppression.get().getEtag();
+        final String applicationReference = suppression.get().getApplicationReference();
         
-        final Payment paymentDetails = paymentService.getPaymentDetails(suppressionId, etag);
+        final Payment paymentDetails = paymentService.getPaymentDetails(applicationReference, etag);
 
         return ResponseEntity.status(HttpStatus.OK).body(paymentDetails);
     }
