@@ -3,6 +3,9 @@ package uk.gov.companieshouse.utils;
 import org.apache.commons.lang3.RandomStringUtils;
 
 public class ReferenceGenerator {
+
+    private ReferenceGenerator() {}
+
     public static String generate() {
 
         return RandomStringUtils.random(5, true, true).toUpperCase() +

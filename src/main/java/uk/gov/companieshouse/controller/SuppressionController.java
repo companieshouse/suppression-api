@@ -59,8 +59,6 @@ public class SuppressionController {
     public ResponseEntity<String> submitSuppression(@RequestHeader("ERIC-identity") String userId,
                                                     @Valid @RequestBody final Suppression suppression) {
 
-        LOGGER.info("POST /suppressions with application reference {}", suppression.getApplicationReference());
-        
         if (StringUtils.isBlank(userId)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -96,8 +94,6 @@ public class SuppressionController {
     @GetMapping(value = "/{suppression-id:^[A-Z0-9]{5}-[A-Z0-9]{5}}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Suppression> getSuppressionById(@RequestHeader("ERIC-identity") final String userId,
                                                           @PathVariable("suppression-id") final String suppressionId) {
-
-        LOGGER.info("GET /suppressions/{}", suppressionId);
 
         if (StringUtils.isBlank(userId)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

@@ -101,6 +101,7 @@ public class PaymentControllerTest_GET {
 
     private Suppression getSuppression() {
         Suppression suppression = new Suppression();
+        suppression.setApplicationReference(TEST_SUPPRESSION_ID);
         suppression.setEtag(TEST_ETAG);
         return suppression;
     }

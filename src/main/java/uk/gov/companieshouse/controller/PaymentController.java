@@ -5,8 +5,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +22,6 @@ import java.util.Optional;
 @RequestMapping("/suppressions/{suppression-id}/payment")
 public class PaymentController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PaymentController.class);
-    
     private final PaymentService paymentService;
     private final SuppressionService suppressionService;
     
@@ -43,17 +39,16 @@ public class PaymentController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Payment> getPaymentDetails(@PathVariable("suppression-id") final String suppressionId) {
 
-        LOGGER.info("GET /suppressions/{}/payment", suppressionId);
-        
         final Optional<Suppression> suppression = suppressionService.getSuppression(suppressionId);
+
         if (suppression.isEmpty()) {
-            LOGGER.error("Suppression resource not found for reference {}", suppressionId);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         
         final String etag = suppression.get().getEtag();
+        final String applicationReference = suppression.get().getApplicationReference();
         
-        final Payment paymentDetails = paymentService.getPaymentDetails(suppressionId, etag);
+        final Payment paymentDetails = paymentService.getPaymentDetails(applicationReference, etag);
 
         return ResponseEntity.status(HttpStatus.OK).body(paymentDetails);
     }
