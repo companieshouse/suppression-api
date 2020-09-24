@@ -3,7 +3,8 @@
   "applicantDetails": {
     "fullName": "Andy",
     "previousName": "Dandy",
-    "emailAddress": "andy@gmail.com"
+    "emailAddress": "andy@gmail.com",
+    "dateOfBirth": "1980-05-01"
   },
   "addressToRemove": {
     "line1": "Handy Street",

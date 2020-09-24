@@ -16,14 +16,18 @@ public class ApplicantDetails {
     @NotBlank(message = "email address must not be blank")
     private String emailAddress;
 
+    @NotBlank(message = "date of birth must not be blank")
+    private String dateOfBirth;
+
     public ApplicantDetails() {
-        this(null, null, null);
+        this(null, null, null, null);
     }
 
-    public ApplicantDetails(String fullName, String previousName, String emailAddress){
+    public ApplicantDetails(String fullName, String previousName, String emailAddress, String dateOfBirth){
         this.fullName = fullName;
         this.emailAddress = emailAddress;
         this.previousName = previousName;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getFullName() { return this.fullName; }
@@ -32,11 +36,15 @@ public class ApplicantDetails {
 
     public String getEmailAddress() { return this.emailAddress; }
 
+    public String getDateOfBirth() { return this.dateOfBirth; }
+
     public void setFullName(String fullName) { this.fullName = fullName; }
 
     public void setPreviousName(String previousName) { this.previousName = previousName; }
 
     public void setEmailAddress(String emailAddress) { this.emailAddress = emailAddress; }
+
+    public void setDateOfBirth(String dateOfBirth) { this.dateOfBirth = dateOfBirth; }
 
 
     @Override
@@ -51,6 +59,7 @@ public class ApplicantDetails {
             .append(fullName, that.fullName)
             .append(previousName, that.previousName)
             .append(emailAddress, that.emailAddress)
+            .append(dateOfBirth, that.dateOfBirth)
             .isEquals();
     }
 
@@ -60,6 +69,7 @@ public class ApplicantDetails {
             .append(fullName)
             .append(previousName)
             .append(emailAddress)
+            .append(dateOfBirth)
             .toHashCode();
     }
 
@@ -69,6 +79,7 @@ public class ApplicantDetails {
             .append("fullName", fullName)
             .append("previousName", previousName)
             .append("emailAddress", emailAddress)
+            .append("dateOfBirth", dateOfBirth)
             .toString();
     }
 
