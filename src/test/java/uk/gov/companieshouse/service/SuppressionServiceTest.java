@@ -129,7 +129,8 @@ public class SuppressionServiceTest {
             new ApplicantDetails(
                 TestData.Suppression.ApplicantDetails.fullName,
                 TestData.Suppression.ApplicantDetails.previousName,
-                TestData.Suppression.ApplicantDetails.fullName
+                TestData.Suppression.ApplicantDetails.emailAddress,
+                TestData.Suppression.ApplicantDetails.dateOfBirth
             ),
             new Address(
                 TestData.Suppression.Address.line1,
@@ -164,7 +165,8 @@ public class SuppressionServiceTest {
             new ApplicantDetailsEntity(
                 TestData.Suppression.ApplicantDetails.fullName,
                 TestData.Suppression.ApplicantDetails.previousName,
-                TestData.Suppression.ApplicantDetails.emailAddress
+                TestData.Suppression.ApplicantDetails.emailAddress,
+                TestData.Suppression.ApplicantDetails.dateOfBirth
             ),
             new AddressEntity(
                 TestData.Suppression.Address.line1,

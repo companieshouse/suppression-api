@@ -16,7 +16,8 @@ public class ApplicantDetailsMapper implements Mapper<ApplicantDetailsEntity, Ap
         return new ApplicantDetailsEntity(
             value.getFullName(),
             value.getPreviousName(),
-            value.getEmailAddress()
+            value.getEmailAddress(),
+            value.getDateOfBirth()
         );
     }
 
@@ -28,7 +29,8 @@ public class ApplicantDetailsMapper implements Mapper<ApplicantDetailsEntity, Ap
         return new ApplicantDetails(
             value.getFullName(),
             value.getPreviousName(),
-            value.getEmailAddress()
+            value.getEmailAddress(),
+            value.getDateOfBirth()
         );
     }
 }

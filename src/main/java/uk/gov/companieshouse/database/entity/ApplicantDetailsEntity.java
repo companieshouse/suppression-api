@@ -13,11 +13,13 @@ public class ApplicantDetailsEntity implements Serializable {
     private final String fullName;
     private final String previousName;
     private final String emailAddress;
+    private final String dateOfBirth;
 
-    public ApplicantDetailsEntity(String fullName, String previousName, String emailAddress){
+    public ApplicantDetailsEntity(String fullName, String previousName, String emailAddress, String dateOfBirth){
         this.fullName = fullName;
         this.previousName = previousName;
         this.emailAddress = emailAddress;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getFullName() { return this.fullName; }
@@ -25,6 +27,8 @@ public class ApplicantDetailsEntity implements Serializable {
     public String getPreviousName() { return this.previousName; }
 
     public String getEmailAddress() { return this.emailAddress; }
+
+    public String getDateOfBirth() { return this.dateOfBirth; }
 
     @Override
     public boolean equals(Object o) {
@@ -38,6 +42,7 @@ public class ApplicantDetailsEntity implements Serializable {
             .append(fullName, that.fullName)
             .append(previousName, that.previousName)
             .append(emailAddress, that.emailAddress)
+            .append(dateOfBirth, that.dateOfBirth)
             .isEquals();
     }
 
@@ -47,6 +52,7 @@ public class ApplicantDetailsEntity implements Serializable {
             .append(fullName)
             .append(previousName)
             .append(emailAddress)
+            .append(dateOfBirth)
             .toHashCode();
     }
 
@@ -56,6 +62,7 @@ public class ApplicantDetailsEntity implements Serializable {
             .append("fullName", fullName)
             .append("previousName", previousName)
             .append("emailAddress", emailAddress)
+            .append("dateOfBirth", dateOfBirth)
             .toString();
     }
 }
