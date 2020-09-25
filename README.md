@@ -15,6 +15,12 @@ API for the 'Suppress My Details' service
 
 3. Navigate to `http://api.chs.local:9000`
 
+### To access swagger documentation
+
+Swagger documentation is available for this service in the the docker CHS development
+
+1. Navigate to `http://api.chs.local/api-docs/suppression-api/swagger-ui.html`
+
 ### To make local changes
 
 Development mode is available for this service in [Docker CHS Development](https://github.com/companieshouse/docker-chs-development).
@@ -30,7 +36,4 @@ Development mode is available for this service in [Docker CHS Development](https
 
 ### Health
 `/actuator/health`
-
-### API Documentation (Swagger)
-http://localhost:9000/swagger-ui.html
 
