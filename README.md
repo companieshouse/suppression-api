@@ -30,6 +30,7 @@ Development mode is available for this service in [Docker CHS Development](https
 
 ### Health
 `/actuator/health`
+`/suppressions/healthcheck`
 
 ### API Documentation (Swagger)
 http://localhost:9000/swagger-ui.html
