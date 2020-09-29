@@ -6,6 +6,13 @@ spring:
     mongodb:
       uri: ${SUPPRESSIONS_API_MONGODB_URL}
 
+management:
+  endpoints:
+    web:
+      base-path: ''
+      path-mapping:
+        health: healthcheck
+
 suppression:
   payment:
     amount: ${SUPPRESSIONS_PAYMENT_AMOUNT}

@@ -35,5 +35,5 @@ Development mode is available for this service in [Docker CHS Development](https
 ## Useful Endpoints
 
 ### Health
-`/actuator/health`
+`/healthcheck`
 
