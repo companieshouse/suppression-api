@@ -27,5 +27,13 @@
     "companyNumber": "NI123123",
     "description": "a document",
     "date": "10/12/2010"
+  },
+  "contactAddress": {
+    "line1": "1 Trefoil",
+    "line2": "The Road",
+    "town": "Brasilia",
+    "county": "DF",
+    "postcode": "DF123-123",
+    "country": "Brussels"
   }
 }

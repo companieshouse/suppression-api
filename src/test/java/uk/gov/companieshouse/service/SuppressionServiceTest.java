@@ -154,6 +154,14 @@ public class SuppressionServiceTest {
                 TestData.Suppression.DocumentDetails.description,
                 TestData.Suppression.DocumentDetails.date
             ),
+            new Address(
+                TestData.Suppression.Address.line1,
+                TestData.Suppression.Address.line2,
+                TestData.Suppression.Address.town,
+                TestData.Suppression.Address.county,
+                TestData.Suppression.Address.postcode,
+                TestData.Suppression.Address.country
+            ),
             TestData.Suppression.etag
         );
     }
@@ -189,6 +197,14 @@ public class SuppressionServiceTest {
                 TestData.Suppression.DocumentDetails.companyNumber,
                 TestData.Suppression.DocumentDetails.description,
                 TestData.Suppression.DocumentDetails.date
+            ),
+            new AddressEntity(
+                TestData.Suppression.Address.line1,
+                TestData.Suppression.Address.line2,
+                TestData.Suppression.Address.town,
+                TestData.Suppression.Address.county,
+                TestData.Suppression.Address.postcode,
+                TestData.Suppression.Address.country
             ),
             TestData.Suppression.etag
         );
