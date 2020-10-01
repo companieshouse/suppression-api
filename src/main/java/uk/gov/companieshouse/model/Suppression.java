@@ -32,10 +32,14 @@ public class Suppression {
     @NotNull(message = "document details must not be null")
     private DocumentDetails documentDetails;
 
+    @Valid
+    @NotNull(message = "Contact address must not be null")
+    private Address contactAddress;
+
     private String etag;
 
     public Suppression() {
-        this(null, null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null, null);
     }
 
     public Suppression(LocalDateTime createdAt,
@@ -44,6 +48,7 @@ public class Suppression {
                        Address addressToRemove,
                        Address serviceAddress,
                        DocumentDetails documentDetails,
+                       Address contactAddress,
                        String etag) {
         this.createdAt = createdAt;
         this.applicationReference = applicationReference;
@@ -51,6 +56,7 @@ public class Suppression {
         this.addressToRemove = addressToRemove;
         this.serviceAddress = serviceAddress;
         this.documentDetails = documentDetails;
+        this.contactAddress = contactAddress;
         this.etag = etag;
     }
 
@@ -102,6 +108,10 @@ public class Suppression {
         this.documentDetails = documentDetails;
     }
 
+    public Address getContactAddress() { return contactAddress; }
+
+    public void setContactAddress(Address contactAddress) { this.contactAddress = contactAddress; }
+
     public String getEtag() {
         return etag;
     }
@@ -125,6 +135,7 @@ public class Suppression {
             .append(addressToRemove, that.addressToRemove)
             .append(serviceAddress, that.serviceAddress)
             .append(documentDetails, that.documentDetails)
+            .append(contactAddress, that.contactAddress)
             .append(etag, that.etag)
             .isEquals();
     }
@@ -138,6 +149,7 @@ public class Suppression {
             .append(addressToRemove)
             .append(serviceAddress)
             .append(documentDetails)
+            .append(contactAddress)
             .append(etag)
             .toHashCode();
     }
@@ -151,6 +163,7 @@ public class Suppression {
             .append("addressToRemove", addressToRemove)
             .append("serviceAddress", serviceAddress)
             .append("documentDetails", documentDetails)
+            .append("contactAddress", contactAddress)
             .append("etag", etag)
             .toString();
     }

@@ -33,6 +33,7 @@ public class SuppressionMapper implements Mapper<SuppressionEntity, Suppression>
             addressMapper.map(value.getAddressToRemove()),
             addressMapper.map(value.getServiceAddress()),
             documentDetailsMapper.map(value.getDocumentDetails()),
+            addressMapper.map(value.getContactAddress()),
             value.getEtag()
         );
     }
@@ -49,6 +50,7 @@ public class SuppressionMapper implements Mapper<SuppressionEntity, Suppression>
             addressMapper.map(value.getAddressToRemove()),
             addressMapper.map(value.getServiceAddress()),
             documentDetailsMapper.map(value.getDocumentDetails()),
+            addressMapper.map(value.getContactAddress()),
             value.getEtag()
         );
     }

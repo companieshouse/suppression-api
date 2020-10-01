@@ -59,6 +59,7 @@ public class SuppressionMapperTest {
                 new Address(line1, line2, town, county, postcode, country),
                 new Address(line1, line2, town, county, postcode, country),
                 new DocumentDetails(companyName, companyNumber, description, date),
+                new Address(line1, line2, town, county, postcode, country),
                 etag
             ));
 
@@ -107,6 +108,7 @@ public class SuppressionMapperTest {
                 new AddressEntity(line1, line2, town, county, postcode, country),
                 new AddressEntity(line1, line2, town, county, postcode, country),
                 new DocumentDetailsEntity(companyName, companyNumber, description, date),
+                new AddressEntity(line1, line2, town, county, postcode, country),
                 etag
             ));
             assertEquals(applicationReference, mapped.getApplicationReference());
