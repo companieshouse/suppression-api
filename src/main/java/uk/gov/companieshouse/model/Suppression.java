@@ -6,7 +6,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
@@ -19,21 +18,17 @@ public class Suppression {
     private String applicationReference;
 
     @Valid
-    @NotNull(message = "applicant details must not be null")
     private ApplicantDetails applicantDetails;
 
     @Valid
-    @NotNull(message = "addressToRemove must not be null")
     private Address addressToRemove;
 
     private Address serviceAddress;
 
     @Valid
-    @NotNull(message = "document details must not be null")
     private DocumentDetails documentDetails;
 
     @Valid
-    @NotNull(message = "Contact address must not be null")
     private Address contactAddress;
 
     private String etag;
