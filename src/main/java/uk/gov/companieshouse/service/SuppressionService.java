@@ -42,6 +42,31 @@ public class SuppressionService {
         return suppressionRepository.save(this.suppressionMapper.map(suppression)).getId();
     }
 
+    public void patchSuppressionResource(Suppression suppression, Suppression suppressionUpdateRequest) {
+
+        if (suppressionUpdateRequest.getApplicantDetails() != null) {
+            suppression.setApplicantDetails(suppressionUpdateRequest.getApplicantDetails());
+        }
+
+        if (suppressionUpdateRequest.getAddressToRemove() != null) {
+            suppression.setAddressToRemove(suppressionUpdateRequest.getAddressToRemove());
+        }
+
+        if (suppressionUpdateRequest.getServiceAddress() != null) {
+            suppression.setServiceAddress(suppressionUpdateRequest.getServiceAddress());
+        }
+
+        if (suppressionUpdateRequest.getDocumentDetails() != null) {
+            suppression.setDocumentDetails(suppressionUpdateRequest.getDocumentDetails());
+        }
+
+        if (suppressionUpdateRequest.getContactAddress() != null) {
+            suppression.setContactAddress(suppressionUpdateRequest.getContactAddress());
+        }
+
+        suppressionRepository.save(this.suppressionMapper.map(suppression));
+    }
+
     public Optional<Suppression> getSuppression(String applicationReference) {
         return suppressionRepository.findById(applicationReference).map(this.suppressionMapper::map);
     }

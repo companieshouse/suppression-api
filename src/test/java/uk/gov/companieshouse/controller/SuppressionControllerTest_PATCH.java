@@ -14,10 +14,14 @@ import uk.gov.companieshouse.service.SuppressionService;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.BDDMockito.doNothing;
+import static org.mockito.BDDMockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(SuppressionController.class)
 public class SuppressionControllerTest_PATCH {
@@ -41,6 +45,7 @@ public class SuppressionControllerTest_PATCH {
         final Suppression suppressionResource = getSuppressionResource();
 
         given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(suppressionResource));
+        doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(Suppression.class));
 
         mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -110,6 +115,21 @@ public class SuppressionControllerTest_PATCH {
             .andExpect(status().isNotFound());
     }
 
+    @Test
+    public void whenExceptionFromService_return500() throws Exception {
+
+        final Suppression suppressionResource = getSuppressionResource();
+
+        given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(suppressionResource));
+        doThrow(RuntimeException.class).when(suppressionService).patchSuppressionResource(any(Suppression.class), any(Suppression.class));
+
+        mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .headers(createHttpHeaders())
+            .content(asJsonString(getSuppressionResource())))
+            .andExpect(status().isInternalServerError());
+    }
+
     private Suppression getSuppressionResource() {
         Suppression suppression = new Suppression();
         suppression.setApplicationReference(TEST_SUPPRESSION_ID);
@@ -125,6 +145,7 @@ public class SuppressionControllerTest_PATCH {
             throw new RuntimeException(e);
         }
     }
+
     private HttpHeaders createHttpHeaders() {
         final HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(IDENTITY_HEADER, TEST_USER_ID);
