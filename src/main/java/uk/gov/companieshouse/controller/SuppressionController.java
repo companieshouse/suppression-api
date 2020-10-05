@@ -14,15 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.service.SuppressionService;
@@ -82,6 +74,33 @@ public class SuppressionController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
+    }
+
+    @Operation(summary = "Partially update suppression resource by ID", tags = "Suppression")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Suppression resource updated"),
+        @ApiResponse(responseCode = "400", description = "Bad request"),
+        @ApiResponse(responseCode = "401", description = "Unauthorised request"),
+        @ApiResponse(responseCode = "404", description = "Suppression resource not found", content = @Content)
+    })
+    @PatchMapping(value = "/{suppression-id:^[A-Z0-9]{5}-[A-Z0-9]{5}}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> partiallyUpdateSuppression(@RequestHeader("ERIC-identity") final String userId,
+                                                             @PathVariable("suppression-id") final String suppressionId,
+                                                             @Valid @RequestBody final Suppression suppressionUpdateRequest) {
+
+        if (StringUtils.isBlank(userId)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        final Optional<Suppression> suppression = suppressionService.getSuppression(suppressionId);
+
+        if (suppression.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // update suppression resource
+
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Get suppression by ID", tags = "Suppression")
