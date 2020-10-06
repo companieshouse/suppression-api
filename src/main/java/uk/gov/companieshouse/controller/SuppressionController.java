@@ -96,7 +96,7 @@ public class SuppressionController {
     @PatchMapping(value = "/{suppression-id:^[A-Z0-9]{5}-[A-Z0-9]{5}}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> partiallyUpdateSuppression(@RequestHeader("ERIC-identity") final String userId,
                                                              @PathVariable("suppression-id") final String suppressionId,
-                                                             @Valid @RequestBody final Suppression suppressionUpdateRequest) {
+                                                             @Valid @RequestBody final Suppression suppressionPatchRequest) {
 
         if (StringUtils.isBlank(userId)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -109,7 +109,7 @@ public class SuppressionController {
         }
 
         try {
-            suppressionService.patchSuppressionResource(suppression.get(), suppressionUpdateRequest);
+            suppressionService.patchSuppressionResource(suppression.get(), suppressionPatchRequest);
         } catch (Exception ex) {
             LOGGER.error("Unable to patch suppression resource for application reference {}",
                 suppression.get().getApplicationReference(), ex);

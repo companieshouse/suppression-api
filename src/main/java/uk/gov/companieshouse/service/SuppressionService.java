@@ -42,29 +42,34 @@ public class SuppressionService {
         return suppressionRepository.save(this.suppressionMapper.map(suppression)).getId();
     }
 
-    public void patchSuppressionResource(Suppression suppression, Suppression suppressionUpdateRequest) {
+    public void patchSuppressionResource(Suppression suppression, Suppression suppressionPatchRequest) {
 
-        if (suppressionUpdateRequest.getApplicantDetails() != null) {
-            suppression.setApplicantDetails(suppressionUpdateRequest.getApplicantDetails());
-        }
-
-        if (suppressionUpdateRequest.getAddressToRemove() != null) {
-            suppression.setAddressToRemove(suppressionUpdateRequest.getAddressToRemove());
-        }
-
-        if (suppressionUpdateRequest.getServiceAddress() != null) {
-            suppression.setServiceAddress(suppressionUpdateRequest.getServiceAddress());
-        }
-
-        if (suppressionUpdateRequest.getDocumentDetails() != null) {
-            suppression.setDocumentDetails(suppressionUpdateRequest.getDocumentDetails());
-        }
-
-        if (suppressionUpdateRequest.getContactAddress() != null) {
-            suppression.setContactAddress(suppressionUpdateRequest.getContactAddress());
-        }
+        mapPatchRequestToSuppression(suppression, suppressionPatchRequest);
 
         suppressionRepository.save(this.suppressionMapper.map(suppression));
+    }
+
+    private void mapPatchRequestToSuppression(Suppression suppression, Suppression suppressionPatchRequest) {
+
+        if (suppressionPatchRequest.getApplicantDetails() != null) {
+            suppression.setApplicantDetails(suppressionPatchRequest.getApplicantDetails());
+        }
+
+        if (suppressionPatchRequest.getAddressToRemove() != null) {
+            suppression.setAddressToRemove(suppressionPatchRequest.getAddressToRemove());
+        }
+
+        if (suppressionPatchRequest.getServiceAddress() != null) {
+            suppression.setServiceAddress(suppressionPatchRequest.getServiceAddress());
+        }
+
+        if (suppressionPatchRequest.getDocumentDetails() != null) {
+            suppression.setDocumentDetails(suppressionPatchRequest.getDocumentDetails());
+        }
+
+        if (suppressionPatchRequest.getContactAddress() != null) {
+            suppression.setContactAddress(suppressionPatchRequest.getContactAddress());
+        }
     }
 
     public Optional<Suppression> getSuppression(String applicationReference) {
