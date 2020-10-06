@@ -94,7 +94,7 @@ public class SuppressionController {
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PatchMapping(value = "/{suppression-id:^[A-Z0-9]{5}-[A-Z0-9]{5}}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> partiallyUpdateSuppression(@RequestHeader("ERIC-identity") final String userId,
+    public ResponseEntity<Void> partiallyUpdateSuppression(@RequestHeader("ERIC-identity") final String userId,
                                                              @PathVariable("suppression-id") final String suppressionId,
                                                              @Valid @RequestBody final Suppression suppressionPatchRequest) {
 
