@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public interface TestData {
     interface Suppression {
         LocalDateTime createdAt = LocalDateTime.of(2010, 12, 31, 23, 59);
-        String applicationReference = "reference#1";
+        String applicationReference = "11111-11111";
 
         interface ApplicantDetails {
             String fullName = "USER#1";

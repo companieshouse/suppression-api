@@ -48,10 +48,7 @@ class SuppressionControllerTest_PATCH {
         doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(Suppression.class));
 
         final Suppression updateSuppressionRequest = new Suppression();
-        updateSuppressionRequest.setApplicantDetails(new ApplicantDetails(TestData.Suppression.ApplicantDetails.fullName,
-            TestData.Suppression.ApplicantDetails.previousName,
-            TestData.Suppression.ApplicantDetails.emailAddress,
-            TestData.Suppression.ApplicantDetails.dateOfBirth));
+        updateSuppressionRequest.setApplicantDetails(getApplicantDetails());
 
         mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -99,10 +96,7 @@ class SuppressionControllerTest_PATCH {
         doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(Suppression.class));
 
         final Suppression updateSuppressionRequest = new Suppression();
-        updateSuppressionRequest.setDocumentDetails(new DocumentDetails(TestData.Suppression.DocumentDetails.companyName,
-            TestData.Suppression.DocumentDetails.companyNumber,
-            TestData.Suppression.DocumentDetails.description,
-            TestData.Suppression.DocumentDetails.date));
+        updateSuppressionRequest.setDocumentDetails(getDocumentDetails());
 
         mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -243,11 +237,14 @@ class SuppressionControllerTest_PATCH {
     }
 
     private Suppression getSuppressionResource() {
-        Suppression suppression = new Suppression();
-        suppression.setApplicationReference(TestData.Suppression.applicationReference);
-        suppression.setCreatedAt(TestData.Suppression.createdAt);
-        suppression.setEtag(TestData.Suppression.etag);
-        return suppression;
+        return new Suppression(TestData.Suppression.createdAt,
+            TestData.Suppression.applicationReference,
+            getApplicantDetails(),
+            getAddress(),
+            getAddress(),
+            getDocumentDetails(),
+            getAddress(),
+            TestData.Suppression.etag);
     }
 
     private Address getAddress() {
@@ -257,6 +254,20 @@ class SuppressionControllerTest_PATCH {
             TestData.Suppression.Address.county,
             TestData.Suppression.Address.country,
             TestData.Suppression.Address.postcode);
+    }
+
+    private ApplicantDetails getApplicantDetails() {
+        return new ApplicantDetails(TestData.Suppression.ApplicantDetails.fullName,
+            TestData.Suppression.ApplicantDetails.previousName,
+            TestData.Suppression.ApplicantDetails.emailAddress,
+            TestData.Suppression.ApplicantDetails.dateOfBirth);
+    }
+
+    private DocumentDetails getDocumentDetails() {
+        return new DocumentDetails(TestData.Suppression.DocumentDetails.companyName,
+            TestData.Suppression.DocumentDetails.companyNumber,
+            TestData.Suppression.DocumentDetails.description,
+            TestData.Suppression.DocumentDetails.date);
     }
 
     private <T> String asJsonString(T body) {
