@@ -90,6 +90,7 @@ public class SuppressionController {
         @ApiResponse(responseCode = "204", description = "Suppression resource updated"),
         @ApiResponse(responseCode = "400", description = "Bad request"),
         @ApiResponse(responseCode = "401", description = "Unauthorised request"),
+        @ApiResponse(responseCode = "422", description = "Invalid suppression data"),
         @ApiResponse(responseCode = "404", description = "Suppression resource not found", content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal server error")
     })
