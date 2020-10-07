@@ -1,10 +1,19 @@
 server:
   port: 9000
 
-spring:
-  data:
-    mongodb:
-      uri: ${SUPPRESSIONS_API_MONGODB_URL}
+email:
+  producer:
+    appId: suppression-api
+  chEmail: ${CH_EMAIL}
+
+# Configure the email-producer library.
+kafka:
+  broker:
+    addr: ${KAFKA_BROKER_ADDR}
+  config:
+    acks: ${KAFKA_CONFIG_ACKS}
+    retries: ${KAFKA_CONFIG_RETRIES}
+    isRoundRobin: ${KAFKA_CONFIG_IS_ROUND_ROBIN}
 
 management:
   endpoints:
@@ -12,6 +21,11 @@ management:
       base-path: ''
       path-mapping:
         health: healthcheck
+
+spring:
+  data:
+    mongodb:
+      uri: ${SUPPRESSIONS_API_MONGODB_URL}
 
 suppression:
   payment:

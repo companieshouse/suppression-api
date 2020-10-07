@@ -1,3 +1,19 @@
+environment:
+  cdnHost: cdn.test.local
+  chEmail: appeals.ch.fake@gmail.com
+  
+email:
+  producer:
+    appId: suppression-api
+
+kafka:
+  broker:
+    addr: kafka-test:1111
+  config:
+    acks: WAIT_FOR_ALL
+    retries: 10
+    isRoundRobin: false
+    
 server:
   port: 9000
 
