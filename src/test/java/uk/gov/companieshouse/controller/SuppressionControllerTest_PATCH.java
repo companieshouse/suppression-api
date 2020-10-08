@@ -9,7 +9,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.companieshouse.TestData;
-import uk.gov.companieshouse.model.*;
+import uk.gov.companieshouse.model.Address;
+import uk.gov.companieshouse.model.ApplicantDetails;
+import uk.gov.companieshouse.model.DocumentDetails;
+import uk.gov.companieshouse.model.Suppression;
+import uk.gov.companieshouse.model.SuppressionPatchRequest;
 import uk.gov.companieshouse.service.SuppressionService;
 
 import java.util.Optional;
