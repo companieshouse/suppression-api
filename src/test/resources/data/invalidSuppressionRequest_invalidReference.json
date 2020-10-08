@@ -1,8 +1,0 @@
-{
-  "applicationReference": "123123",
-  "applicantDetails": {
-    "fullName": "Andy",
-    "emailAddress": "andy@gmail.com",
-    "dateOfBirth": "1980-05-01"
-  }
-}

@@ -97,33 +97,6 @@ public class SuppressionControllerTest_POST {
     }
 
     @Test
-    public void whenInvalidReference_return422() throws Exception {
-
-        final String invalidSuppression = asJsonString("src/test/resources/data/invalidSuppressionRequest_invalidReference.json");
-
-        mockMvc.perform(post(SUPPRESSION_URI)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .headers(createHttpHeaders(TEST_USER_ID))
-            .content(invalidSuppression))
-            .andExpect(status().isUnprocessableEntity())
-            .andExpect(
-                content().json("{\"applicationReference\":\"applicationReference format is invalid\"}")
-            );
-    }
-
-    @Test
-    public void whenEmptyReference_return201() throws Exception {
-
-        final String validSuppression = asJsonString("src/test/resources/data/validSuppressionRequest_emptyReference.json");
-
-        mockMvc.perform(post(SUPPRESSION_URI)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .headers(createHttpHeaders(TEST_USER_ID))
-            .content(validSuppression))
-            .andExpect(status().isCreated());
-    }
-
-    @Test
     public void whenExceptionFromService_return500() throws Exception {
 
         when(suppressionService.saveSuppression(any(SuppressionRequest.class))).thenThrow(new RuntimeException());

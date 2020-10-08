@@ -5,7 +5,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
@@ -17,20 +16,11 @@ public class Suppression {
     @Pattern(regexp = "([A-Z0-9]{5}-[A-Z0-9]{5})|^$", message = "applicationReference format is invalid")
     private String applicationReference;
 
-    @Valid
     private ApplicantDetails applicantDetails;
-
-    @Valid
     private Address addressToRemove;
-
     private Address serviceAddress;
-
-    @Valid
     private DocumentDetails documentDetails;
-
-    @Valid
     private Address contactAddress;
-
     private String etag;
 
     public Suppression() {

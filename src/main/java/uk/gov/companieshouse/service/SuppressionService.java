@@ -1,8 +1,5 @@
 package uk.gov.companieshouse.service;
 
-import org.slf4j.Logger;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.companieshouse.GenerateEtagUtil;
@@ -23,7 +20,6 @@ public class SuppressionService {
     private final SuppressionMapper suppressionMapper;
     private final SuppressionRequestMapper suppressionRequestMapper;
     private final SuppressionRepository suppressionRepository;
-    private static final Logger LOGGER = LoggerFactory.getLogger(SuppressionService.class);
 
     @Autowired
     public SuppressionService(SuppressionMapper suppressionMapper, SuppressionRequestMapper suppressionRequestMapper, SuppressionRepository suppressionRepository) {
@@ -34,16 +30,10 @@ public class SuppressionService {
 
     public String saveSuppression(SuppressionRequest suppression) {
 
-        if (StringUtils.isBlank(suppression.getApplicationReference())) {
-
-            String generatedReference = generateUniqueSuppressionReference();
-            suppression.setApplicationReference(generatedReference);
-
-            LOGGER.info("No application reference found, generated {}", suppression.getApplicationReference());
-        }
-
+        suppression.setApplicationReference(generateUniqueSuppressionReference());
         suppression.setEtag(GenerateEtagUtil.generateEtag());
         suppression.setCreatedAt(LocalDateTime.now());
+
         return suppressionRepository.save(this.suppressionRequestMapper.map(suppression)).getId();
     }
 
