@@ -25,9 +25,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.SuppressionPatchRequest;
-import uk.gov.companieshouse.model.SuppressionRequest;
 import uk.gov.companieshouse.service.SuppressionService;
 
 import javax.validation.Valid;
@@ -60,7 +60,7 @@ public class SuppressionController {
     })
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> submitSuppression(@RequestHeader("ERIC-identity") String userId,
-                                                    @Valid @RequestBody final SuppressionRequest suppressionRequest) {
+                                                    @Valid @RequestBody final ApplicantDetails applicantDetails) {
 
         if (StringUtils.isBlank(userId)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -68,7 +68,7 @@ public class SuppressionController {
 
         try {
 
-            final String id = suppressionService.saveSuppression(suppressionRequest);
+            final String id = suppressionService.saveSuppression(applicantDetails);
 
             final URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -80,8 +80,7 @@ public class SuppressionController {
 
         } catch (Exception ex) {
 
-            LOGGER.error("Unable to create suppression for application reference {}",
-                suppressionRequest.getApplicationReference(), ex);
+            LOGGER.error("Unable to create suppression", ex);
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

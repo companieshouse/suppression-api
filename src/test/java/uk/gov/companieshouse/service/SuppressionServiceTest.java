@@ -13,7 +13,6 @@ import uk.gov.companieshouse.database.entity.ApplicantDetailsEntity;
 import uk.gov.companieshouse.database.entity.DocumentDetailsEntity;
 import uk.gov.companieshouse.database.entity.SuppressionEntity;
 import uk.gov.companieshouse.mapper.SuppressionMapper;
-import uk.gov.companieshouse.mapper.SuppressionRequestMapper;
 import uk.gov.companieshouse.model.*;
 import uk.gov.companieshouse.repository.SuppressionRepository;
 
@@ -37,9 +36,6 @@ class SuppressionServiceTest {
 
     @Mock
     private SuppressionMapper suppressionMapper;
-
-    @Mock
-    private SuppressionRequestMapper suppressionRequestMapper;
 
     @Mock
     private SuppressionRepository suppressionRepository;
@@ -88,7 +84,7 @@ class SuppressionServiceTest {
     @Test
     void testSaveSuppression_returnsResourceReference() {
 
-        when(suppressionRequestMapper.map(any(SuppressionRequest.class))).thenReturn(createSuppressionEntity(TEST_SUPPRESSION_ID));
+        when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity(TEST_SUPPRESSION_ID));
         when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.applicationReference));
 
         assertEquals(TestData.Suppression.applicationReference, suppressionService.saveSuppression(createSuppressionRequest(TEST_SUPPRESSION_ID)));
@@ -97,7 +93,7 @@ class SuppressionServiceTest {
     @Test
     void testSaveSuppressionWithEmptyReference_returnsResourceReference() {
 
-        when(suppressionRequestMapper.map(any(SuppressionRequest.class))).thenReturn(createSuppressionEntity(TEST_SUPPRESSION_ID));
+        when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity(TEST_SUPPRESSION_ID));
         when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.applicationReference));
 
         String expectedReference = suppressionService.saveSuppression(createSuppressionRequest(""));
@@ -282,17 +278,12 @@ class SuppressionServiceTest {
         );
     }
 
-    private SuppressionRequest createSuppressionRequest(String reference) {
-        return new SuppressionRequest(
-            TestData.Suppression.createdAt,
-            reference,
-            new ApplicantDetails(
-                TestData.Suppression.ApplicantDetails.fullName,
-                TestData.Suppression.ApplicantDetails.previousName,
-                TestData.Suppression.ApplicantDetails.emailAddress,
-                TestData.Suppression.ApplicantDetails.dateOfBirth
-            ),
-            TestData.Suppression.etag
+    private ApplicantDetails createSuppressionRequest(String reference) {
+        return new ApplicantDetails(
+            TestData.Suppression.ApplicantDetails.fullName,
+            TestData.Suppression.ApplicantDetails.previousName,
+            TestData.Suppression.ApplicantDetails.emailAddress,
+            TestData.Suppression.ApplicantDetails.dateOfBirth
         );
     }
 

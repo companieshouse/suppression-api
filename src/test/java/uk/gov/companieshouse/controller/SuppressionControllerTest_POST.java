@@ -9,8 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import uk.gov.companieshouse.model.Suppression;
-import uk.gov.companieshouse.model.SuppressionRequest;
+import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.service.SuppressionService;
 
 import java.io.File;
@@ -44,9 +43,9 @@ public class SuppressionControllerTest_POST {
     @BeforeEach
     public void setUp() {
 
-        when(suppressionService.saveSuppression(any(SuppressionRequest.class))).thenReturn(TEST_RESOURCE_ID);
+        when(suppressionService.saveSuppression(any(ApplicantDetails.class))).thenReturn(TEST_RESOURCE_ID);
 
-        validSuppression = asJsonString("src/test/resources/data/validSuppressionRequest_complete.json");
+        validSuppression = asJsonString("src/test/resources/data/validApplicantDetails_complete.json");
     }
 
     @Test
@@ -84,7 +83,7 @@ public class SuppressionControllerTest_POST {
     @Test
     public void whenInvalidInput_return422() throws Exception {
 
-        final String invalidSuppression = asJsonString("src/test/resources/data/invalidSuppressionRequest_missingFields.json");
+        final String invalidSuppression = asJsonString("src/test/resources/data/invalidApplicantDetails_missingFields.json");
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -92,14 +91,14 @@ public class SuppressionControllerTest_POST {
             .content(invalidSuppression))
             .andExpect(status().isUnprocessableEntity())
             .andExpect(
-                content().json("{\"applicantDetails.dateOfBirth\":\"date of birth must not be blank\"}")
+                content().json("{\"dateOfBirth\":\"date of birth must not be blank\"}")
             );
     }
 
     @Test
     public void whenExceptionFromService_return500() throws Exception {
 
-        when(suppressionService.saveSuppression(any(SuppressionRequest.class))).thenThrow(new RuntimeException());
+        when(suppressionService.saveSuppression(any(ApplicantDetails.class))).thenThrow(new RuntimeException());
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -109,9 +108,9 @@ public class SuppressionControllerTest_POST {
     }
 
 
-    private String asJsonString(final String pathname, final Function<Suppression, Suppression> suppressionModifier) {
+    private String asJsonString(final String pathname, final Function<ApplicantDetails, ApplicantDetails> suppressionModifier) {
         try {
-            final Suppression suppression = mapper.readValue(new File(pathname), Suppression.class);
+            final ApplicantDetails suppression = mapper.readValue(new File(pathname), ApplicantDetails.class);
             return new ObjectMapper().writeValueAsString(suppressionModifier.apply(suppression));
         } catch (final Exception e) {
             throw new RuntimeException(e);
