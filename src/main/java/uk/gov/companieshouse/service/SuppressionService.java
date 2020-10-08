@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.companieshouse.GenerateEtagUtil;
 import uk.gov.companieshouse.mapper.SuppressionMapper;
+import uk.gov.companieshouse.mapper.SuppressionRequestMapper;
 import uk.gov.companieshouse.model.Suppression;
+import uk.gov.companieshouse.model.SuppressionRequest;
 import uk.gov.companieshouse.repository.SuppressionRepository;
 import uk.gov.companieshouse.utils.ReferenceGenerator;
 
@@ -18,16 +20,18 @@ import java.util.Optional;
 public class SuppressionService {
 
     private final SuppressionMapper suppressionMapper;
+    private final SuppressionRequestMapper suppressionRequestMapper;
     private final SuppressionRepository suppressionRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(SuppressionService.class);
 
     @Autowired
-    public SuppressionService(SuppressionMapper suppressionMapper, SuppressionRepository suppressionRepository) {
+    public SuppressionService(SuppressionMapper suppressionMapper, SuppressionRequestMapper suppressionRequestMapper, SuppressionRepository suppressionRepository) {
         this.suppressionMapper = suppressionMapper;
+        this.suppressionRequestMapper = suppressionRequestMapper;
         this.suppressionRepository = suppressionRepository;
     }
 
-    public String saveSuppression(Suppression suppression) {
+    public String saveSuppression(SuppressionRequest suppression) {
 
         if (StringUtils.isBlank(suppression.getApplicationReference())) {
 
@@ -39,7 +43,7 @@ public class SuppressionService {
 
         suppression.setEtag(GenerateEtagUtil.generateEtag());
         suppression.setCreatedAt(LocalDateTime.now());
-        return suppressionRepository.save(this.suppressionMapper.map(suppression)).getId();
+        return suppressionRepository.save(this.suppressionRequestMapper.map(suppression)).getId();
     }
 
     public void patchSuppressionResource(Suppression suppression, Suppression suppressionPatchRequest) {

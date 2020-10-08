@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import uk.gov.companieshouse.model.Suppression;
+import uk.gov.companieshouse.model.SuppressionRequest;
 import uk.gov.companieshouse.service.SuppressionService;
 
 import javax.validation.Valid;
@@ -46,7 +47,7 @@ public class SuppressionController {
         this.suppressionService = suppressionService;
     }
 
-    @Operation(summary = "Create a new suppression", tags = "Suppression")
+    @Operation(summary = "Create a new suppression resource", tags = "Suppression")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Suppression resource created", headers = {
             @Header(name = "location")
@@ -58,7 +59,7 @@ public class SuppressionController {
     })
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> submitSuppression(@RequestHeader("ERIC-identity") String userId,
-                                                    @Valid @RequestBody final Suppression suppression) {
+                                                    @Valid @RequestBody final SuppressionRequest suppressionRequest) {
 
         if (StringUtils.isBlank(userId)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -66,7 +67,7 @@ public class SuppressionController {
 
         try {
 
-            final String id = suppressionService.saveSuppression(suppression);
+            final String id = suppressionService.saveSuppression(suppressionRequest);
 
             final URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -78,7 +79,8 @@ public class SuppressionController {
 
         } catch (Exception ex) {
 
-            LOGGER.error("Unable to create suppression for application reference {}", suppression.getApplicationReference(), ex);
+            LOGGER.error("Unable to create suppression for application reference {}",
+                suppressionRequest.getApplicationReference(), ex);
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.companieshouse.model.Suppression;
+import uk.gov.companieshouse.model.SuppressionRequest;
 import uk.gov.companieshouse.service.SuppressionService;
 
 import java.io.File;
@@ -43,9 +44,9 @@ public class SuppressionControllerTest_POST {
     @BeforeEach
     public void setUp() {
 
-        when(suppressionService.saveSuppression(any(Suppression.class))).thenReturn(TEST_RESOURCE_ID);
+        when(suppressionService.saveSuppression(any(SuppressionRequest.class))).thenReturn(TEST_RESOURCE_ID);
 
-        validSuppression = asJsonString("src/test/resources/data/validSuppression_complete.json");
+        validSuppression = asJsonString("src/test/resources/data/validSuppressionRequest_complete.json");
     }
 
     @Test
@@ -83,7 +84,7 @@ public class SuppressionControllerTest_POST {
     @Test
     public void whenInvalidInput_return422() throws Exception {
 
-        final String invalidSuppression = asJsonString("src/test/resources/data/invalidSuppression_missingFields.json");
+        final String invalidSuppression = asJsonString("src/test/resources/data/invalidSuppressionRequest_missingFields.json");
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -98,7 +99,7 @@ public class SuppressionControllerTest_POST {
     @Test
     public void whenInvalidReference_return422() throws Exception {
 
-        final String invalidSuppression = asJsonString("src/test/resources/data/invalidSuppression_invalidReference.json");
+        final String invalidSuppression = asJsonString("src/test/resources/data/invalidSuppressionRequest_invalidReference.json");
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -113,7 +114,7 @@ public class SuppressionControllerTest_POST {
     @Test
     public void whenEmptyReference_return201() throws Exception {
 
-        final String validSuppression = asJsonString("src/test/resources/data/validSuppression_emptyReference.json");
+        final String validSuppression = asJsonString("src/test/resources/data/validSuppressionRequest_emptyReference.json");
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -125,7 +126,7 @@ public class SuppressionControllerTest_POST {
     @Test
     public void whenExceptionFromService_return500() throws Exception {
 
-        when(suppressionService.saveSuppression(any(Suppression.class))).thenThrow(new RuntimeException());
+        when(suppressionService.saveSuppression(any(SuppressionRequest.class))).thenThrow(new RuntimeException());
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)

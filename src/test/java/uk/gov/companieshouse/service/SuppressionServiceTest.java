@@ -13,10 +13,8 @@ import uk.gov.companieshouse.database.entity.ApplicantDetailsEntity;
 import uk.gov.companieshouse.database.entity.DocumentDetailsEntity;
 import uk.gov.companieshouse.database.entity.SuppressionEntity;
 import uk.gov.companieshouse.mapper.SuppressionMapper;
-import uk.gov.companieshouse.model.Address;
-import uk.gov.companieshouse.model.ApplicantDetails;
-import uk.gov.companieshouse.model.DocumentDetails;
-import uk.gov.companieshouse.model.Suppression;
+import uk.gov.companieshouse.mapper.SuppressionRequestMapper;
+import uk.gov.companieshouse.model.*;
 import uk.gov.companieshouse.repository.SuppressionRepository;
 
 import java.util.Optional;
@@ -39,6 +37,9 @@ class SuppressionServiceTest {
 
     @Mock
     private SuppressionMapper suppressionMapper;
+
+    @Mock
+    private SuppressionRequestMapper suppressionRequestMapper;
 
     @Mock
     private SuppressionRepository suppressionRepository;
@@ -87,19 +88,19 @@ class SuppressionServiceTest {
     @Test
     void testSaveSuppression_returnsResourceReference() {
 
-        when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity(TEST_SUPPRESSION_ID));
+        when(suppressionRequestMapper.map(any(SuppressionRequest.class))).thenReturn(createSuppressionEntity(TEST_SUPPRESSION_ID));
         when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.applicationReference));
 
-        assertEquals(TestData.Suppression.applicationReference, suppressionService.saveSuppression(createSuppression(TEST_SUPPRESSION_ID)));
+        assertEquals(TestData.Suppression.applicationReference, suppressionService.saveSuppression(createSuppressionRequest(TEST_SUPPRESSION_ID)));
     }
 
     @Test
     void testSaveSuppressionWithEmptyReference_returnsResourceReference() {
 
-        when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity(TEST_SUPPRESSION_ID));
+        when(suppressionRequestMapper.map(any(SuppressionRequest.class))).thenReturn(createSuppressionEntity(TEST_SUPPRESSION_ID));
         when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.applicationReference));
 
-        String expectedReference = suppressionService.saveSuppression(createSuppression(""));
+        String expectedReference = suppressionService.saveSuppression(createSuppressionRequest(""));
 
         verify(suppressionRepository, times(1)).findById(any(String.class));
         assertEquals(TestData.Suppression.applicationReference, expectedReference);
@@ -276,6 +277,20 @@ class SuppressionServiceTest {
                 TestData.Suppression.Address.county,
                 TestData.Suppression.Address.postcode,
                 TestData.Suppression.Address.country
+            ),
+            TestData.Suppression.etag
+        );
+    }
+
+    private SuppressionRequest createSuppressionRequest(String reference) {
+        return new SuppressionRequest(
+            TestData.Suppression.createdAt,
+            reference,
+            new ApplicantDetails(
+                TestData.Suppression.ApplicantDetails.fullName,
+                TestData.Suppression.ApplicantDetails.previousName,
+                TestData.Suppression.ApplicantDetails.emailAddress,
+                TestData.Suppression.ApplicantDetails.dateOfBirth
             ),
             TestData.Suppression.etag
         );
