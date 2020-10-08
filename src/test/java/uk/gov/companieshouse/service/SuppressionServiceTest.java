@@ -13,7 +13,11 @@ import uk.gov.companieshouse.database.entity.ApplicantDetailsEntity;
 import uk.gov.companieshouse.database.entity.DocumentDetailsEntity;
 import uk.gov.companieshouse.database.entity.SuppressionEntity;
 import uk.gov.companieshouse.mapper.SuppressionMapper;
-import uk.gov.companieshouse.model.*;
+import uk.gov.companieshouse.model.Address;
+import uk.gov.companieshouse.model.ApplicantDetails;
+import uk.gov.companieshouse.model.DocumentDetails;
+import uk.gov.companieshouse.model.Suppression;
+import uk.gov.companieshouse.model.SuppressionPatchRequest;
 import uk.gov.companieshouse.repository.SuppressionRepository;
 
 import java.util.Optional;

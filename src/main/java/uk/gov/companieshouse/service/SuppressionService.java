@@ -27,7 +27,7 @@ public class SuppressionService {
 
     public String saveSuppression(ApplicantDetails applicantDetails) {
 
-        Suppression suppression = new Suppression();
+        final Suppression suppression = new Suppression();
         suppression.setApplicantDetails(applicantDetails);
         suppression.setApplicationReference(generateUniqueSuppressionReference());
         suppression.setEtag(GenerateEtagUtil.generateEtag());

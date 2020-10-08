@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 
 @WebMvcTest(SuppressionController.class)
-public class SuppressionControllerTest_POST {
+class SuppressionControllerTest_POST {
 
     private static final String SUPPRESSION_URI = "/suppressions";
     private static final String IDENTITY_HEADER = "ERIC-identity";
@@ -41,7 +41,7 @@ public class SuppressionControllerTest_POST {
     private String validSuppression;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
 
         when(suppressionService.saveSuppression(any(ApplicantDetails.class))).thenReturn(TEST_RESOURCE_ID);
 
@@ -49,7 +49,7 @@ public class SuppressionControllerTest_POST {
     }
 
     @Test
-    public void whenValidInput_return201() throws Exception {
+    void whenValidInput_return201() throws Exception {
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -61,7 +61,7 @@ public class SuppressionControllerTest_POST {
     }
 
     @Test
-    public void whenEmptyInput_return400() throws Exception {
+    void whenEmptyInput_return400() throws Exception {
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -71,7 +71,7 @@ public class SuppressionControllerTest_POST {
     }
 
     @Test
-    public void whenInvalidHeader_return401() throws Exception {
+    void whenInvalidHeader_return401() throws Exception {
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -81,7 +81,7 @@ public class SuppressionControllerTest_POST {
     }
 
     @Test
-    public void whenInvalidInput_return422() throws Exception {
+    void whenInvalidInput_return422() throws Exception {
 
         final String invalidSuppression = asJsonString("src/test/resources/data/invalidApplicantDetails_missingFields.json");
 
@@ -96,7 +96,7 @@ public class SuppressionControllerTest_POST {
     }
 
     @Test
-    public void whenExceptionFromService_return500() throws Exception {
+    void whenExceptionFromService_return500() throws Exception {
 
         when(suppressionService.saveSuppression(any(ApplicantDetails.class))).thenThrow(new RuntimeException());
 
@@ -108,10 +108,10 @@ public class SuppressionControllerTest_POST {
     }
 
 
-    private String asJsonString(final String pathname, final Function<ApplicantDetails, ApplicantDetails> suppressionModifier) {
+    private String asJsonString(final String pathname, final Function<ApplicantDetails, ApplicantDetails> applicantDetailsModifier) {
         try {
-            final ApplicantDetails suppression = mapper.readValue(new File(pathname), ApplicantDetails.class);
-            return new ObjectMapper().writeValueAsString(suppressionModifier.apply(suppression));
+            final ApplicantDetails applicantDetails = mapper.readValue(new File(pathname), ApplicantDetails.class);
+            return new ObjectMapper().writeValueAsString(applicantDetailsModifier.apply(applicantDetails));
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
@@ -123,7 +123,7 @@ public class SuppressionControllerTest_POST {
 
     private HttpHeaders createHttpHeaders(String testUserId) {
         final HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(IDENTITY_HEADER,testUserId);
+        httpHeaders.add(IDENTITY_HEADER, testUserId);
         return httpHeaders;
     }
 }
