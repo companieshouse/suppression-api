@@ -9,10 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.companieshouse.TestData;
-import uk.gov.companieshouse.model.Address;
-import uk.gov.companieshouse.model.ApplicantDetails;
-import uk.gov.companieshouse.model.DocumentDetails;
-import uk.gov.companieshouse.model.Suppression;
+import uk.gov.companieshouse.model.*;
 import uk.gov.companieshouse.service.SuppressionService;
 
 import java.util.Optional;
@@ -45,7 +42,7 @@ class SuppressionControllerTest_PATCH {
     void whenPartiallyUpdateSuppression_applicantDetails_return204() throws Exception {
 
         given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(getSuppressionResource()));
-        doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(Suppression.class));
+        doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(SuppressionPatchRequest.class));
 
         final Suppression updateSuppressionRequest = new Suppression();
         updateSuppressionRequest.setApplicantDetails(getApplicantDetails());
@@ -61,7 +58,7 @@ class SuppressionControllerTest_PATCH {
     void whenPartiallyUpdateSuppression_addressToRemove_return204() throws Exception {
 
         given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(getSuppressionResource()));
-        doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(Suppression.class));
+        doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(SuppressionPatchRequest.class));
 
         final Suppression updateSuppressionRequest = new Suppression();
         updateSuppressionRequest.setAddressToRemove(getAddress());
@@ -77,7 +74,7 @@ class SuppressionControllerTest_PATCH {
     void whenPartiallyUpdateSuppression_serviceAddress_return204() throws Exception {
 
         given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(getSuppressionResource()));
-        doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(Suppression.class));
+        doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(SuppressionPatchRequest.class));
 
         final Suppression updateSuppressionRequest = new Suppression();
         updateSuppressionRequest.setServiceAddress(getAddress());
@@ -93,7 +90,7 @@ class SuppressionControllerTest_PATCH {
     void whenPartiallyUpdateSuppression_documentDetails_return204() throws Exception {
 
         given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(getSuppressionResource()));
-        doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(Suppression.class));
+        doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(SuppressionPatchRequest.class));
 
         final Suppression updateSuppressionRequest = new Suppression();
         updateSuppressionRequest.setDocumentDetails(getDocumentDetails());
@@ -109,7 +106,7 @@ class SuppressionControllerTest_PATCH {
     void whenPartiallyUpdateSuppression_contactAddress_return204() throws Exception {
 
         given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(getSuppressionResource()));
-        doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(Suppression.class));
+        doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(SuppressionPatchRequest.class));
 
         final Suppression updateSuppressionRequest = new Suppression();
         updateSuppressionRequest.setContactAddress(getAddress());
@@ -185,7 +182,7 @@ class SuppressionControllerTest_PATCH {
     void whenPartiallyUpdateSuppression_applicantDetails_invalid_return422() throws Exception {
 
         given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(getSuppressionResource()));
-        doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(Suppression.class));
+        doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(SuppressionPatchRequest.class));
 
         final Suppression updateSuppressionRequest = new Suppression();
         updateSuppressionRequest.setApplicantDetails(new ApplicantDetails(TestData.Suppression.ApplicantDetails.fullName,
@@ -204,7 +201,8 @@ class SuppressionControllerTest_PATCH {
     void whenPartiallyUpdateSuppression_addressToRemove_invalid_return422() throws Exception {
 
         given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(getSuppressionResource()));
-        doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(Suppression.class));
+        doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class),
+            any(SuppressionPatchRequest.class));
 
         final Suppression updateSuppressionRequest = new Suppression();
         updateSuppressionRequest.setAddressToRemove(new Address(null,
@@ -227,7 +225,8 @@ class SuppressionControllerTest_PATCH {
         final Suppression suppressionResource = getSuppressionResource();
 
         given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(suppressionResource));
-        doThrow(RuntimeException.class).when(suppressionService).patchSuppressionResource(any(Suppression.class), any(Suppression.class));
+        doThrow(RuntimeException.class).when(suppressionService).patchSuppressionResource(any(Suppression.class),
+            any(SuppressionPatchRequest.class));
 
         mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
             .contentType(MediaType.APPLICATION_JSON_VALUE)

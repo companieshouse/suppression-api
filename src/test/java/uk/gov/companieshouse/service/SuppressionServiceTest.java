@@ -142,7 +142,7 @@ class SuppressionServiceTest {
         final Suppression suppression = createSuppression(TEST_SUPPRESSION_ID);
         suppression.setApplicantDetails(null);
 
-        final Suppression patchSuppressionRequest = new Suppression();
+        final SuppressionPatchRequest patchSuppressionRequest = new SuppressionPatchRequest();
         patchSuppressionRequest.setApplicantDetails(new ApplicantDetails(TestData.Suppression.ApplicantDetails.fullName,
             TestData.Suppression.ApplicantDetails.previousName,
             TestData.Suppression.ApplicantDetails.emailAddress,
@@ -165,7 +165,7 @@ class SuppressionServiceTest {
         final Suppression suppression = createSuppression(TEST_SUPPRESSION_ID);
         suppression.setAddressToRemove(null);
 
-        final Suppression patchSuppressionRequest = new Suppression();
+        final SuppressionPatchRequest patchSuppressionRequest = new SuppressionPatchRequest();
         patchSuppressionRequest.setAddressToRemove(getAddress());
 
         suppressionService.patchSuppressionResource(suppression, patchSuppressionRequest);
@@ -185,7 +185,7 @@ class SuppressionServiceTest {
         final Suppression suppression = createSuppression(TEST_SUPPRESSION_ID);
         suppression.setServiceAddress(null);
 
-        final Suppression patchSuppressionRequest = new Suppression();
+        final SuppressionPatchRequest patchSuppressionRequest = new SuppressionPatchRequest();
         patchSuppressionRequest.setServiceAddress(getAddress());
 
         suppressionService.patchSuppressionResource(suppression, patchSuppressionRequest);
@@ -205,7 +205,7 @@ class SuppressionServiceTest {
         final Suppression suppression = createSuppression(TEST_SUPPRESSION_ID);
         suppression.setDocumentDetails(null);
 
-        final Suppression patchSuppressionRequest = new Suppression();
+        final SuppressionPatchRequest patchSuppressionRequest = new SuppressionPatchRequest();
         patchSuppressionRequest.setDocumentDetails(new DocumentDetails(TestData.Suppression.DocumentDetails.companyName,
             TestData.Suppression.DocumentDetails.companyNumber,
             TestData.Suppression.DocumentDetails.description,
@@ -228,7 +228,7 @@ class SuppressionServiceTest {
         final Suppression suppression = createSuppression(TEST_SUPPRESSION_ID);
         suppression.setContactAddress(null);
 
-        final Suppression patchSuppressionRequest = new Suppression();
+        final SuppressionPatchRequest patchSuppressionRequest = new SuppressionPatchRequest();
         patchSuppressionRequest.setContactAddress(getAddress());
 
         suppressionService.patchSuppressionResource(suppression, patchSuppressionRequest);

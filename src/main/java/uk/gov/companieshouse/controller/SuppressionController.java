@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import uk.gov.companieshouse.model.Suppression;
+import uk.gov.companieshouse.model.SuppressionPatchRequest;
 import uk.gov.companieshouse.model.SuppressionRequest;
 import uk.gov.companieshouse.service.SuppressionService;
 
@@ -99,7 +100,7 @@ public class SuppressionController {
     @PatchMapping(value = "/{suppression-id:^[A-Z0-9]{5}-[A-Z0-9]{5}}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> partiallyUpdateSuppression(@RequestHeader("ERIC-identity") final String userId,
                                                              @PathVariable("suppression-id") final String suppressionId,
-                                                             @Valid @RequestBody final Suppression suppressionPatchRequest) {
+                                                             @Valid @RequestBody final SuppressionPatchRequest suppressionPatchRequest) {
 
         if (StringUtils.isBlank(userId)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

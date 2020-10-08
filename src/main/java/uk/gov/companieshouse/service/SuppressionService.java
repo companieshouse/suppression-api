@@ -9,6 +9,7 @@ import uk.gov.companieshouse.GenerateEtagUtil;
 import uk.gov.companieshouse.mapper.SuppressionMapper;
 import uk.gov.companieshouse.mapper.SuppressionRequestMapper;
 import uk.gov.companieshouse.model.Suppression;
+import uk.gov.companieshouse.model.SuppressionPatchRequest;
 import uk.gov.companieshouse.model.SuppressionRequest;
 import uk.gov.companieshouse.repository.SuppressionRepository;
 import uk.gov.companieshouse.utils.ReferenceGenerator;
@@ -46,14 +47,14 @@ public class SuppressionService {
         return suppressionRepository.save(this.suppressionRequestMapper.map(suppression)).getId();
     }
 
-    public void patchSuppressionResource(Suppression suppression, Suppression suppressionPatchRequest) {
+    public void patchSuppressionResource(Suppression suppression, SuppressionPatchRequest suppressionPatchRequest) {
 
         mapPatchRequestToSuppression(suppression, suppressionPatchRequest);
 
         suppressionRepository.save(this.suppressionMapper.map(suppression));
     }
 
-    private void mapPatchRequestToSuppression(Suppression suppression, Suppression suppressionPatchRequest) {
+    private void mapPatchRequestToSuppression(Suppression suppression, SuppressionPatchRequest suppressionPatchRequest) {
 
         if (suppressionPatchRequest.getApplicantDetails() != null) {
             suppression.setApplicantDetails(suppressionPatchRequest.getApplicantDetails());
