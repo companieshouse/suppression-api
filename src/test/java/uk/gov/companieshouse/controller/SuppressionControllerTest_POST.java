@@ -9,7 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import uk.gov.companieshouse.model.Suppression;
+import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.service.SuppressionService;
 
 import java.io.File;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 
 @WebMvcTest(SuppressionController.class)
-public class SuppressionControllerTest_POST {
+class SuppressionControllerTest_POST {
 
     private static final String SUPPRESSION_URI = "/suppressions";
     private static final String IDENTITY_HEADER = "ERIC-identity";
@@ -41,15 +41,15 @@ public class SuppressionControllerTest_POST {
     private String validSuppression;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
 
-        when(suppressionService.saveSuppression(any(Suppression.class))).thenReturn(TEST_RESOURCE_ID);
+        when(suppressionService.saveSuppression(any(ApplicantDetails.class))).thenReturn(TEST_RESOURCE_ID);
 
-        validSuppression = asJsonString("src/test/resources/data/validSuppression_complete.json");
+        validSuppression = asJsonString("src/test/resources/data/validApplicantDetails_complete.json");
     }
 
     @Test
-    public void whenValidInput_return201() throws Exception {
+    void whenValidInput_return201() throws Exception {
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -61,7 +61,7 @@ public class SuppressionControllerTest_POST {
     }
 
     @Test
-    public void whenEmptyInput_return400() throws Exception {
+    void whenEmptyInput_return400() throws Exception {
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -71,7 +71,7 @@ public class SuppressionControllerTest_POST {
     }
 
     @Test
-    public void whenInvalidHeader_return401() throws Exception {
+    void whenInvalidHeader_return401() throws Exception {
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -81,24 +81,9 @@ public class SuppressionControllerTest_POST {
     }
 
     @Test
-    public void whenInvalidInput_return422() throws Exception {
+    void whenInvalidInput_return422() throws Exception {
 
-        final String invalidSuppression = asJsonString("src/test/resources/data/invalidSuppression_missingFields.json");
-
-        mockMvc.perform(post(SUPPRESSION_URI)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .headers(createHttpHeaders(TEST_USER_ID))
-            .content(invalidSuppression))
-            .andExpect(status().isUnprocessableEntity())
-            .andExpect(
-                content().json("{\"documentDetails.companyNumber\":\"companyNumber must not be blank\",\"addressToRemove\":\"addressToRemove must not be null\"}")
-            );
-    }
-
-    @Test
-    public void whenInvalidReference_return422() throws Exception {
-
-        final String invalidSuppression = asJsonString("src/test/resources/data/invalidSuppression_invalidReference.json");
+        final String invalidSuppression = asJsonString("src/test/resources/data/invalidApplicantDetails_missingFields.json");
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -106,26 +91,14 @@ public class SuppressionControllerTest_POST {
             .content(invalidSuppression))
             .andExpect(status().isUnprocessableEntity())
             .andExpect(
-                content().json("{\"applicationReference\":\"applicationReference format is invalid\"}")
+                content().json("{\"dateOfBirth\":\"date of birth must not be blank\"}")
             );
     }
 
     @Test
-    public void whenEmptyReference_return201() throws Exception {
+    void whenExceptionFromService_return500() throws Exception {
 
-        final String validSuppression = asJsonString("src/test/resources/data/validSuppression_emptyReference.json");
-
-        mockMvc.perform(post(SUPPRESSION_URI)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .headers(createHttpHeaders(TEST_USER_ID))
-            .content(validSuppression))
-            .andExpect(status().isCreated());
-    }
-
-    @Test
-    public void whenExceptionFromService_return500() throws Exception {
-
-        when(suppressionService.saveSuppression(any(Suppression.class))).thenThrow(new RuntimeException());
+        when(suppressionService.saveSuppression(any(ApplicantDetails.class))).thenThrow(new RuntimeException());
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -135,10 +108,10 @@ public class SuppressionControllerTest_POST {
     }
 
 
-    private String asJsonString(final String pathname, final Function<Suppression, Suppression> suppressionModifier) {
+    private String asJsonString(final String pathname, final Function<ApplicantDetails, ApplicantDetails> applicantDetailsModifier) {
         try {
-            final Suppression suppression = mapper.readValue(new File(pathname), Suppression.class);
-            return new ObjectMapper().writeValueAsString(suppressionModifier.apply(suppression));
+            final ApplicantDetails applicantDetails = mapper.readValue(new File(pathname), ApplicantDetails.class);
+            return new ObjectMapper().writeValueAsString(applicantDetailsModifier.apply(applicantDetails));
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
@@ -150,7 +123,7 @@ public class SuppressionControllerTest_POST {
 
     private HttpHeaders createHttpHeaders(String testUserId) {
         final HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(IDENTITY_HEADER,testUserId);
+        httpHeaders.add(IDENTITY_HEADER, testUserId);
         return httpHeaders;
     }
 }
