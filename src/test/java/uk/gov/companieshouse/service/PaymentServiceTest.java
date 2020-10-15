@@ -28,6 +28,7 @@ public class PaymentServiceTest {
     private static final String PAYMENT_AMOUNT = "32";
     private static final String AVAILABLE_PAYMENT_METHOD = "credit-card";
     private static final String CLASS_OF_PAYMENT = "data-maintenance";
+    private static final String APPLICATION_TYPE = "sr01";
 
     @InjectMocks
     private PaymentService paymentService;
@@ -56,6 +57,7 @@ public class PaymentServiceTest {
         assertEquals(PAYMENT_ITEM_KIND, paymentItem.getKind());
         assertEquals(PAYMENT_DESCRIPTION, paymentItem.getProductType());
         assertEquals(PAYMENT_RESOURCE_KIND, paymentItem.getResourceKind());
+        assertEquals(APPLICATION_TYPE, paymentItem.getProductType());
 
         Links links = payment.getLinks();
         assertEquals("/suppressions/" + TEST_SUPPRESSION_ID + "/payment", links.getPayment());
