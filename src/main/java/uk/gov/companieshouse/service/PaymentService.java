@@ -16,7 +16,7 @@ public class PaymentService {
     private static final String PAYMENT_DESCRIPTION = "Suppression application";
     private static final String AVAILABLE_PAYMENT_METHOD = "credit-card";
     private static final String CLASS_OF_PAYMENT = "data-maintenance";
-    private static final String APPLICATION_TYPE = "sr01";
+    private static final String PRODUCT_TYPE = "sr01";
 
     private final PaymentConfig paymentConfig;
 
@@ -49,7 +49,7 @@ public class PaymentService {
         paymentItem.setDescriptionIdentifier(PAYMENT_DESCRIPTION);
         paymentItem.setDescriptionValues(Collections.emptyMap());
         paymentItem.setKind(PAYMENT_ITEM_KIND);
-        paymentItem.setProductType(APPLICATION_TYPE);
+        paymentItem.setProductType(PRODUCT_TYPE);
         paymentItem.setResourceKind(PAYMENT_RESOURCE_KIND);
         return paymentItem;
     }
