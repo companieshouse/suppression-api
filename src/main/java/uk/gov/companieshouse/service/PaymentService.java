@@ -49,9 +49,8 @@ public class PaymentService {
         paymentItem.setDescriptionIdentifier(PAYMENT_DESCRIPTION);
         paymentItem.setDescriptionValues(Collections.emptyMap());
         paymentItem.setKind(PAYMENT_ITEM_KIND);
-        paymentItem.setProductType(PAYMENT_DESCRIPTION);
-        paymentItem.setResourceKind(PAYMENT_RESOURCE_KIND);
         paymentItem.setProductType(APPLICATION_TYPE);
+        paymentItem.setResourceKind(PAYMENT_RESOURCE_KIND);
         return paymentItem;
     }
 }

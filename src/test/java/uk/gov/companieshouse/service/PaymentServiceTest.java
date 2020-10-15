@@ -55,9 +55,8 @@ public class PaymentServiceTest {
         assertEquals(PAYMENT_DESCRIPTION, paymentItem.getDescriptionIdentifier());
         assertEquals(Collections.emptyMap(), paymentItem.getDescriptionValues());
         assertEquals(PAYMENT_ITEM_KIND, paymentItem.getKind());
-        assertEquals(PAYMENT_DESCRIPTION, paymentItem.getProductType());
-        assertEquals(PAYMENT_RESOURCE_KIND, paymentItem.getResourceKind());
         assertEquals(APPLICATION_TYPE, paymentItem.getProductType());
+        assertEquals(PAYMENT_RESOURCE_KIND, paymentItem.getResourceKind());
 
         Links links = payment.getLinks();
         assertEquals("/suppressions/" + TEST_SUPPRESSION_ID + "/payment", links.getPayment());
