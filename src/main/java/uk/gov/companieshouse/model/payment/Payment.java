@@ -67,12 +67,13 @@ public class Payment {
         return Objects.equals(etag, payment.etag) &&
             Objects.equals(kind, payment.kind) &&
             Objects.equals(links, payment.links) &&
+            Objects.equals(companyNumber, payment.companyNumber) &&
             Objects.equals(items, payment.items);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(etag, kind, links, items);
+        return Objects.hash(etag, kind, links, companyNumber, items);
     }
 
     @Override
@@ -81,6 +82,7 @@ public class Payment {
             .append("etag", etag)
             .append("kind", kind)
             .append("links", links)
+            .append("companyNumber", companyNumber)
             .append("items", items)
             .toString();
     }
