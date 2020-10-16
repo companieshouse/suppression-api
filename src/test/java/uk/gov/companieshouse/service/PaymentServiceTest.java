@@ -21,6 +21,7 @@ import static org.mockito.Mockito.when;
 public class PaymentServiceTest {
 
     private static final String TEST_SUPPRESSION_ID = "123";
+    private static final String TEST_COMPANY_NUMBER = "SC123123";
     private static final String PAYMENT_KIND = "suppression-request#payment";
     private static final String PAYMENT_ITEM_KIND = "suppression-request#payment-details";
     private static final String PAYMENT_RESOURCE_KIND = "suppression-request#suppression-request";
@@ -41,7 +42,7 @@ public class PaymentServiceTest {
 
         when(paymentConfig.getAmount()).thenReturn(PAYMENT_AMOUNT);
         
-        Payment payment = paymentService.getPaymentDetails(TEST_SUPPRESSION_ID, "1");
+        Payment payment = paymentService.getPaymentDetails(TEST_SUPPRESSION_ID, "1", TEST_COMPANY_NUMBER);
 
         assertNotNull(payment.getEtag());
         assertEquals(PAYMENT_KIND, payment.getKind());
