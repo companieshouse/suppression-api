@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.service;
 
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,23 +13,29 @@ import uk.gov.companieshouse.database.entity.AddressEntity;
 import uk.gov.companieshouse.database.entity.ApplicantDetailsEntity;
 import uk.gov.companieshouse.database.entity.DocumentDetailsEntity;
 import uk.gov.companieshouse.database.entity.SuppressionEntity;
+import uk.gov.companieshouse.email_producer.EmailSendingException;
 import uk.gov.companieshouse.mapper.SuppressionMapper;
 import uk.gov.companieshouse.model.Address;
 import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.model.DocumentDetails;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.SuppressionPatchRequest;
+import uk.gov.companieshouse.model.payment.PaymentPatchRequest;
+import uk.gov.companieshouse.model.payment.PaymentStatus;
 import uk.gov.companieshouse.repository.SuppressionRepository;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
+
+import static uk.gov.companieshouse.fixtures.SuppressionFixtures.generateSuppression;
+import static uk.gov.companieshouse.fixtures.PaymentFixtures.generatePaymentPatchRequest;
 
 @ExtendWith(MockitoExtension.class)
 class SuppressionServiceTest {
@@ -44,6 +51,9 @@ class SuppressionServiceTest {
     @Mock
     private SuppressionRepository suppressionRepository;
 
+    @Mock
+    private EmailService emailService;
+    
     private ArgumentCaptor<SuppressionEntity> suppressionArgumentCaptor;
 
     @BeforeEach
@@ -68,7 +78,7 @@ class SuppressionServiceTest {
     @Test
     void testGetExistingSuppression_returnsResource() {
 
-        final Suppression suppression = createSuppression(TEST_SUPPRESSION_ID);
+        final Suppression suppression = generateSuppression(TEST_SUPPRESSION_ID);
 
         when(suppressionMapper.map(any(SuppressionEntity.class))).thenReturn(suppression);
         when(suppressionRepository.findById(TEST_SUPPRESSION_ID)).thenReturn(Optional.of(createSuppressionEntity(TEST_SUPPRESSION_ID)));
@@ -104,6 +114,40 @@ class SuppressionServiceTest {
 
         verify(suppressionRepository, times(1)).findById(any(String.class));
         assertEquals(TestData.Suppression.applicationReference, expectedReference);
+    }
+
+    @Test
+    void testHandlePayment__sendEmailWhenPaid() {
+        PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
+        Suppression suppression = generateSuppression("TEST1-TEST1");
+
+        suppressionService.handlePayment(paymentDetails, suppression);
+
+        verify(emailService, times(1)).sendToStaff(suppression);
+    }
+
+    @Test
+    void testHandlePayment__noEmailWhenNotPaid() {
+        PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.CANCELLED);
+        Suppression suppression = generateSuppression("TEST1-TEST1");
+
+        suppressionService.handlePayment(paymentDetails, suppression);
+
+        verify(emailService, times(0)).sendToStaff(any());
+    }
+
+    @Test
+    void testHandlePayment__errSendingEmail() {
+        PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
+        Suppression suppression = generateSuppression("TEST1-TEST1");
+        doThrow(EmailSendingException.class)
+            .when(emailService)
+            .sendToStaff(any());
+
+        assertThrows(
+            EmailSendingException.class,
+            () -> suppressionService.handlePayment(paymentDetails, suppression)
+        );
     }
 
     @Test
