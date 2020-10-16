@@ -46,9 +46,10 @@ public class PaymentController {
         }
         
         final String etag = suppression.get().getEtag();
+        final String companyNumber = suppression.get().getDocumentDetails().getCompanyNumber();
         final String applicationReference = suppression.get().getApplicationReference();
         
-        final Payment paymentDetails = paymentService.getPaymentDetails(applicationReference, etag);
+        final Payment paymentDetails = paymentService.getPaymentDetails(applicationReference, etag, companyNumber);
 
         return ResponseEntity.status(HttpStatus.OK).body(paymentDetails);
     }

@@ -24,11 +24,12 @@ public class PaymentService {
         this.paymentConfig = paymentConfig;
     }
 
-    public Payment getPaymentDetails(final String suppressionId, final String etag) {
+    public Payment getPaymentDetails(final String suppressionId, final String etag, final String companyNumber) {
 
         Payment payment = new Payment();
 
         payment.setEtag(etag);
+        payment.setCompanyNumber(companyNumber);
         payment.setItems(Collections.singletonList(createPaymentItem()));
         payment.setKind(PAYMENT_KIND);
 
