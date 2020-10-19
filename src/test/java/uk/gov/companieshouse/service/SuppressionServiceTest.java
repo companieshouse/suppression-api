@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.service;
 
 import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,11 +16,10 @@ import uk.gov.companieshouse.database.entity.DocumentDetailsEntity;
 import uk.gov.companieshouse.database.entity.PaymentDetailsEntity;
 import uk.gov.companieshouse.database.entity.SuppressionEntity;
 import uk.gov.companieshouse.email_producer.EmailSendingException;
+import uk.gov.companieshouse.fixtures.SuppressionFixtures;
 import uk.gov.companieshouse.mapper.SuppressionMapper;
-import uk.gov.companieshouse.model.Address;
 import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.model.DocumentDetails;
-import uk.gov.companieshouse.model.PaymentDetails;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.SuppressionPatchRequest;
 import uk.gov.companieshouse.model.payment.PaymentPatchRequest;
@@ -36,6 +36,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 
+import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
+import static uk.gov.companieshouse.fixtures.SuppressionFixtures.generateAddress;
 import static uk.gov.companieshouse.fixtures.SuppressionFixtures.generateSuppression;
 import static uk.gov.companieshouse.fixtures.PaymentFixtures.generatePaymentPatchRequest;
 
@@ -55,7 +57,7 @@ class SuppressionServiceTest {
 
     @Mock
     private EmailService emailService;
-    
+
     private ArgumentCaptor<SuppressionEntity> suppressionArgumentCaptor;
 
     @BeforeEach
@@ -101,21 +103,21 @@ class SuppressionServiceTest {
     void testSaveSuppression_returnsResourceReference() {
 
         when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity(TEST_SUPPRESSION_ID));
-        when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.applicationReference));
+        when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(applicationReference));
 
-        assertEquals(TestData.Suppression.applicationReference, suppressionService.saveSuppression(createSuppressionRequest(TEST_SUPPRESSION_ID)));
+        assertEquals(applicationReference, suppressionService.saveSuppression(createSuppressionRequest(TEST_SUPPRESSION_ID)));
     }
 
     @Test
     void testSaveSuppressionWithEmptyReference_returnsResourceReference() {
 
         when(suppressionMapper.map(any(Suppression.class))).thenReturn(createSuppressionEntity(TEST_SUPPRESSION_ID));
-        when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(TestData.Suppression.applicationReference));
+        when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(createSuppressionEntity(applicationReference));
 
         String expectedReference = suppressionService.saveSuppression(createSuppressionRequest(""));
 
         verify(suppressionRepository, times(1)).findById(any(String.class));
-        assertEquals(TestData.Suppression.applicationReference, expectedReference);
+        assertEquals(applicationReference, expectedReference);
     }
 
     @Test
@@ -124,7 +126,7 @@ class SuppressionServiceTest {
         final SuppressionEntity patchedSuppressionEntity = createSuppressionEntity(TEST_SUPPRESSION_ID);
         when(suppressionMapper.map(any(Suppression.class))).thenReturn(patchedSuppressionEntity);
 
-        final Suppression suppression = createSuppression(TEST_SUPPRESSION_ID);
+        final Suppression suppression = SuppressionFixtures.generateSuppression(applicationReference);
         suppression.setPaymentDetails(null);
 
         PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
@@ -211,7 +213,7 @@ class SuppressionServiceTest {
     @Test
     void generateUniqueSuppressionReference_duplicatesPresent() {
 
-        SuppressionEntity suppressionEntity = createSuppressionEntity(TestData.Suppression.applicationReference);
+        SuppressionEntity suppressionEntity = createSuppressionEntity(applicationReference);
 
         when(suppressionRepository.findById(any(String.class)))
             .thenReturn(Optional.of(suppressionEntity))
@@ -231,7 +233,7 @@ class SuppressionServiceTest {
 
         when(suppressionMapper.map(any(Suppression.class))).thenReturn(patchedSuppressionEntity);
 
-        final Suppression suppression = createSuppression(TEST_SUPPRESSION_ID);
+        final Suppression suppression = SuppressionFixtures.generateSuppression(applicationReference);
         suppression.setApplicantDetails(null);
 
         final SuppressionPatchRequest patchSuppressionRequest = new SuppressionPatchRequest();
@@ -254,11 +256,11 @@ class SuppressionServiceTest {
 
         when(suppressionMapper.map(any(Suppression.class))).thenReturn(patchedSuppressionEntity);
 
-        final Suppression suppression = createSuppression(TEST_SUPPRESSION_ID);
+        final Suppression suppression = SuppressionFixtures.generateSuppression(applicationReference);
         suppression.setAddressToRemove(null);
 
         final SuppressionPatchRequest patchSuppressionRequest = new SuppressionPatchRequest();
-        patchSuppressionRequest.setAddressToRemove(getAddress());
+        patchSuppressionRequest.setAddressToRemove(generateAddress());
 
         suppressionService.patchSuppressionResource(suppression, patchSuppressionRequest);
 
@@ -274,11 +276,11 @@ class SuppressionServiceTest {
 
         when(suppressionMapper.map(any(Suppression.class))).thenReturn(patchedSuppressionEntity);
 
-        final Suppression suppression = createSuppression(TEST_SUPPRESSION_ID);
+        final Suppression suppression = SuppressionFixtures.generateSuppression(applicationReference);
         suppression.setServiceAddress(null);
 
         final SuppressionPatchRequest patchSuppressionRequest = new SuppressionPatchRequest();
-        patchSuppressionRequest.setServiceAddress(getAddress());
+        patchSuppressionRequest.setServiceAddress(generateAddress());
 
         suppressionService.patchSuppressionResource(suppression, patchSuppressionRequest);
 
@@ -294,7 +296,7 @@ class SuppressionServiceTest {
 
         when(suppressionMapper.map(any(Suppression.class))).thenReturn(patchedSuppressionEntity);
 
-        final Suppression suppression = createSuppression(TEST_SUPPRESSION_ID);
+        final Suppression suppression = SuppressionFixtures.generateSuppression(applicationReference);
         suppression.setDocumentDetails(null);
 
         final SuppressionPatchRequest patchSuppressionRequest = new SuppressionPatchRequest();
@@ -317,67 +319,17 @@ class SuppressionServiceTest {
 
         when(suppressionMapper.map(any(Suppression.class))).thenReturn(patchedSuppressionEntity);
 
-        final Suppression suppression = createSuppression(TEST_SUPPRESSION_ID);
+        final Suppression suppression = SuppressionFixtures.generateSuppression(applicationReference);
         suppression.setContactAddress(null);
 
         final SuppressionPatchRequest patchSuppressionRequest = new SuppressionPatchRequest();
-        patchSuppressionRequest.setContactAddress(getAddress());
+        patchSuppressionRequest.setContactAddress(SuppressionFixtures.generateAddress());
 
         suppressionService.patchSuppressionResource(suppression, patchSuppressionRequest);
 
         verify(suppressionRepository).save(suppressionArgumentCaptor.capture());
 
         assertEquals(patchedSuppressionEntity, suppressionArgumentCaptor.getValue());
-    }
-
-
-    private Suppression createSuppression(String reference) {
-        return new Suppression(
-            TestData.Suppression.createdAt,
-            reference,
-            new ApplicantDetails(
-                TestData.Suppression.ApplicantDetails.fullName,
-                TestData.Suppression.ApplicantDetails.previousName,
-                TestData.Suppression.ApplicantDetails.emailAddress,
-                TestData.Suppression.ApplicantDetails.dateOfBirth
-            ),
-            new Address(
-                TestData.Suppression.Address.line1,
-                TestData.Suppression.Address.line2,
-                TestData.Suppression.Address.town,
-                TestData.Suppression.Address.county,
-                TestData.Suppression.Address.postcode,
-                TestData.Suppression.Address.country
-            ),
-            new Address(
-                TestData.Suppression.Address.line1,
-                TestData.Suppression.Address.line2,
-                TestData.Suppression.Address.town,
-                TestData.Suppression.Address.county,
-                TestData.Suppression.Address.postcode,
-                TestData.Suppression.Address.country
-            ),
-            new DocumentDetails(
-                TestData.Suppression.DocumentDetails.companyName,
-                TestData.Suppression.DocumentDetails.companyNumber,
-                TestData.Suppression.DocumentDetails.description,
-                TestData.Suppression.DocumentDetails.date
-            ),
-            new Address(
-                TestData.Suppression.Address.line1,
-                TestData.Suppression.Address.line2,
-                TestData.Suppression.Address.town,
-                TestData.Suppression.Address.county,
-                TestData.Suppression.Address.postcode,
-                TestData.Suppression.Address.country
-            ),
-            TestData.Suppression.etag,
-            new PaymentDetails(
-                TestData.Suppression.PaymentDetails.reference,
-                TestData.Suppression.PaymentDetails.paidAt,
-                TestData.Suppression.PaymentDetails.status
-            )
-        );
     }
 
     private ApplicantDetails createSuppressionRequest(String reference) {
@@ -436,15 +388,6 @@ class SuppressionServiceTest {
                 TestData.Suppression.PaymentDetails.status
             )
         );
-    }
-
-    private Address getAddress() {
-        return new Address(TestData.Suppression.Address.line1,
-            TestData.Suppression.Address.line2,
-            TestData.Suppression.Address.town,
-            TestData.Suppression.Address.county,
-            TestData.Suppression.Address.country,
-            TestData.Suppression.Address.postcode);
     }
 
 }

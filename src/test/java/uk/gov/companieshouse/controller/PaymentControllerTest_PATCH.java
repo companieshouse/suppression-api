@@ -8,17 +8,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import uk.gov.companieshouse.TestData;
 import uk.gov.companieshouse.email_producer.EmailSendingException;
-import uk.gov.companieshouse.model.Address;
-import uk.gov.companieshouse.model.ApplicantDetails;
-import uk.gov.companieshouse.model.DocumentDetails;
-import uk.gov.companieshouse.model.PaymentDetails;
+import uk.gov.companieshouse.fixtures.SuppressionFixtures;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.payment.PaymentPatchRequest;
 import uk.gov.companieshouse.model.payment.PaymentStatus;
 import uk.gov.companieshouse.service.PaymentService;
 import uk.gov.companieshouse.service.SuppressionService;
+
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -52,8 +49,8 @@ class PaymentControllerTest_PATCH {
 
         PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
 
-        Suppression suppression = getSuppressionResource();
-        suppression.setPaymentDetails(getPaymentDetails());
+        Suppression suppression = SuppressionFixtures.generateSuppression(applicationReference);
+        suppression.setPaymentDetails(SuppressionFixtures.generatePaymentDetails());
 
         given(suppressionService.getSuppression(anyString()))
             .willReturn(Optional.of(suppression));
@@ -83,7 +80,11 @@ class PaymentControllerTest_PATCH {
 
         PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
 
-        given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(getSuppressionResource()));
+        Suppression suppression = SuppressionFixtures.generateSuppression(applicationReference);
+        suppression.setPaymentDetails(null);
+
+        given(suppressionService.getSuppression(anyString()))
+            .willReturn(Optional.of(suppression));
         doThrow(EmailSendingException.class)
             .when(suppressionService)
             .handlePayment(any(PaymentPatchRequest.class), any(Suppression.class));
@@ -93,13 +94,17 @@ class PaymentControllerTest_PATCH {
             .content(asJsonString(paymentDetails)))
             .andExpect(status().isInternalServerError());
     }
-    
+
     @Test
     void whenEmailSendSucceeds__return204() throws Exception {
 
         PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
 
-        given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(getSuppressionResource()));
+        Suppression suppression = SuppressionFixtures.generateSuppression(applicationReference);
+        suppression.setPaymentDetails(null);
+
+        given(suppressionService.getSuppression(anyString()))
+            .willReturn(Optional.of(suppression));
 
         mockMvc.perform(patch(SUPPRESSIONS_PAYMENT_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -113,46 +118,5 @@ class PaymentControllerTest_PATCH {
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private Suppression getSuppressionResource() {
-        return new Suppression(TestData.Suppression.createdAt,
-            applicationReference,
-            getApplicantDetails(),
-            getAddress(),
-            getAddress(),
-            getDocumentDetails(),
-            getAddress(),
-            TestData.Suppression.etag,
-            null);
-    }
-
-    private Address getAddress() {
-        return new Address(TestData.Suppression.Address.line1,
-            TestData.Suppression.Address.line2,
-            TestData.Suppression.Address.town,
-            TestData.Suppression.Address.county,
-            TestData.Suppression.Address.country,
-            TestData.Suppression.Address.postcode);
-    }
-
-    private ApplicantDetails getApplicantDetails() {
-        return new ApplicantDetails(TestData.Suppression.ApplicantDetails.fullName,
-            TestData.Suppression.ApplicantDetails.previousName,
-            TestData.Suppression.ApplicantDetails.emailAddress,
-            TestData.Suppression.ApplicantDetails.dateOfBirth);
-    }
-
-    private DocumentDetails getDocumentDetails() {
-        return new DocumentDetails(TestData.Suppression.DocumentDetails.companyName,
-            TestData.Suppression.DocumentDetails.companyNumber,
-            TestData.Suppression.DocumentDetails.description,
-            TestData.Suppression.DocumentDetails.date);
-    }
-
-    private PaymentDetails getPaymentDetails() {
-        return new PaymentDetails(TestData.Suppression.PaymentDetails.reference,
-            TestData.Suppression.PaymentDetails.paidAt,
-            TestData.Suppression.PaymentDetails.status);
     }
 }
