@@ -27,7 +27,7 @@ public interface TestData {
             String companyName = "COMPANYNAME#1";
             String companyNumber = "COMPANYNUMBER#1";
             String description = "DESCRIPTION";
-            String date = "01/01/2000";
+            String date = "2000-01-01";
         }
 
         String etag = "123";

@@ -21,6 +21,7 @@ import static org.mockito.Mockito.when;
 public class PaymentServiceTest {
 
     private static final String TEST_SUPPRESSION_ID = "123";
+    private static final String TEST_COMPANY_NUMBER = "SC123123";
     private static final String PAYMENT_KIND = "suppression-request#payment";
     private static final String PAYMENT_ITEM_KIND = "suppression-request#payment-details";
     private static final String PAYMENT_RESOURCE_KIND = "suppression-request#suppression-request";
@@ -28,6 +29,7 @@ public class PaymentServiceTest {
     private static final String PAYMENT_AMOUNT = "32";
     private static final String AVAILABLE_PAYMENT_METHOD = "credit-card";
     private static final String CLASS_OF_PAYMENT = "data-maintenance";
+    private static final String PRODUCT_TYPE = "sr01";
 
     @InjectMocks
     private PaymentService paymentService;
@@ -40,7 +42,7 @@ public class PaymentServiceTest {
 
         when(paymentConfig.getAmount()).thenReturn(PAYMENT_AMOUNT);
         
-        Payment payment = paymentService.getPaymentDetails(TEST_SUPPRESSION_ID, "1");
+        Payment payment = paymentService.getPaymentDetails(TEST_SUPPRESSION_ID, "1", TEST_COMPANY_NUMBER);
 
         assertNotNull(payment.getEtag());
         assertEquals(PAYMENT_KIND, payment.getKind());
@@ -54,7 +56,7 @@ public class PaymentServiceTest {
         assertEquals(PAYMENT_DESCRIPTION, paymentItem.getDescriptionIdentifier());
         assertEquals(Collections.emptyMap(), paymentItem.getDescriptionValues());
         assertEquals(PAYMENT_ITEM_KIND, paymentItem.getKind());
-        assertEquals(PAYMENT_DESCRIPTION, paymentItem.getProductType());
+        assertEquals(PRODUCT_TYPE, paymentItem.getProductType());
         assertEquals(PAYMENT_RESOURCE_KIND, paymentItem.getResourceKind());
 
         Links links = payment.getLinks();

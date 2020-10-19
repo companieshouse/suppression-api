@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.model.payment;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
@@ -10,7 +11,12 @@ public class Payment {
     private String etag;
 
     private String kind;
+
     private Links links;
+
+    @JsonProperty("company_number")
+    private String companyNumber;
+
     private List<PaymentItem> items;
 
     public String getEtag() {
@@ -37,6 +43,14 @@ public class Payment {
         this.links = links;
     }
 
+    public String getCompanyNumber() {
+        return companyNumber;
+    }
+
+    public void setCompanyNumber(String companyNumber) {
+        this.companyNumber = companyNumber;
+    }
+
     public List<PaymentItem> getItems() {
         return items;
     }
@@ -53,12 +67,13 @@ public class Payment {
         return Objects.equals(etag, payment.etag) &&
             Objects.equals(kind, payment.kind) &&
             Objects.equals(links, payment.links) &&
+            Objects.equals(companyNumber, payment.companyNumber) &&
             Objects.equals(items, payment.items);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(etag, kind, links, items);
+        return Objects.hash(etag, kind, links, companyNumber, items);
     }
 
     @Override
@@ -67,6 +82,7 @@ public class Payment {
             .append("etag", etag)
             .append("kind", kind)
             .append("links", links)
+            .append("companyNumber", companyNumber)
             .append("items", items)
             .toString();
     }

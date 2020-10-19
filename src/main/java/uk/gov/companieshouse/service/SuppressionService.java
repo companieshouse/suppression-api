@@ -7,6 +7,8 @@ import uk.gov.companieshouse.mapper.SuppressionMapper;
 import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.SuppressionPatchRequest;
+import uk.gov.companieshouse.model.payment.PaymentPatchRequest;
+import uk.gov.companieshouse.model.payment.PaymentStatus;
 import uk.gov.companieshouse.repository.SuppressionRepository;
 import uk.gov.companieshouse.utils.ReferenceGenerator;
 
@@ -18,11 +20,14 @@ public class SuppressionService {
 
     private final SuppressionMapper suppressionMapper;
     private final SuppressionRepository suppressionRepository;
+    private final EmailService emailService;
 
     @Autowired
-    public SuppressionService(SuppressionMapper suppressionMapper, SuppressionRepository suppressionRepository) {
+    public SuppressionService(SuppressionMapper suppressionMapper, SuppressionRepository suppressionRepository,
+            EmailService emailService) {
         this.suppressionMapper = suppressionMapper;
         this.suppressionRepository = suppressionRepository;
+        this.emailService = emailService;
     }
 
     public String saveSuppression(ApplicantDetails applicantDetails) {
@@ -72,6 +77,13 @@ public class SuppressionService {
 
     public boolean isExistingSuppressionID(String applicationReference) {
         return suppressionRepository.findById(applicationReference).isPresent();
+    }
+
+    public void handlePayment(PaymentPatchRequest data, Suppression suppression) {
+        // TODO: Update payment status
+        if (data.getStatus() == PaymentStatus.PAID) {
+            emailService.sendToStaff(suppression);
+        }
     }
     
     public String generateUniqueSuppressionReference(){

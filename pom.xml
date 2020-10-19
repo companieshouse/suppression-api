@@ -25,9 +25,10 @@
         </sonar.coverage.exclusions>
         <!-- Versions -->
         <java.version>11</java.version>
-        <version.spring.boot>2.3.3.RELEASE</version.spring.boot>
+        <version.spring.boot>2.3.4.RELEASE</version.spring.boot>
         <version.springdoc.openapi>1.4.8</version.springdoc.openapi>
         <version.api-helper-java>1.4.3</version.api-helper-java>
+        <version.email-producer-java>1.0.4</version.email-producer-java>
     </properties>
 
     <repositories>
@@ -38,6 +39,7 @@
     </repositories>
 
 	<dependencies>
+        
         <!-- Spring/SpringBoot -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -94,6 +96,13 @@
                     <artifactId>jackson-core</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <!-- Email -->
+        <dependency>
+            <groupId>uk.gov.companieshouse</groupId>
+            <artifactId>email-producer-java</artifactId>
+            <version>${version.email-producer-java}</version>
         </dependency>
 
         <!-- Testing -->
