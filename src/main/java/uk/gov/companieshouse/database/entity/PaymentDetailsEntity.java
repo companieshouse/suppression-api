@@ -7,16 +7,16 @@ import org.springframework.data.annotation.AccessType;
 import uk.gov.companieshouse.model.payment.PaymentStatus;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @AccessType(AccessType.Type.PROPERTY)
 public class PaymentDetailsEntity implements Serializable {
 
     private final String reference;
-    private final Timestamp paidAt;
+    private final LocalDateTime paidAt;
     private final PaymentStatus status;
 
-    public PaymentDetailsEntity(String reference, Timestamp paidAt, PaymentStatus status) {
+    public PaymentDetailsEntity(String reference, LocalDateTime paidAt, PaymentStatus status) {
         this.reference = reference;
         this.paidAt = paidAt;
         this.status = status;
@@ -26,7 +26,7 @@ public class PaymentDetailsEntity implements Serializable {
         return reference;
     }
 
-    public Timestamp getPaidAt() {
+    public LocalDateTime getPaidAt() {
         return paidAt;
     }
 

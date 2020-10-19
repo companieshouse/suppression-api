@@ -2,7 +2,6 @@ package uk.gov.companieshouse;
 
 import uk.gov.companieshouse.model.payment.PaymentStatus;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public interface TestData {
@@ -37,7 +36,7 @@ public interface TestData {
 
         interface PaymentDetails {
             String reference = "123";
-            Timestamp paidAt = new Timestamp(System.currentTimeMillis());
+            LocalDateTime paidAt = LocalDateTime.of(2010, 12, 31, 23, 59);
             PaymentStatus status = PaymentStatus.PAID;
         }
     }

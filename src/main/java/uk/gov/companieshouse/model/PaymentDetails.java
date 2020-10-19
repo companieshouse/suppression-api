@@ -5,19 +5,19 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import uk.gov.companieshouse.model.payment.PaymentStatus;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class PaymentDetails {
 
     private String reference;
-    private Timestamp paidAt;
+    private LocalDateTime paidAt;
     private PaymentStatus status;
 
     public PaymentDetails() {
         this(null, null, null);
     }
 
-    public PaymentDetails(String reference, Timestamp paidAt, PaymentStatus status) {
+    public PaymentDetails(String reference, LocalDateTime paidAt, PaymentStatus status) {
         this.reference = reference;
         this.paidAt = paidAt;
         this.status = status;
@@ -31,11 +31,11 @@ public class PaymentDetails {
         this.reference = reference;
     }
 
-    public Timestamp getPaidAt() {
+    public LocalDateTime getPaidAt() {
         return paidAt;
     }
 
-    public void setPaidAt(Timestamp paidAt) {
+    public void setPaidAt(LocalDateTime paidAt) {
         this.paidAt = paidAt;
     }
 

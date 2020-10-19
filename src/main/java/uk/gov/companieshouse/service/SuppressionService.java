@@ -88,7 +88,7 @@ public class SuppressionService {
 
         PaymentDetails paymentDetails = new PaymentDetails();
         paymentDetails.setReference(data.getPaymentReference());
-        paymentDetails.setPaidAt(data.getPaidAt());
+        paymentDetails.setPaidAt(data.getPaidAt().toLocalDateTime());
         paymentDetails.setStatus(data.getStatus());
 
         suppression.setPaymentDetails(paymentDetails);
