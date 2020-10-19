@@ -7,6 +7,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.Optional;
 import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import uk.gov.companieshouse.model.PaymentDetails;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.payment.Payment;
 import uk.gov.companieshouse.model.payment.PaymentPatchRequest;
+import uk.gov.companieshouse.model.payment.PaymentStatus;
 import uk.gov.companieshouse.service.PaymentService;
 import uk.gov.companieshouse.service.SuppressionService;
 import uk.gov.companieshouse.email_producer.EmailSendingException;
@@ -28,6 +33,8 @@ import uk.gov.companieshouse.email_producer.EmailSendingException;
 @RestController
 @RequestMapping("/suppressions/{suppression-id}/payment")
 public class PaymentController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PaymentController.class);
 
     private final PaymentService paymentService;
     private final SuppressionService suppressionService;
@@ -64,13 +71,14 @@ public class PaymentController {
     @Operation(summary = "Update suppression payment details by ID", tags = "Payment")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Suppression payment details updated successfully"),
+        @ApiResponse(responseCode = "400", description = "Unable to update payment details, status is paid"),
         @ApiResponse(responseCode = "404", description = "Suppression application not found"),
         @ApiResponse(responseCode = "500", description = "Failed to send email")
     })
     @PatchMapping
     public ResponseEntity<Void> patchPaymentDetails(
         @PathVariable("suppression-id") final String suppressionId,
-        @Valid @RequestBody final PaymentPatchRequest body ) {
+        @Valid @RequestBody final PaymentPatchRequest paymentPatchRequest ) {
 
         final Optional<Suppression> suppression = suppressionService.getSuppression(suppressionId);
 
@@ -78,8 +86,20 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
+        final Suppression suppressionResource = suppression.get();
+        final PaymentDetails paymentDetails = suppressionResource.getPaymentDetails();
+
+        if (paymentDetails != null && paymentDetails.getStatus() == PaymentStatus.PAID) {
+
+            LOGGER.error("Unable to update payment details for suppression application ref. {}, payment status is {} " +
+                    "(payment ref. {})", suppressionResource.getApplicationReference(), PaymentStatus.PAID,
+                paymentPatchRequest.getPaymentReference());
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
         try {
-            suppressionService.handlePayment(body, suppression.get());
+            suppressionService.handlePayment(paymentPatchRequest, suppressionResource);
         } catch (EmailSendingException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
