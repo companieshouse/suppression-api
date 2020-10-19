@@ -22,9 +22,10 @@ public class Suppression {
     private DocumentDetails documentDetails;
     private Address contactAddress;
     private String etag;
+    private PaymentDetails paymentDetails;
 
     public Suppression() {
-        this(null, null, null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null, null, null);
     }
 
     public Suppression(LocalDateTime createdAt,
@@ -34,7 +35,8 @@ public class Suppression {
                        Address serviceAddress,
                        DocumentDetails documentDetails,
                        Address contactAddress,
-                       String etag) {
+                       String etag,
+                       PaymentDetails paymentDetails) {
         this.createdAt = createdAt;
         this.applicationReference = applicationReference;
         this.applicantDetails = applicantDetails;
@@ -43,6 +45,7 @@ public class Suppression {
         this.documentDetails = documentDetails;
         this.contactAddress = contactAddress;
         this.etag = etag;
+        this.paymentDetails = paymentDetails;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -105,6 +108,14 @@ public class Suppression {
         this.etag = etag;
     }
 
+    public PaymentDetails getPaymentDetails() {
+        return paymentDetails;
+    }
+
+    public void setPaymentDetails(PaymentDetails paymentDetails) {
+        this.paymentDetails = paymentDetails;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -122,6 +133,7 @@ public class Suppression {
             .append(documentDetails, that.documentDetails)
             .append(contactAddress, that.contactAddress)
             .append(etag, that.etag)
+            .append(paymentDetails, that.paymentDetails)
             .isEquals();
     }
 
@@ -136,6 +148,7 @@ public class Suppression {
             .append(documentDetails)
             .append(contactAddress)
             .append(etag)
+            .append(paymentDetails)
             .toHashCode();
     }
 
@@ -150,6 +163,7 @@ public class Suppression {
             .append("documentDetails", documentDetails)
             .append("contactAddress", contactAddress)
             .append("etag", etag)
+            .append("paymentDetails", paymentDetails)
             .toString();
     }
 }

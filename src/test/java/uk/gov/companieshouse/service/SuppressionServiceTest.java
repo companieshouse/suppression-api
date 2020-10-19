@@ -12,12 +12,14 @@ import uk.gov.companieshouse.TestData;
 import uk.gov.companieshouse.database.entity.AddressEntity;
 import uk.gov.companieshouse.database.entity.ApplicantDetailsEntity;
 import uk.gov.companieshouse.database.entity.DocumentDetailsEntity;
+import uk.gov.companieshouse.database.entity.PaymentDetailsEntity;
 import uk.gov.companieshouse.database.entity.SuppressionEntity;
 import uk.gov.companieshouse.email_producer.EmailSendingException;
 import uk.gov.companieshouse.mapper.SuppressionMapper;
 import uk.gov.companieshouse.model.Address;
 import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.model.DocumentDetails;
+import uk.gov.companieshouse.model.PaymentDetails;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.SuppressionPatchRequest;
 import uk.gov.companieshouse.model.payment.PaymentPatchRequest;
@@ -117,7 +119,29 @@ class SuppressionServiceTest {
     }
 
     @Test
+    void testHandlePayment_savesPaymentDetails() {
+
+        final SuppressionEntity patchedSuppressionEntity = createSuppressionEntity(TEST_SUPPRESSION_ID);
+        when(suppressionMapper.map(any(Suppression.class))).thenReturn(patchedSuppressionEntity);
+
+        final Suppression suppression = createSuppression(TEST_SUPPRESSION_ID);
+        suppression.setPaymentDetails(null);
+
+        PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
+
+        suppressionService.handlePayment(paymentDetails, suppression);
+
+        verify(suppressionRepository).save(suppressionArgumentCaptor.capture());
+
+        assertEquals(patchedSuppressionEntity, suppressionArgumentCaptor.getValue());
+    }
+
+    @Test
     void testHandlePayment__sendEmailWhenPaid() {
+
+        final SuppressionEntity patchedSuppressionEntity = createSuppressionEntity(TEST_SUPPRESSION_ID);
+        when(suppressionMapper.map(any(Suppression.class))).thenReturn(patchedSuppressionEntity);
+
         PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
         Suppression suppression = generateSuppression("TEST1-TEST1");
 
@@ -128,6 +152,11 @@ class SuppressionServiceTest {
 
     @Test
     void testHandlePayment__noEmailWhenNotPaid() {
+
+        final SuppressionEntity patchedSuppressionEntity = createSuppressionEntity(TEST_SUPPRESSION_ID);
+        when(suppressionMapper.map(any(Suppression.class))).thenReturn(patchedSuppressionEntity);
+
+
         PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.CANCELLED);
         Suppression suppression = generateSuppression("TEST1-TEST1");
 
@@ -138,6 +167,10 @@ class SuppressionServiceTest {
 
     @Test
     void testHandlePayment__errSendingEmail() {
+
+        final SuppressionEntity patchedSuppressionEntity = createSuppressionEntity(TEST_SUPPRESSION_ID);
+        when(suppressionMapper.map(any(Suppression.class))).thenReturn(patchedSuppressionEntity);
+
         PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
         Suppression suppression = generateSuppression("TEST1-TEST1");
         doThrow(EmailSendingException.class)
@@ -282,6 +315,7 @@ class SuppressionServiceTest {
         assertEquals(patchedSuppressionEntity, suppressionArgumentCaptor.getValue());
     }
 
+
     private Suppression createSuppression(String reference) {
         return new Suppression(
             TestData.Suppression.createdAt,
@@ -322,7 +356,12 @@ class SuppressionServiceTest {
                 TestData.Suppression.Address.postcode,
                 TestData.Suppression.Address.country
             ),
-            TestData.Suppression.etag
+            TestData.Suppression.etag,
+            new PaymentDetails(
+                TestData.Suppression.PaymentDetails.reference,
+                TestData.Suppression.PaymentDetails.paidAt,
+                TestData.Suppression.PaymentDetails.status
+            )
         );
     }
 
@@ -375,7 +414,12 @@ class SuppressionServiceTest {
                 TestData.Suppression.Address.postcode,
                 TestData.Suppression.Address.country
             ),
-            TestData.Suppression.etag
+            TestData.Suppression.etag,
+            new PaymentDetailsEntity(
+                TestData.Suppression.PaymentDetails.reference,
+                TestData.Suppression.PaymentDetails.paidAt,
+                TestData.Suppression.PaymentDetails.status
+            )
         );
     }
 

@@ -15,9 +15,7 @@ import uk.gov.companieshouse.model.payment.Payment;
 import uk.gov.companieshouse.service.PaymentService;
 import uk.gov.companieshouse.service.SuppressionService;
 
-import javax.swing.text.Document;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -27,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PaymentController.class)
-public class PaymentControllerTest_GET {
+class PaymentControllerTest_GET {
 
     private final String SUPPRESSIONS_PAYMENT_URI = "/suppressions/{suppression-id}/payment";
     private final String TEST_SUPPRESSION_ID = "123";
@@ -46,7 +44,7 @@ public class PaymentControllerTest_GET {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    public void whenPaymentDetailsExistForSuppression_return200() throws Exception {
+    void whenPaymentDetailsExistForSuppression_return200() throws Exception {
 
         Payment paymentDetails = getPaymentDetails();
 
@@ -62,7 +60,7 @@ public class PaymentControllerTest_GET {
     }
 
     @Test
-    public void whenSuppressionResourceNotFound_return404() throws Exception {
+    void whenSuppressionResourceNotFound_return404() throws Exception {
 
         given(suppressionService.getSuppression(anyString())).willReturn(Optional.empty());
 

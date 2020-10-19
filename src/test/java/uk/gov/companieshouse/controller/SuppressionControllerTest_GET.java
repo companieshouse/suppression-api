@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(SuppressionController.class)
-public class SuppressionControllerTest_GET {
+class SuppressionControllerTest_GET {
 
     private static final String SUPPRESSION_URI = "/suppressions/{suppression-id}";
     private static final String TEST_SUPPRESSION_ID = "11111-11111";
@@ -40,7 +40,7 @@ public class SuppressionControllerTest_GET {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    public void whenSuppressionResourceExistsForSuppressionID_return200() throws Exception {
+    void whenSuppressionResourceExistsForSuppressionID_return200() throws Exception {
 
         final Suppression suppressionResource = getSuppressionResource();
 
@@ -54,7 +54,7 @@ public class SuppressionControllerTest_GET {
     }
 
     @Test
-    public void whenMissingEricIdentityHeader_return400() throws Exception {
+    void whenMissingEricIdentityHeader_return400() throws Exception {
 
         mockMvc.perform(get(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
             .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -62,7 +62,7 @@ public class SuppressionControllerTest_GET {
     }
 
     @Test
-    public void whenBlankEricIdentityHeader_return401() throws Exception {
+    void whenBlankEricIdentityHeader_return401() throws Exception {
 
         mockMvc.perform(get(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -71,7 +71,7 @@ public class SuppressionControllerTest_GET {
     }
 
     @Test
-    public void whenBlankSuppressionId_return404() throws Exception {
+    void whenBlankSuppressionId_return404() throws Exception {
 
         mockMvc.perform(get(SUPPRESSION_URI, " ")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -80,7 +80,7 @@ public class SuppressionControllerTest_GET {
     }
 
     @Test
-    public void whenInvalidSuppressionIdFormat_return404() throws Exception {
+    void whenInvalidSuppressionIdFormat_return404() throws Exception {
 
         mockMvc.perform(get(SUPPRESSION_URI, TEST_SUPPRESSION_ID + "-" + TEST_SUPPRESSION_ID)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -89,7 +89,7 @@ public class SuppressionControllerTest_GET {
     }
 
     @Test
-    public void whenSuppressionResourceNotFound_return404() throws Exception {
+    void whenSuppressionResourceNotFound_return404() throws Exception {
 
         given(suppressionService.getSuppression(anyString())).willReturn(Optional.empty());
 

@@ -1,10 +1,11 @@
 package uk.gov.companieshouse.fixtures;
 
+import uk.gov.companieshouse.TestData;
 import uk.gov.companieshouse.model.Address;
 import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.model.DocumentDetails;
+import uk.gov.companieshouse.model.PaymentDetails;
 import uk.gov.companieshouse.model.Suppression;
-import uk.gov.companieshouse.TestData;
 
 public class SuppressionFixtures {
     
@@ -48,7 +49,12 @@ public class SuppressionFixtures {
                 TestData.Suppression.Address.postcode,
                 TestData.Suppression.Address.country
             ),
-            TestData.Suppression.etag
+            TestData.Suppression.etag,
+            new PaymentDetails(
+                TestData.Suppression.PaymentDetails.reference,
+                TestData.Suppression.PaymentDetails.paidAt,
+                TestData.Suppression.PaymentDetails.status
+            )
         );
     }
 }

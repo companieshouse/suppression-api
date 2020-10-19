@@ -12,6 +12,7 @@ import uk.gov.companieshouse.TestData;
 import uk.gov.companieshouse.model.Address;
 import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.model.DocumentDetails;
+import uk.gov.companieshouse.model.PaymentDetails;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.SuppressionPatchRequest;
 import uk.gov.companieshouse.service.SuppressionService;
@@ -247,7 +248,8 @@ class SuppressionControllerTest_PATCH {
             getAddress(),
             getDocumentDetails(),
             getAddress(),
-            TestData.Suppression.etag);
+            TestData.Suppression.etag,
+            getPaymentDetails());
     }
 
     private Address getAddress() {
@@ -271,6 +273,12 @@ class SuppressionControllerTest_PATCH {
             TestData.Suppression.DocumentDetails.companyNumber,
             TestData.Suppression.DocumentDetails.description,
             TestData.Suppression.DocumentDetails.date);
+    }
+
+    private PaymentDetails getPaymentDetails() {
+        return new PaymentDetails(TestData.Suppression.PaymentDetails.reference,
+            TestData.Suppression.PaymentDetails.paidAt,
+            TestData.Suppression.PaymentDetails.status);
     }
 
     private <T> String asJsonString(T body) {

@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static uk.gov.companieshouse.fixtures.PaymentFixtures.generatePaymentPatchRequest;
 
 @WebMvcTest(PaymentController.class)
-public class PaymentControllerTest_PATCH {
+class PaymentControllerTest_PATCH {
 
     private final String SUPPRESSIONS_PAYMENT_URI = "/suppressions/{suppression-id}/payment";
     private final String TEST_SUPPRESSION_ID = "123";
@@ -44,7 +44,7 @@ public class PaymentControllerTest_PATCH {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    public void whenSuppressionNotFound__return404() throws Exception {
+    void whenSuppressionNotFound__return404() throws Exception {
 
         PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
 
@@ -58,7 +58,7 @@ public class PaymentControllerTest_PATCH {
     }
 
     @Test
-    public void whenEmailSendFails__return500() throws Exception {
+    void whenEmailSendFails__return500() throws Exception {
 
         PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
 
@@ -74,7 +74,7 @@ public class PaymentControllerTest_PATCH {
     }
     
     @Test
-    public void whenEmailSendSucceeds__return204() throws Exception {
+    void whenEmailSendSucceeds__return204() throws Exception {
 
         PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
 

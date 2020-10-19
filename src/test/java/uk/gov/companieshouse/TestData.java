@@ -1,5 +1,8 @@
 package uk.gov.companieshouse;
 
+import uk.gov.companieshouse.model.payment.PaymentStatus;
+
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public interface TestData {
@@ -31,5 +34,11 @@ public interface TestData {
         }
 
         String etag = "123";
+
+        interface PaymentDetails {
+            String reference = "123";
+            Timestamp paidAt = new Timestamp(System.currentTimeMillis());
+            PaymentStatus status = PaymentStatus.PAID;
+        }
     }
 }
