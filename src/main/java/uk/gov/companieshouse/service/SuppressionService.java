@@ -83,6 +83,7 @@ public class SuppressionService {
         // TODO: Update payment status
         if (data.getStatus() == PaymentStatus.PAID) {
             emailService.sendToStaff(suppression);
+            emailService.sendToUser(suppression);
         }
     }
     
