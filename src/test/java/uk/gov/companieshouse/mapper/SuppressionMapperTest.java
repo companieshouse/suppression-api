@@ -4,14 +4,16 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.companieshouse.database.entity.SuppressionEntity;
 import uk.gov.companieshouse.database.entity.AddressEntity;
 import uk.gov.companieshouse.database.entity.ApplicantDetailsEntity;
 import uk.gov.companieshouse.database.entity.DocumentDetailsEntity;
-import uk.gov.companieshouse.model.Suppression;
+import uk.gov.companieshouse.database.entity.PaymentDetailsEntity;
+import uk.gov.companieshouse.database.entity.SuppressionEntity;
 import uk.gov.companieshouse.model.Address;
 import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.model.DocumentDetails;
+import uk.gov.companieshouse.model.PaymentDetails;
+import uk.gov.companieshouse.model.Suppression;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -36,12 +38,17 @@ import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
 import static uk.gov.companieshouse.TestData.Suppression.createdAt;
 import static uk.gov.companieshouse.TestData.Suppression.etag;
 
+import static uk.gov.companieshouse.TestData.Suppression.PaymentDetails.reference;
+import static uk.gov.companieshouse.TestData.Suppression.PaymentDetails.paidAt;
+import static uk.gov.companieshouse.TestData.Suppression.PaymentDetails.status;
+
 @ExtendWith(SpringExtension.class)
 public class SuppressionMapperTest {
     private final SuppressionMapper mapper = new SuppressionMapper(
         new ApplicantDetailsMapper(),
         new AddressMapper(),
-        new DocumentDetailsMapper()
+        new DocumentDetailsMapper(),
+        new PaymentDetailsMapper()
     );
 
     @Nested
@@ -60,7 +67,8 @@ public class SuppressionMapperTest {
                 new Address(line1, line2, town, county, postcode, country),
                 new DocumentDetails(companyName, companyNumber, description, date),
                 new Address(line1, line2, town, county, postcode, country),
-                etag
+                etag,
+                new PaymentDetails(reference, paidAt, status)
             ));
 
             assertNull(mapped.getCreatedAt());
@@ -91,6 +99,10 @@ public class SuppressionMapperTest {
             assertEquals(date, mapped.getDocumentDetails().getDate());
 
             assertEquals(etag, mapped.getEtag());
+
+            assertEquals(reference, mapped.getPaymentDetails().getReference());
+            assertEquals(paidAt, mapped.getPaymentDetails().getPaidAt());
+            assertEquals(status, mapped.getPaymentDetails().getStatus());
         }
     }
 
@@ -109,7 +121,8 @@ public class SuppressionMapperTest {
                 new AddressEntity(line1, line2, town, county, postcode, country),
                 new DocumentDetailsEntity(companyName, companyNumber, description, date),
                 new AddressEntity(line1, line2, town, county, postcode, country),
-                etag
+                etag,
+                new PaymentDetailsEntity(reference, paidAt, status)
             ));
             assertEquals(applicationReference, mapped.getApplicationReference());
             assertEquals(createdAt, mapped.getCreatedAt());
@@ -139,6 +152,10 @@ public class SuppressionMapperTest {
             assertEquals(date, mapped.getDocumentDetails().getDate());
 
             assertEquals(etag, mapped.getEtag());
+
+            assertEquals(reference, mapped.getPaymentDetails().getReference());
+            assertEquals(paidAt, mapped.getPaymentDetails().getPaidAt());
+            assertEquals(status, mapped.getPaymentDetails().getStatus());
         }
     }
 }

@@ -9,11 +9,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import uk.gov.companieshouse.email_producer.EmailSendingException;
+import uk.gov.companieshouse.fixtures.SuppressionFixtures;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.payment.PaymentPatchRequest;
 import uk.gov.companieshouse.model.payment.PaymentStatus;
 import uk.gov.companieshouse.service.PaymentService;
 import uk.gov.companieshouse.service.SuppressionService;
+
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -23,14 +25,13 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
 import static uk.gov.companieshouse.fixtures.PaymentFixtures.generatePaymentPatchRequest;
 
 @WebMvcTest(PaymentController.class)
-public class PaymentControllerTest_PATCH {
+class PaymentControllerTest_PATCH {
 
     private final String SUPPRESSIONS_PAYMENT_URI = "/suppressions/{suppression-id}/payment";
-    private final String TEST_SUPPRESSION_ID = "123";
-    private final String TEST_ETAG = "I_AM_AN_ETAG";
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,43 +45,68 @@ public class PaymentControllerTest_PATCH {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    public void whenSuppressionNotFound__return404() throws Exception {
+    void whenSuppressionExistsWithPaymentStatusPaid_return400() throws Exception {
+
+        PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
+
+        Suppression suppression = SuppressionFixtures.generateSuppression(applicationReference);
+        suppression.setPaymentDetails(SuppressionFixtures.generatePaymentDetails());
+
+        given(suppressionService.getSuppression(anyString()))
+            .willReturn(Optional.of(suppression));
+
+        mockMvc.perform(patch(SUPPRESSIONS_PAYMENT_URI, applicationReference)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(asJsonString(paymentDetails)))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void whenSuppressionNotFound__return404() throws Exception {
 
         PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
 
         given(suppressionService.getSuppression(anyString()))
             .willReturn(Optional.empty());
 
-        mockMvc.perform(patch(SUPPRESSIONS_PAYMENT_URI, TEST_SUPPRESSION_ID)
+        mockMvc.perform(patch(SUPPRESSIONS_PAYMENT_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(asJsonString(paymentDetails)))
             .andExpect(status().isNotFound());
     }
 
     @Test
-    public void whenEmailSendFails__return500() throws Exception {
+    void whenEmailSendFails__return500() throws Exception {
 
         PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
 
-        given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(getSuppression()));
+        Suppression suppression = SuppressionFixtures.generateSuppression(applicationReference);
+        suppression.setPaymentDetails(null);
+
+        given(suppressionService.getSuppression(anyString()))
+            .willReturn(Optional.of(suppression));
         doThrow(EmailSendingException.class)
             .when(suppressionService)
             .handlePayment(any(PaymentPatchRequest.class), any(Suppression.class));
 
-        mockMvc.perform(patch(SUPPRESSIONS_PAYMENT_URI, TEST_SUPPRESSION_ID)
+        mockMvc.perform(patch(SUPPRESSIONS_PAYMENT_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(asJsonString(paymentDetails)))
             .andExpect(status().isInternalServerError());
     }
-    
+
     @Test
-    public void whenEmailSendSucceeds__return204() throws Exception {
+    void whenEmailSendSucceeds__return204() throws Exception {
 
         PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.PAID);
 
-        given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(getSuppression()));
+        Suppression suppression = SuppressionFixtures.generateSuppression(applicationReference);
+        suppression.setPaymentDetails(null);
 
-        mockMvc.perform(patch(SUPPRESSIONS_PAYMENT_URI, TEST_SUPPRESSION_ID)
+        given(suppressionService.getSuppression(anyString()))
+            .willReturn(Optional.of(suppression));
+
+        mockMvc.perform(patch(SUPPRESSIONS_PAYMENT_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(asJsonString(paymentDetails)))
             .andExpect(status().isNoContent());
@@ -92,12 +118,5 @@ public class PaymentControllerTest_PATCH {
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private Suppression getSuppression() {
-        Suppression suppression = new Suppression();
-        suppression.setApplicationReference(TEST_SUPPRESSION_ID);
-        suppression.setEtag(TEST_ETAG);
-        return suppression;
     }
 }

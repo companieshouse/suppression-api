@@ -1,10 +1,13 @@
 package uk.gov.companieshouse.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.companieshouse.GenerateEtagUtil;
 import uk.gov.companieshouse.mapper.SuppressionMapper;
 import uk.gov.companieshouse.model.ApplicantDetails;
+import uk.gov.companieshouse.model.PaymentDetails;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.SuppressionPatchRequest;
 import uk.gov.companieshouse.model.payment.PaymentPatchRequest;
@@ -17,6 +20,8 @@ import java.util.Optional;
 
 @Service
 public class SuppressionService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SuppressionService.class);
 
     private final SuppressionMapper suppressionMapper;
     private final SuppressionRepository suppressionRepository;
@@ -80,10 +85,23 @@ public class SuppressionService {
     }
 
     public void handlePayment(PaymentPatchRequest data, Suppression suppression) {
-        // TODO: Update payment status
+
+        PaymentDetails paymentDetails = new PaymentDetails();
+        paymentDetails.setReference(data.getPaymentReference());
+        paymentDetails.setPaidAt(data.getPaidAt().toLocalDateTime());
+        paymentDetails.setStatus(data.getStatus());
+
+        suppression.setPaymentDetails(paymentDetails);
+
+        suppressionRepository.save(this.suppressionMapper.map(suppression));
+
         if (data.getStatus() == PaymentStatus.PAID) {
             emailService.sendToStaff(suppression);
             emailService.sendToUser(suppression);
+        } else {
+            LOGGER.info("Email not sent for suppression application ref. {}, due to payment status {} for " +
+                    "payment ref. {}",
+                suppression.getApplicationReference(), data.getStatus(), data.getPaymentReference());
         }
     }
     
