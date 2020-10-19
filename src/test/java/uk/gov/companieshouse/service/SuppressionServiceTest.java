@@ -150,6 +150,7 @@ class SuppressionServiceTest {
         suppressionService.handlePayment(paymentDetails, suppression);
 
         verify(emailService, times(1)).sendToStaff(suppression);
+        verify(emailService, times(1)).sendToUser(suppression);
     }
 
     @Test
@@ -198,6 +199,8 @@ class SuppressionServiceTest {
             EmailSendingException.class,
             () -> suppressionService.handlePayment(paymentDetails, suppression)
         );
+
+        verify(emailService, times(0)).sendToUser(suppression);
     }
 
     @Test
