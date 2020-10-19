@@ -11,14 +11,17 @@ public class SuppressionMapper implements Mapper<SuppressionEntity, Suppression>
     private final ApplicantDetailsMapper applicantDetailsMapper;
     private final AddressMapper addressMapper;
     private final DocumentDetailsMapper documentDetailsMapper;
+    private final PaymentDetailsMapper paymentDetailsMapper;
 
     public SuppressionMapper(ApplicantDetailsMapper applicantDetailsMapper,
                              AddressMapper addressMapper,
-                             DocumentDetailsMapper documentDetailsMapper) {
+                             DocumentDetailsMapper documentDetailsMapper,
+                             PaymentDetailsMapper paymentDetailsMapper) {
 
         this.applicantDetailsMapper = applicantDetailsMapper;
         this.addressMapper = addressMapper;
         this.documentDetailsMapper = documentDetailsMapper;
+        this.paymentDetailsMapper = paymentDetailsMapper;
     }
 
     @Override
@@ -34,7 +37,8 @@ public class SuppressionMapper implements Mapper<SuppressionEntity, Suppression>
             addressMapper.map(value.getServiceAddress()),
             documentDetailsMapper.map(value.getDocumentDetails()),
             addressMapper.map(value.getContactAddress()),
-            value.getEtag()
+            value.getEtag(),
+            paymentDetailsMapper.map(value.getPaymentDetails())
         );
     }
 
@@ -51,7 +55,8 @@ public class SuppressionMapper implements Mapper<SuppressionEntity, Suppression>
             addressMapper.map(value.getServiceAddress()),
             documentDetailsMapper.map(value.getDocumentDetails()),
             addressMapper.map(value.getContactAddress()),
-            value.getEtag()
+            value.getEtag(),
+            paymentDetailsMapper.map(value.getPaymentDetails())
         );
     }
 }

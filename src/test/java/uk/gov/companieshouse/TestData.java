@@ -1,5 +1,7 @@
 package uk.gov.companieshouse;
 
+import uk.gov.companieshouse.model.payment.PaymentStatus;
+
 import java.time.LocalDateTime;
 
 public interface TestData {
@@ -31,5 +33,11 @@ public interface TestData {
         }
 
         String etag = "123";
+
+        interface PaymentDetails {
+            String reference = "123";
+            LocalDateTime paidAt = LocalDateTime.of(2010, 12, 31, 23, 59);
+            PaymentStatus status = PaymentStatus.PAID;
+        }
     }
 }
