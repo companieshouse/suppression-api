@@ -151,13 +151,28 @@ class SuppressionServiceTest {
     }
 
     @Test
-    void testHandlePayment__noEmailWhenNotPaid() {
+    void testHandlePayment__noEmailWhenCancelledPayment() {
 
         final SuppressionEntity patchedSuppressionEntity = createSuppressionEntity(TEST_SUPPRESSION_ID);
         when(suppressionMapper.map(any(Suppression.class))).thenReturn(patchedSuppressionEntity);
 
 
         PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.CANCELLED);
+        Suppression suppression = generateSuppression("TEST1-TEST1");
+
+        suppressionService.handlePayment(paymentDetails, suppression);
+
+        verify(emailService, times(0)).sendToStaff(any());
+    }
+
+    @Test
+    void testHandlePayment__noEmailWhenFailedPayment() {
+
+        final SuppressionEntity patchedSuppressionEntity = createSuppressionEntity(TEST_SUPPRESSION_ID);
+        when(suppressionMapper.map(any(Suppression.class))).thenReturn(patchedSuppressionEntity);
+
+
+        PaymentPatchRequest paymentDetails = generatePaymentPatchRequest(PaymentStatus.FAILED);
         Suppression suppression = generateSuppression("TEST1-TEST1");
 
         suppressionService.handlePayment(paymentDetails, suppression);
