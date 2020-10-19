@@ -51,7 +51,7 @@ public class PaymentDetailsEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
+        return new HashCodeBuilder()
             .append(reference)
             .append(paidAt)
             .append(status)
