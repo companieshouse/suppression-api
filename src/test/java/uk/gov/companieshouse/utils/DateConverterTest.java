@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class DateConverterTest {
+class DateConverterTest {
 
     @Test
-    public void testDateConversion__successfullyConvertsValidDatestrings() {
+    void testDateConversion__successfullyConvertsValidDatestrings() {
 
         String date1 = "2020-01-01";
         String date2 = "1965-12-31";
@@ -23,7 +23,7 @@ public class DateConverterTest {
     }
 
     @Test
-    public void testDateConversion__gracefullyRejectsInvalidDatestrings() {
+    void testDateConversion__gracefullyRejectsInvalidDatestrings() {
 
         String date = "etcfryvgkubhlinjlm";
         String dateResult = DateConverter.convertDateToHumanReadableFormat(date);

@@ -1,9 +1,11 @@
 package uk.gov.companieshouse.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -33,15 +35,22 @@ class SuppressionControllerTest_PATCH {
     private static final String SUPPRESSION_URI = "/suppressions/{suppression-id}";
     private static final String IDENTITY_HEADER = "ERIC-identity";
     private static final String TEST_USER_ID = "1234";
-    private static final String TEST_SUPPRESSION_ID = "11111-11111";
 
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @MockBean
     private SuppressionService suppressionService;
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private JacksonTester<Suppression> json;
+
+    @BeforeEach
+    public void setUp(){
+        JacksonTester.initFields(this, objectMapper);
+    }
 
     @Test
     void whenPartiallyUpdateSuppression_applicantDetails_return204() throws Exception {
@@ -53,10 +62,10 @@ class SuppressionControllerTest_PATCH {
         final Suppression updateSuppressionRequest = new Suppression();
         updateSuppressionRequest.setApplicantDetails(SuppressionFixtures.generateApplicantDetails());
 
-        mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
+        mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(asJsonString(updateSuppressionRequest)))
+            .content(this.json.write(updateSuppressionRequest).getJson()))
             .andExpect(status().isNoContent());
     }
 
@@ -70,10 +79,10 @@ class SuppressionControllerTest_PATCH {
         final Suppression updateSuppressionRequest = new Suppression();
         updateSuppressionRequest.setAddressToRemove(SuppressionFixtures.generateAddress());
 
-        mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
+        mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(asJsonString(updateSuppressionRequest)))
+            .content(this.json.write(updateSuppressionRequest).getJson()))
             .andExpect(status().isNoContent());
     }
 
@@ -87,10 +96,10 @@ class SuppressionControllerTest_PATCH {
         final Suppression updateSuppressionRequest = new Suppression();
         updateSuppressionRequest.setServiceAddress(SuppressionFixtures.generateAddress());
 
-        mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
+        mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(asJsonString(updateSuppressionRequest)))
+            .content(this.json.write(updateSuppressionRequest).getJson()))
             .andExpect(status().isNoContent());
     }
 
@@ -104,10 +113,10 @@ class SuppressionControllerTest_PATCH {
         final Suppression updateSuppressionRequest = new Suppression();
         updateSuppressionRequest.setDocumentDetails(SuppressionFixtures.generateDocumentDetails());
 
-        mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
+        mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(asJsonString(updateSuppressionRequest)))
+            .content(this.json.write(updateSuppressionRequest).getJson()))
             .andExpect(status().isNoContent());
     }
 
@@ -121,17 +130,17 @@ class SuppressionControllerTest_PATCH {
         final Suppression updateSuppressionRequest = new Suppression();
         updateSuppressionRequest.setContactAddress(SuppressionFixtures.generateAddress());
 
-        mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
+        mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(asJsonString(updateSuppressionRequest)))
+            .content(this.json.write(updateSuppressionRequest).getJson()))
             .andExpect(status().isNoContent());
     }
 
     @Test
     void whenMissingRequestBody_return400() throws Exception {
 
-        mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
+        mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders()))
             .andExpect(status().isBadRequest());
@@ -140,19 +149,19 @@ class SuppressionControllerTest_PATCH {
     @Test
     void whenMissingEricIdentityHeader_return400() throws Exception {
 
-        mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
+        mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(asJsonString(SuppressionFixtures.generateSuppression(applicationReference))))
+            .content(this.json.write(SuppressionFixtures.generateSuppression(applicationReference)).getJson()))
             .andExpect(status().isBadRequest());
     }
 
     @Test
     void whenBlankEricIdentityHeader_return401() throws Exception {
 
-        mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
+        mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .header(IDENTITY_HEADER, " ")
-            .content(asJsonString(SuppressionFixtures.generateSuppression(applicationReference))))
+            .content(this.json.write(SuppressionFixtures.generateSuppression(applicationReference)).getJson()))
             .andExpect(status().isUnauthorized());
     }
 
@@ -162,17 +171,17 @@ class SuppressionControllerTest_PATCH {
         mockMvc.perform(patch(SUPPRESSION_URI, " ")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(asJsonString(SuppressionFixtures.generateSuppression(applicationReference))))
+            .content(this.json.write(SuppressionFixtures.generateSuppression(applicationReference)).getJson()))
             .andExpect(status().isNotFound());
     }
 
     @Test
     void whenInvalidSuppressionIdFormat_return404() throws Exception {
 
-        mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID + "-" + TEST_SUPPRESSION_ID)
+        mockMvc.perform(patch(SUPPRESSION_URI, applicationReference + "-" + applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(asJsonString(SuppressionFixtures.generateSuppression(applicationReference))))
+            .content(this.json.write(SuppressionFixtures.generateSuppression(applicationReference)).getJson()))
             .andExpect(status().isNotFound());
     }
 
@@ -181,10 +190,10 @@ class SuppressionControllerTest_PATCH {
 
         given(suppressionService.getSuppression(anyString())).willReturn(Optional.empty());
 
-        mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
+        mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(asJsonString(SuppressionFixtures.generateSuppression(applicationReference))))
+            .content(this.json.write(SuppressionFixtures.generateSuppression(applicationReference)).getJson()))
             .andExpect(status().isNotFound());
     }
 
@@ -201,10 +210,10 @@ class SuppressionControllerTest_PATCH {
             null,
             " "));
 
-        mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
+        mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(asJsonString(updateSuppressionRequest)))
+            .content(this.json.write(updateSuppressionRequest).getJson()))
             .andExpect(status().isUnprocessableEntity());
     }
 
@@ -224,10 +233,10 @@ class SuppressionControllerTest_PATCH {
             TestData.Suppression.Address.country,
             " "));
 
-        mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
+        mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(asJsonString(updateSuppressionRequest)))
+            .content(this.json.write(updateSuppressionRequest).getJson()))
             .andExpect(status().isUnprocessableEntity());
     }
 
@@ -240,19 +249,11 @@ class SuppressionControllerTest_PATCH {
         doThrow(RuntimeException.class).when(suppressionService).patchSuppressionResource(any(Suppression.class),
             any(SuppressionPatchRequest.class));
 
-        mockMvc.perform(patch(SUPPRESSION_URI, TEST_SUPPRESSION_ID)
+        mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(asJsonString(suppressionResource)))
+            .content(this.json.write(suppressionResource).getJson()))
             .andExpect(status().isInternalServerError());
-    }
-
-    private <T> String asJsonString(T body) {
-        try {
-            return mapper.writeValueAsString(body);
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private HttpHeaders createHttpHeaders() {

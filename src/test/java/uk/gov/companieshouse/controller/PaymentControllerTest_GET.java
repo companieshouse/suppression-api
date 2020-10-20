@@ -1,21 +1,20 @@
 package uk.gov.companieshouse.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import uk.gov.companieshouse.model.DocumentDetails;
-import uk.gov.companieshouse.model.Suppression;
-import uk.gov.companieshouse.model.payment.PaymentItem;
-import uk.gov.companieshouse.model.payment.Links;
+import uk.gov.companieshouse.fixtures.PaymentFixtures;
+import uk.gov.companieshouse.fixtures.SuppressionFixtures;
 import uk.gov.companieshouse.model.payment.Payment;
 import uk.gov.companieshouse.service.PaymentService;
 import uk.gov.companieshouse.service.SuppressionService;
 
-import java.util.Collections;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -23,40 +22,47 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
+import static uk.gov.companieshouse.TestData.Suppression.etag;
+import static uk.gov.companieshouse.TestData.Suppression.DocumentDetails.companyNumber;
 
 @WebMvcTest(PaymentController.class)
 class PaymentControllerTest_GET {
 
-    private final String SUPPRESSIONS_PAYMENT_URI = "/suppressions/{suppression-id}/payment";
-    private final String TEST_SUPPRESSION_ID = "123";
-    private final String TEST_ETAG = "I_AM_AN_ETAG";
-    private final String TEST_COMPANY_NUMBER = "SC123123";
+    private static final String SUPPRESSIONS_PAYMENT_URI = "/suppressions/{suppression-id}/payment";
 
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @MockBean
     private PaymentService paymentService;
-    
+
     @MockBean
     private SuppressionService suppressionService;
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private JacksonTester<Payment> json;
+
+    @BeforeEach
+    public void setUp(){
+        JacksonTester.initFields(this, objectMapper);
+    }
 
     @Test
     void whenPaymentDetailsExistForSuppression_return200() throws Exception {
 
-        Payment paymentDetails = getPaymentDetails();
+        Payment paymentDetails = PaymentFixtures.generatePaymentDetails();
 
-        given(suppressionService.getSuppression(anyString())).willReturn(Optional.of(getSuppression()));
-        given(paymentService.getPaymentDetails(TEST_SUPPRESSION_ID, TEST_ETAG, TEST_COMPANY_NUMBER)).willReturn(paymentDetails);
+        given(suppressionService.getSuppression(anyString()))
+            .willReturn(Optional.of(SuppressionFixtures.generateSuppression(applicationReference)));
+        given(paymentService.getPaymentDetails(applicationReference, etag, companyNumber)).willReturn(paymentDetails);
 
-        String jsonContent = asJsonString(paymentDetails);
-
-        mockMvc.perform(get(SUPPRESSIONS_PAYMENT_URI, TEST_SUPPRESSION_ID, TEST_COMPANY_NUMBER)
+        mockMvc.perform(get(SUPPRESSIONS_PAYMENT_URI, applicationReference, companyNumber)
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
-            .andExpect(content().json(jsonContent));
+            .andExpect(content().json(this.json.write(paymentDetails).getJson()));
     }
 
     @Test
@@ -64,54 +70,8 @@ class PaymentControllerTest_GET {
 
         given(suppressionService.getSuppression(anyString())).willReturn(Optional.empty());
 
-        mockMvc.perform(get(SUPPRESSIONS_PAYMENT_URI, TEST_SUPPRESSION_ID, TEST_COMPANY_NUMBER)
+        mockMvc.perform(get(SUPPRESSIONS_PAYMENT_URI, applicationReference, companyNumber)
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isNotFound());
-    }
-
-    private <T> String asJsonString(T body) {
-        try {
-            return mapper.writeValueAsString(body);
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private Payment getPaymentDetails() {
-        Payment payment = new Payment();
-
-        Links links = new Links();
-        links.setSelf("/suppressions/" + TEST_SUPPRESSION_ID);
-        links.setPayment("/suppressions/" + TEST_SUPPRESSION_ID + "/payment");
-
-        PaymentItem paymentItem = new PaymentItem();
-        paymentItem.setDescription("Suppression application");
-        paymentItem.setDescriptionIdentifier("Suppression application");
-        paymentItem.setDescriptionValues(Collections.emptyMap());
-        paymentItem.setProductType("Suppression application");
-        paymentItem.setAmount("32");
-        paymentItem.setAvailablePaymentMethods(Collections.singletonList("credit-card"));
-        paymentItem.setClassOfPayment(Collections.singletonList("data-maintenance"));
-        paymentItem.setKind("suppression-request#payment-details");
-        paymentItem.setResourceKind("suppression-request#suppression-request");
-
-        payment.setEtag(TEST_ETAG);
-        payment.setCompanyNumber(TEST_COMPANY_NUMBER);
-        payment.setKind("suppression-request#payment");
-        payment.setLinks(links);
-        payment.setItems(Collections.singletonList(paymentItem));
-        return payment;
-    }
-
-    private Suppression getSuppression() {
-
-        DocumentDetails documentDetails = new DocumentDetails();
-        documentDetails.setCompanyNumber("SC123123");
-
-        Suppression suppression = new Suppression();
-        suppression.setApplicationReference(TEST_SUPPRESSION_ID);
-        suppression.setEtag(TEST_ETAG);
-        suppression.setDocumentDetails(documentDetails);
-        return suppression;
     }
 }

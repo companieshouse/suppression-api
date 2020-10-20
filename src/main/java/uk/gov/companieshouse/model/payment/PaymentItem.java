@@ -33,6 +33,22 @@ public class PaymentItem {
     @JsonProperty("resource_kind")
     private String resourceKind;
 
+    public PaymentItem() {}
+
+    public PaymentItem(String description, String descriptionIdentifier, Map<String, String> descriptionValues,
+                       String productType, String amount, List<String> availablePaymentMethods,
+                       List<String> classOfPayment, String kind, String resourceKind) {
+        this.description = description;
+        this.descriptionIdentifier = descriptionIdentifier;
+        this.descriptionValues = descriptionValues;
+        this.productType = productType;
+        this.amount = amount;
+        this.availablePaymentMethods = availablePaymentMethods;
+        this.classOfPayment = classOfPayment;
+        this.kind = kind;
+        this.resourceKind = resourceKind;
+    }
+
     public String getDescription() {
         return description;
     }

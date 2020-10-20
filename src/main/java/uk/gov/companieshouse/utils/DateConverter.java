@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 public class DateConverter {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(DateConverter.class);
+
+    private DateConverter() {}
     
     public static String convertDateToHumanReadableFormat(String date) {
         SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd");
