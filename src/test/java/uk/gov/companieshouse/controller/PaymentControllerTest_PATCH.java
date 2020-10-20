@@ -50,7 +50,7 @@ class PaymentControllerTest_PATCH {
     private JacksonTester<PaymentPatchRequest> json;
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
         JacksonTester.initFields(this, objectMapper);
     }
 

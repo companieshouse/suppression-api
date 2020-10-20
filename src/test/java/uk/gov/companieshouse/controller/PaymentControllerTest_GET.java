@@ -46,7 +46,7 @@ class PaymentControllerTest_GET {
     private JacksonTester<Payment> json;
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
         JacksonTester.initFields(this, objectMapper);
     }
 

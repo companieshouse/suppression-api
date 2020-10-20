@@ -48,7 +48,7 @@ class SuppressionControllerTest_PATCH {
     private JacksonTester<Suppression> json;
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
         JacksonTester.initFields(this, objectMapper);
     }
 
