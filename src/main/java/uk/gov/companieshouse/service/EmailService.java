@@ -73,7 +73,7 @@ public class EmailService {
     private void sendEmail(EmailData emailData, String messageType) throws EmailSendingException {
         try {
             emailProducer.sendEmail(emailData, messageType);
-            LOGGER.info("Submitted email to Kafka");
+            LOGGER.info("Submitted {} email to Kafka", messageType);
         } catch (EmailSendingException err) {
             LOGGER.error("Error sending email", err);
             throw err;
