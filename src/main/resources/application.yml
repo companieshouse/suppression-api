@@ -5,6 +5,7 @@ email:
   producer:
     appId: suppression-api
   chEmail: ${CH_EMAIL}
+  processingDelayEvent: ${PROCESSING_DELAY_EVENT}
 
 # Configure the email-producer library.
 kafka:

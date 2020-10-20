@@ -1,10 +1,11 @@
-environment:
-  cdnHost: cdn.test.local
-  chEmail: appeals.ch.fake@gmail.com
-  
+server:
+  port: 9000
+
 email:
   producer:
     appId: suppression-api
+  chEmail: appeals.ch.fake@gmail.com
+  processingDelayEvent: "coronavirus (COVID-19)"
 
 kafka:
   broker:
@@ -13,9 +14,6 @@ kafka:
     acks: WAIT_FOR_ALL
     retries: 10
     isRoundRobin: false
-    
-server:
-  port: 9000
 
 spring:
   data:

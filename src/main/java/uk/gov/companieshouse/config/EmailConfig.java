@@ -9,6 +9,11 @@ public class EmailConfig {
     @Value("${email.chEmail}")
     private String chEmail;
 
+    @Value("${email.processingDelayEvent:}")
+    private String processingDelayEvent;
+
     public String getChEmail() { return chEmail; }
+
+    public String getProcessingDelayEvent() { return processingDelayEvent; }
 
 }

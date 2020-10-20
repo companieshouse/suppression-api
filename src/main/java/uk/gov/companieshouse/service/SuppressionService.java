@@ -97,6 +97,7 @@ public class SuppressionService {
 
         if (data.getStatus() == PaymentStatus.PAID) {
             emailService.sendToStaff(suppression);
+            emailService.sendToUser(suppression);
         } else {
             LOGGER.info("Email not sent for suppression application ref. {}, due to payment status {} for " +
                     "payment ref. {}",
