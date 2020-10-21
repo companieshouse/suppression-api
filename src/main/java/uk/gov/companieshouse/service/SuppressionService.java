@@ -1,10 +1,9 @@
 package uk.gov.companieshouse.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.companieshouse.GenerateEtagUtil;
+import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.mapper.SuppressionMapper;
 import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.model.PaymentDetails;
@@ -21,18 +20,17 @@ import java.util.Optional;
 @Service
 public class SuppressionService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SuppressionService.class);
-
     private final SuppressionMapper suppressionMapper;
     private final SuppressionRepository suppressionRepository;
     private final EmailService emailService;
+    private final Logger logger;
 
     @Autowired
-    public SuppressionService(SuppressionMapper suppressionMapper, SuppressionRepository suppressionRepository,
-            EmailService emailService) {
+    public SuppressionService(SuppressionMapper suppressionMapper, SuppressionRepository suppressionRepository, EmailService emailService, Logger logger) {
         this.suppressionMapper = suppressionMapper;
         this.suppressionRepository = suppressionRepository;
         this.emailService = emailService;
+        this.logger = logger;
     }
 
     public String saveSuppression(ApplicantDetails applicantDetails) {
@@ -99,9 +97,9 @@ public class SuppressionService {
             emailService.sendToStaff(suppression);
             emailService.sendToUser(suppression);
         } else {
-            LOGGER.info("Email not sent for suppression application ref. {}, due to payment status {} for " +
-                    "payment ref. {}",
-                suppression.getApplicationReference(), data.getStatus(), data.getPaymentReference());
+            logger.info(String.format("Email not sent for suppression application ref. %s, due to payment status %s for " +
+                    "payment ref. %s",
+                suppression.getApplicationReference(), data.getStatus(), data.getPaymentReference()));
         }
     }
     

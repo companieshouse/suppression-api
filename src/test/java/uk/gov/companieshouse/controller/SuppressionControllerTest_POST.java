@@ -9,6 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.service.SuppressionService;
 
@@ -35,6 +36,9 @@ class SuppressionControllerTest_POST {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private Logger logger;
 
     private final ObjectMapper mapper = new ObjectMapper();
 

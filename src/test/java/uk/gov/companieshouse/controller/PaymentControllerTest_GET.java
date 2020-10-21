@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.model.DocumentDetails;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.payment.PaymentItem;
@@ -40,6 +41,9 @@ class PaymentControllerTest_GET {
     
     @MockBean
     private SuppressionService suppressionService;
+
+    @MockBean
+    private Logger logger;
 
     private final ObjectMapper mapper = new ObjectMapper();
 

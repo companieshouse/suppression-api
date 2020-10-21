@@ -19,6 +19,7 @@ import uk.gov.companieshouse.email_producer.EmailProducer;
 import uk.gov.companieshouse.email_producer.EmailSendingException;
 import uk.gov.companieshouse.config.EmailConfig;
 import uk.gov.companieshouse.config.PaymentConfig;
+import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.email.ApplicationConfirmationEmailData;
 import uk.gov.companieshouse.model.email.ApplicationReceivedEmailData;
@@ -41,6 +42,9 @@ public class EmailServiceTest {
 
     @Mock
     private PaymentConfig paymentConfig;
+
+    @Mock
+    private Logger logger;
 
     @Test
     public void sendToStaff__ok() throws EmailSendingException {

@@ -17,6 +17,7 @@ import uk.gov.companieshouse.database.entity.PaymentDetailsEntity;
 import uk.gov.companieshouse.database.entity.SuppressionEntity;
 import uk.gov.companieshouse.email_producer.EmailSendingException;
 import uk.gov.companieshouse.fixtures.SuppressionFixtures;
+import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.mapper.SuppressionMapper;
 import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.model.DocumentDetails;
@@ -57,6 +58,9 @@ class SuppressionServiceTest {
 
     @Mock
     private EmailService emailService;
+
+    @Mock
+    private Logger logger;
 
     private ArgumentCaptor<SuppressionEntity> suppressionArgumentCaptor;
 
