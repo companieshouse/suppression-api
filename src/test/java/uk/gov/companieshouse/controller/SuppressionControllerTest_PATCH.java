@@ -1,11 +1,8 @@
 package uk.gov.companieshouse.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -27,6 +24,7 @@ import static org.mockito.BDDMockito.doNothing;
 import static org.mockito.BDDMockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.companieshouse.JsonConverter.convertObjectToJsonString;
 import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
 
 @WebMvcTest(SuppressionController.class)
@@ -39,18 +37,8 @@ class SuppressionControllerTest_PATCH {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @MockBean
     private SuppressionService suppressionService;
-
-    private JacksonTester<Suppression> json;
-
-    @BeforeEach
-    void setUp(){
-        JacksonTester.initFields(this, objectMapper);
-    }
 
     @Test
     void whenPartiallyUpdateSuppression_applicantDetails_return204() throws Exception {
@@ -65,7 +53,7 @@ class SuppressionControllerTest_PATCH {
         mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(this.json.write(updateSuppressionRequest).getJson()))
+            .content(convertObjectToJsonString(updateSuppressionRequest)))
             .andExpect(status().isNoContent());
     }
 
@@ -82,7 +70,7 @@ class SuppressionControllerTest_PATCH {
         mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(this.json.write(updateSuppressionRequest).getJson()))
+            .content(convertObjectToJsonString(updateSuppressionRequest)))
             .andExpect(status().isNoContent());
     }
 
@@ -99,7 +87,7 @@ class SuppressionControllerTest_PATCH {
         mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(this.json.write(updateSuppressionRequest).getJson()))
+            .content(convertObjectToJsonString(updateSuppressionRequest)))
             .andExpect(status().isNoContent());
     }
 
@@ -116,7 +104,7 @@ class SuppressionControllerTest_PATCH {
         mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(this.json.write(updateSuppressionRequest).getJson()))
+            .content(convertObjectToJsonString(updateSuppressionRequest)))
             .andExpect(status().isNoContent());
     }
 
@@ -133,7 +121,7 @@ class SuppressionControllerTest_PATCH {
         mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(this.json.write(updateSuppressionRequest).getJson()))
+            .content(convertObjectToJsonString(updateSuppressionRequest)))
             .andExpect(status().isNoContent());
     }
 
@@ -151,7 +139,7 @@ class SuppressionControllerTest_PATCH {
 
         mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(this.json.write(SuppressionFixtures.generateSuppression(applicationReference)).getJson()))
+            .content(convertObjectToJsonString(SuppressionFixtures.generateSuppression(applicationReference))))
             .andExpect(status().isBadRequest());
     }
 
@@ -161,7 +149,7 @@ class SuppressionControllerTest_PATCH {
         mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .header(IDENTITY_HEADER, " ")
-            .content(this.json.write(SuppressionFixtures.generateSuppression(applicationReference)).getJson()))
+            .content(convertObjectToJsonString(SuppressionFixtures.generateSuppression(applicationReference))))
             .andExpect(status().isUnauthorized());
     }
 
@@ -171,7 +159,7 @@ class SuppressionControllerTest_PATCH {
         mockMvc.perform(patch(SUPPRESSION_URI, " ")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(this.json.write(SuppressionFixtures.generateSuppression(applicationReference)).getJson()))
+            .content(convertObjectToJsonString(SuppressionFixtures.generateSuppression(applicationReference))))
             .andExpect(status().isNotFound());
     }
 
@@ -181,7 +169,7 @@ class SuppressionControllerTest_PATCH {
         mockMvc.perform(patch(SUPPRESSION_URI, applicationReference + "-" + applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(this.json.write(SuppressionFixtures.generateSuppression(applicationReference)).getJson()))
+            .content(convertObjectToJsonString(SuppressionFixtures.generateSuppression(applicationReference))))
             .andExpect(status().isNotFound());
     }
 
@@ -193,7 +181,7 @@ class SuppressionControllerTest_PATCH {
         mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(this.json.write(SuppressionFixtures.generateSuppression(applicationReference)).getJson()))
+            .content(convertObjectToJsonString(SuppressionFixtures.generateSuppression(applicationReference))))
             .andExpect(status().isNotFound());
     }
 
@@ -213,7 +201,7 @@ class SuppressionControllerTest_PATCH {
         mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(this.json.write(updateSuppressionRequest).getJson()))
+            .content(convertObjectToJsonString(updateSuppressionRequest)))
             .andExpect(status().isUnprocessableEntity());
     }
 
@@ -236,7 +224,7 @@ class SuppressionControllerTest_PATCH {
         mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(this.json.write(updateSuppressionRequest).getJson()))
+            .content(convertObjectToJsonString(updateSuppressionRequest)))
             .andExpect(status().isUnprocessableEntity());
     }
 
@@ -252,7 +240,7 @@ class SuppressionControllerTest_PATCH {
         mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders())
-            .content(this.json.write(suppressionResource).getJson()))
+            .content(convertObjectToJsonString(suppressionResource)))
             .andExpect(status().isInternalServerError());
     }
 

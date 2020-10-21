@@ -1,11 +1,9 @@
 package uk.gov.companieshouse.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -20,6 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static uk.gov.companieshouse.JsonConverter.convertObjectToJsonString;
 import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
 
 @WebMvcTest(SuppressionController.class)
@@ -35,15 +34,8 @@ class SuppressionControllerTest_POST {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    private JacksonTester<ApplicantDetails> json;
-
     @BeforeEach
     void setUp() {
-        JacksonTester.initFields(this, objectMapper);
-
         when(suppressionService.saveSuppression(any(ApplicantDetails.class))).thenReturn(applicationReference);
     }
 
@@ -53,7 +45,7 @@ class SuppressionControllerTest_POST {
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders(TEST_USER_ID))
-            .content(this.json.write(SuppressionFixtures.generateApplicantDetails()).getJson()))
+            .content(convertObjectToJsonString(SuppressionFixtures.generateApplicantDetails())))
             .andExpect(status().isCreated())
             .andExpect(content().string(applicationReference))
             .andExpect(header().string(HttpHeaders.LOCATION, "http://localhost/suppressions/" + applicationReference));
@@ -75,7 +67,7 @@ class SuppressionControllerTest_POST {
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders(" "))
-            .content(this.json.write(SuppressionFixtures.generateApplicantDetails()).getJson()))
+            .content(convertObjectToJsonString(SuppressionFixtures.generateApplicantDetails())))
             .andExpect(status().isUnauthorized());
     }
 
@@ -88,7 +80,7 @@ class SuppressionControllerTest_POST {
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders(TEST_USER_ID))
-            .content(this.json.write(invalid).getJson()))
+            .content(convertObjectToJsonString(invalid)))
             .andExpect(status().isUnprocessableEntity())
             .andExpect(
                 content().json("{\"dateOfBirth\":\"date of birth must not be blank\"}")
@@ -103,7 +95,7 @@ class SuppressionControllerTest_POST {
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders(TEST_USER_ID))
-            .content(this.json.write(SuppressionFixtures.generateApplicantDetails()).getJson()))
+            .content(convertObjectToJsonString(SuppressionFixtures.generateApplicantDetails())))
             .andExpect(status().isInternalServerError());
     }
 

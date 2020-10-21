@@ -1,11 +1,8 @@
 package uk.gov.companieshouse.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,6 +24,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static uk.gov.companieshouse.JsonConverter.convertObjectToJsonString;
 import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
 import static uk.gov.companieshouse.fixtures.PaymentFixtures.generatePaymentPatchRequest;
 
@@ -38,21 +36,11 @@ class PaymentControllerTest_PATCH {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @MockBean
     private PaymentService paymentService;
 
     @MockBean
     private SuppressionService suppressionService;
-
-    private JacksonTester<PaymentPatchRequest> json;
-
-    @BeforeEach
-    void setUp(){
-        JacksonTester.initFields(this, objectMapper);
-    }
 
     @Test
     void whenSuppressionExistsWithPaymentStatusPaid_return400() throws Exception {
@@ -67,7 +55,7 @@ class PaymentControllerTest_PATCH {
 
         mockMvc.perform(patch(SUPPRESSIONS_PAYMENT_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(this.json.write(paymentDetails).getJson()))
+            .content(convertObjectToJsonString(paymentDetails)))
             .andExpect(status().isBadRequest());
     }
 
@@ -81,7 +69,7 @@ class PaymentControllerTest_PATCH {
 
         mockMvc.perform(patch(SUPPRESSIONS_PAYMENT_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(this.json.write(paymentDetails).getJson()))
+            .content(convertObjectToJsonString(paymentDetails)))
             .andExpect(status().isNotFound());
     }
 
@@ -101,7 +89,7 @@ class PaymentControllerTest_PATCH {
 
         mockMvc.perform(patch(SUPPRESSIONS_PAYMENT_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(this.json.write(paymentDetails).getJson()))
+            .content(convertObjectToJsonString(paymentDetails)))
             .andExpect(status().isInternalServerError());
     }
 
@@ -118,7 +106,7 @@ class PaymentControllerTest_PATCH {
 
         mockMvc.perform(patch(SUPPRESSIONS_PAYMENT_URI, applicationReference)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(this.json.write(paymentDetails).getJson()))
+            .content(convertObjectToJsonString(paymentDetails)))
             .andExpect(status().isNoContent());
     }
 }

@@ -1,11 +1,8 @@
 package uk.gov.companieshouse.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,6 +18,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.companieshouse.JsonConverter.convertObjectToJsonString;
 import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
 
 @WebMvcTest(SuppressionController.class)
@@ -33,18 +31,8 @@ class SuppressionControllerTest_GET {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @MockBean
     private SuppressionService suppressionService;
-
-    private JacksonTester<Suppression> json;
-
-    @BeforeEach
-    void setUp(){
-        JacksonTester.initFields(this, objectMapper);
-    }
 
     @Test
     void whenSuppressionResourceExistsForSuppressionID_return200() throws Exception {
@@ -58,7 +46,7 @@ class SuppressionControllerTest_GET {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders()))
             .andExpect(status().isOk())
-            .andExpect(content().json(this.json.write(suppressionResource).getJson()));
+            .andExpect(content().json(convertObjectToJsonString(suppressionResource)));
     }
 
     @Test

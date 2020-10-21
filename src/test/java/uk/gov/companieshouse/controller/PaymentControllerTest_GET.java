@@ -1,11 +1,8 @@
 package uk.gov.companieshouse.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +19,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.companieshouse.JsonConverter.convertObjectToJsonString;
 import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
 import static uk.gov.companieshouse.TestData.Suppression.etag;
 import static uk.gov.companieshouse.TestData.Suppression.DocumentDetails.companyNumber;
@@ -34,21 +32,11 @@ class PaymentControllerTest_GET {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @MockBean
     private PaymentService paymentService;
 
     @MockBean
     private SuppressionService suppressionService;
-
-    private JacksonTester<Payment> json;
-
-    @BeforeEach
-    void setUp(){
-        JacksonTester.initFields(this, objectMapper);
-    }
 
     @Test
     void whenPaymentDetailsExistForSuppression_return200() throws Exception {
@@ -62,7 +50,7 @@ class PaymentControllerTest_GET {
         mockMvc.perform(get(SUPPRESSIONS_PAYMENT_URI, applicationReference, companyNumber)
             .contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
-            .andExpect(content().json(this.json.write(paymentDetails).getJson()));
+            .andExpect(content().json(convertObjectToJsonString(paymentDetails)));
     }
 
     @Test
