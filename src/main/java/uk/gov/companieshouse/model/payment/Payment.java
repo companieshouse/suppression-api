@@ -19,7 +19,9 @@ public class Payment {
 
     private List<PaymentItem> items;
 
-    public Payment() {}
+    public Payment() {
+        this(null, null, null, null, null);
+    }
 
     public Payment(String etag, String kind, Links links, String companyNumber, List<PaymentItem> items) {
         this.etag = etag;

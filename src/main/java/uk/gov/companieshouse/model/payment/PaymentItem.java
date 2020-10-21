@@ -33,7 +33,9 @@ public class PaymentItem {
     @JsonProperty("resource_kind")
     private String resourceKind;
 
-    public PaymentItem() {}
+    public PaymentItem() {
+        this(null, null, null, null, null, null, null, null, null);
+    }
 
     public PaymentItem(String description, String descriptionIdentifier, Map<String, String> descriptionValues,
                        String productType, String amount, List<String> availablePaymentMethods,
