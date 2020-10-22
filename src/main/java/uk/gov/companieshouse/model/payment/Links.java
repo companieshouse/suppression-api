@@ -12,6 +12,15 @@ public class Links {
     @JsonProperty("suppression_request")
     private String payment;
 
+    public Links() {
+        this(null, null);
+    }
+
+    public Links(String self, String payment) {
+        this.self = self;
+        this.payment = payment;
+    }
+
     public String getSelf() {
         return self;
     }

@@ -8,6 +8,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,9 +26,8 @@ import uk.gov.companieshouse.model.email.ApplicationReceivedEmailData;
 import uk.gov.companieshouse.fixtures.SuppressionFixtures;
 
 @ExtendWith(MockitoExtension.class)
-public class EmailServiceTest {
+class EmailServiceTest {
 
-    private static final String TEST_SUPPRESSION_ID = "reference#01";
     private static final String TEST_CH_EMAIL = "test@ch.gov.uk";
     
     @InjectMocks
@@ -43,24 +43,24 @@ public class EmailServiceTest {
     private PaymentConfig paymentConfig;
 
     @Test
-    public void sendToStaff__ok() throws EmailSendingException {
+    void sendToStaff__ok() throws EmailSendingException {
         when(emailConfig.getChEmail()).thenReturn(TEST_CH_EMAIL);
         final ArgumentCaptor<ApplicationReceivedEmailData> dataCaptor = ArgumentCaptor.forClass(ApplicationReceivedEmailData.class);
 
-        emailService.sendToStaff(SuppressionFixtures.generateSuppression(TEST_SUPPRESSION_ID));
+        emailService.sendToStaff(SuppressionFixtures.generateSuppression(applicationReference));
 
         verify(emailKafkaProducer, times(1)).sendEmail(dataCaptor.capture(), eq("suppression_application_received"));
         ApplicationReceivedEmailData sentEmailData = dataCaptor.getValue();
         assertEquals(TEST_CH_EMAIL, sentEmailData.getTo());
-        assertEquals("Application received: reference#01", sentEmailData.getSubject());
-        assertEquals("reference#01", sentEmailData.getSuppression().getApplicationReference());
+        assertEquals("Application received: " + applicationReference, sentEmailData.getSubject());
+        assertEquals(applicationReference, sentEmailData.getSuppression().getApplicationReference());
         assertEquals("1 May 1980", sentEmailData.getApplicantDateOfBirth());
         assertEquals("1 January 2000", sentEmailData.getDocumentDate());
     }
 
     @Test
-    public void sendToStaff__err() throws EmailSendingException {
-        Suppression testSuppression = SuppressionFixtures.generateSuppression(TEST_SUPPRESSION_ID);
+    void sendToStaff__err() throws EmailSendingException {
+        Suppression testSuppression = SuppressionFixtures.generateSuppression(applicationReference);
         doThrow(EmailSendingException.class)
             .when(emailKafkaProducer)
             .sendEmail(any(), any());
@@ -72,21 +72,21 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void sendToUser__ok() throws EmailSendingException {
+    void sendToUser__ok() throws EmailSendingException {
         when(emailConfig.getProcessingDelayEvent()).thenReturn("");
         when(paymentConfig.getAmount()).thenReturn("32");
 
         final ArgumentCaptor<ApplicationConfirmationEmailData> dataCaptor = ArgumentCaptor.forClass(ApplicationConfirmationEmailData.class);
 
-        emailService.sendToUser(SuppressionFixtures.generateSuppression(TEST_SUPPRESSION_ID));
+        emailService.sendToUser(SuppressionFixtures.generateSuppression(applicationReference));
 
         verify(emailKafkaProducer, times(1)).sendEmail(dataCaptor.capture(), eq("suppression_application_confirmation"));
         ApplicationConfirmationEmailData sentEmailData = dataCaptor.getValue();
 
-        String expectedSubject = "Application to remove your home address from the Companies House register submitted: reference#01";
+        String expectedSubject = "Application to remove your home address from the Companies House register submitted: " + applicationReference;
         assertEquals("user@example.com", sentEmailData.getTo());
         assertEquals(expectedSubject, sentEmailData.getSubject());
-        assertEquals("reference#01", sentEmailData.getSuppressionReference());
+        assertEquals(applicationReference, sentEmailData.getSuppressionReference());
         assertEquals("COMPANYNUMBER#1", sentEmailData.getDocumentDetails().getCompanyNumber());
         assertEquals("1 January 2000", sentEmailData.getDocumentDate());
         assertEquals("32", sentEmailData.getPaymentReceived());
@@ -94,8 +94,8 @@ public class EmailServiceTest {
     }
 
     @Test
-    public void sendToUser__err() throws EmailSendingException {
-        Suppression testSuppression = SuppressionFixtures.generateSuppression(TEST_SUPPRESSION_ID);
+    void sendToUser__err() throws EmailSendingException {
+        Suppression testSuppression = SuppressionFixtures.generateSuppression(applicationReference);
         doThrow(EmailSendingException.class)
             .when(emailKafkaProducer)
             .sendEmail(any(), any());

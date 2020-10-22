@@ -1,6 +1,5 @@
 package uk.gov.companieshouse.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +8,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import uk.gov.companieshouse.fixtures.SuppressionFixtures;
 import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.service.SuppressionService;
-
-import java.io.File;
-import java.util.function.Function;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -21,6 +18,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static uk.gov.companieshouse.JsonConverter.convertObjectToJsonString;
+import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
 
 @WebMvcTest(SuppressionController.class)
 class SuppressionControllerTest_POST {
@@ -28,7 +27,6 @@ class SuppressionControllerTest_POST {
     private static final String SUPPRESSION_URI = "/suppressions";
     private static final String IDENTITY_HEADER = "ERIC-identity";
     private static final String TEST_USER_ID = "1234";
-    private static final String TEST_RESOURCE_ID = "11111-11111";
 
     @MockBean
     private SuppressionService suppressionService;
@@ -36,16 +34,9 @@ class SuppressionControllerTest_POST {
     @Autowired
     private MockMvc mockMvc;
 
-    private final ObjectMapper mapper = new ObjectMapper();
-
-    private String validSuppression;
-
     @BeforeEach
     void setUp() {
-
-        when(suppressionService.saveSuppression(any(ApplicantDetails.class))).thenReturn(TEST_RESOURCE_ID);
-
-        validSuppression = asJsonString("src/test/resources/data/validApplicantDetails_complete.json");
+        when(suppressionService.saveSuppression(any(ApplicantDetails.class))).thenReturn(applicationReference);
     }
 
     @Test
@@ -54,10 +45,10 @@ class SuppressionControllerTest_POST {
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders(TEST_USER_ID))
-            .content(validSuppression))
+            .content(convertObjectToJsonString(SuppressionFixtures.generateApplicantDetails())))
             .andExpect(status().isCreated())
-            .andExpect(content().string(TEST_RESOURCE_ID))
-            .andExpect(header().string(HttpHeaders.LOCATION, "http://localhost/suppressions/" + TEST_RESOURCE_ID));
+            .andExpect(content().string(applicationReference))
+            .andExpect(header().string(HttpHeaders.LOCATION, "http://localhost/suppressions/" + applicationReference));
     }
 
     @Test
@@ -76,19 +67,20 @@ class SuppressionControllerTest_POST {
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders(" "))
-            .content(validSuppression))
+            .content(convertObjectToJsonString(SuppressionFixtures.generateApplicantDetails())))
             .andExpect(status().isUnauthorized());
     }
 
     @Test
     void whenInvalidInput_return422() throws Exception {
 
-        final String invalidSuppression = asJsonString("src/test/resources/data/invalidApplicantDetails_missingFields.json");
+        ApplicantDetails invalid = SuppressionFixtures.generateApplicantDetails();
+        invalid.setDateOfBirth(null);
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders(TEST_USER_ID))
-            .content(invalidSuppression))
+            .content(convertObjectToJsonString(invalid)))
             .andExpect(status().isUnprocessableEntity())
             .andExpect(
                 content().json("{\"dateOfBirth\":\"date of birth must not be blank\"}")
@@ -103,22 +95,8 @@ class SuppressionControllerTest_POST {
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .headers(createHttpHeaders(TEST_USER_ID))
-            .content(validSuppression))
+            .content(convertObjectToJsonString(SuppressionFixtures.generateApplicantDetails())))
             .andExpect(status().isInternalServerError());
-    }
-
-
-    private String asJsonString(final String pathname, final Function<ApplicantDetails, ApplicantDetails> applicantDetailsModifier) {
-        try {
-            final ApplicantDetails applicantDetails = mapper.readValue(new File(pathname), ApplicantDetails.class);
-            return new ObjectMapper().writeValueAsString(applicantDetailsModifier.apply(applicantDetails));
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String asJsonString(final String pathname) {
-        return asJsonString(pathname, Function.identity());
     }
 
     private HttpHeaders createHttpHeaders(String testUserId) {
