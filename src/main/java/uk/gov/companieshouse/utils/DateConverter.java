@@ -7,7 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static uk.gov.companieshouse.SuppressionApplication.APPLICATION_NAMESPACE;
+import static uk.gov.companieshouse.model.Constants.APPLICATION_NAMESPACE;
 
 public class DateConverter {
 
