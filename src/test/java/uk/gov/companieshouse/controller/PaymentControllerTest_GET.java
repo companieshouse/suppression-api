@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.companieshouse.fixtures.PaymentFixtures;
 import uk.gov.companieshouse.fixtures.SuppressionFixtures;
+import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.model.payment.Payment;
 import uk.gov.companieshouse.service.PaymentService;
 import uk.gov.companieshouse.service.SuppressionService;
@@ -37,6 +38,9 @@ class PaymentControllerTest_GET {
 
     @MockBean
     private SuppressionService suppressionService;
+
+    @MockBean
+    private Logger logger;
 
     @Test
     void whenPaymentDetailsExistForSuppression_return200() throws Exception {

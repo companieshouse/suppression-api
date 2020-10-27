@@ -7,8 +7,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.SuppressionPatchRequest;
@@ -40,12 +39,12 @@ import java.util.Optional;
 @RequestMapping("/suppressions")
 public class SuppressionController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SuppressionController.class);
-
     private final SuppressionService suppressionService;
+    private final Logger logger;
 
-    public SuppressionController(SuppressionService suppressionService) {
+    public SuppressionController(SuppressionService suppressionService, Logger logger) {
         this.suppressionService = suppressionService;
+        this.logger = logger;
     }
 
     @Operation(summary = "Create a new suppression resource", tags = "Suppression")
@@ -80,7 +79,7 @@ public class SuppressionController {
 
         } catch (Exception ex) {
 
-            LOGGER.error("Unable to create suppression", ex);
+            logger.error("Unable to create suppression", ex);
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -114,8 +113,8 @@ public class SuppressionController {
         try {
             suppressionService.patchSuppressionResource(suppression.get(), suppressionPatchRequest);
         } catch (Exception ex) {
-            LOGGER.error("Unable to patch suppression resource for application reference {}",
-                suppression.get().getApplicationReference(), ex);
+            logger.error(String.format("Unable to patch suppression resource for application reference %s",
+                suppression.get().getApplicationReference()), ex);
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

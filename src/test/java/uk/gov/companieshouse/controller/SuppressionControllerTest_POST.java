@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.companieshouse.fixtures.SuppressionFixtures;
+import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.service.SuppressionService;
 
@@ -30,6 +31,9 @@ class SuppressionControllerTest_POST {
 
     @MockBean
     private SuppressionService suppressionService;
+
+    @MockBean
+    private Logger logger;
 
     @Autowired
     private MockMvc mockMvc;

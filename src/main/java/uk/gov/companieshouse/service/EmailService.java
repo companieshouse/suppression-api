@@ -1,11 +1,11 @@
 package uk.gov.companieshouse.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import uk.gov.companieshouse.config.EmailConfig;
 import uk.gov.companieshouse.config.PaymentConfig;
+import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.model.email.ApplicationReceivedEmailData;
 import uk.gov.companieshouse.model.email.ApplicationConfirmationEmailData;
 import uk.gov.companieshouse.email_producer.model.EmailData;
@@ -24,15 +24,17 @@ import static uk.gov.companieshouse.utils.DateConverter.convertDateToHumanReadab
 @Service
 public class EmailService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
     private final EmailConfig emailConfig;
     private final EmailProducer emailProducer;
     private final PaymentConfig paymentConfig;
+    private final Logger logger;
 
-    public EmailService(EmailConfig emailConfig, EmailProducer emailProducer, PaymentConfig paymentConfig) {
+    @Autowired
+    public EmailService(EmailConfig emailConfig, EmailProducer emailProducer, PaymentConfig paymentConfig, Logger logger) {
         this.emailConfig = emailConfig;
         this.emailProducer = emailProducer;
         this.paymentConfig = paymentConfig;
+        this.logger = logger;
     }
 
     public void sendToStaff(Suppression suppression) {
@@ -47,7 +49,7 @@ public class EmailService {
         emailData.setApplicantDateOfBirth(applicantDateOfBirth);
         emailData.setDocumentDate(documentDate);
 
-        LOGGER.debug("Sending Submission email for #{} to staff", emailData.getSuppression().getApplicationReference());
+        logger.debug(String.format("Sending Submission email for #%s to staff", emailData.getSuppression().getApplicationReference()));
         this.sendEmail(emailData, APPLICATION_RECEIVED_MESSAGE_TYPE);
     }
 
@@ -66,16 +68,16 @@ public class EmailService {
         emailData.setPaymentReceived(paymentConfig.getAmount());
         emailData.setProcessingDelayEvent(emailConfig.getProcessingDelayEvent());
 
-        LOGGER.debug("Sending Confirmation email for #{} to user", applicationReference);
+        logger.debug(String.format("Sending Confirmation email for #%s to user", applicationReference));
         this.sendEmail(emailData, APPLICATION_CONFIRMATION_MESSAGE_TYPE);
     }
 
     private void sendEmail(EmailData emailData, String messageType) throws EmailSendingException {
         try {
             emailProducer.sendEmail(emailData, messageType);
-            LOGGER.info("Submitted {} email to Kafka", messageType);
+            logger.info(String.format("Submitted %s email to Kafka", messageType));
         } catch (EmailSendingException err) {
-            LOGGER.error("Error sending email", err);
+            logger.error("Error sending email", err);
             throw err;
         } 
     }
