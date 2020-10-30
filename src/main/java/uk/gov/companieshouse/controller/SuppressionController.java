@@ -59,6 +59,7 @@ public class SuppressionController {
     })
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> submitSuppression(@RequestHeader("ERIC-identity") String userId,
+                                                    @RequestHeader("ERIC-Authorised-User") String authorisedUser,
                                                     @Valid @RequestBody final ApplicantDetails applicantDetails) {
 
         if (StringUtils.isBlank(userId)) {
@@ -66,9 +67,8 @@ public class SuppressionController {
         }
 
         try {
-
-            final String id = suppressionService.saveSuppression(applicantDetails);
-
+            final String createdBy = authorisedUser.split(";")[0];
+            final String id = suppressionService.saveSuppression(applicantDetails, createdBy);
             final URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{applicationReference}")

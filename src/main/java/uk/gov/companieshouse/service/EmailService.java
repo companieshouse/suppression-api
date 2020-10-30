@@ -60,7 +60,7 @@ public class EmailService {
         String documentDate = convertDateToHumanReadableFormat(documentDetails.getDate());
 
         final ApplicationConfirmationEmailData emailData = new ApplicationConfirmationEmailData();
-        emailData.setTo(suppression.getApplicantDetails().getEmailAddress());
+        emailData.setTo(suppression.getCreatedBy());
         emailData.setSubject(subject);
         emailData.setSuppressionReference(applicationReference);
         emailData.setDocumentDetails(documentDetails);

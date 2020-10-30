@@ -13,6 +13,8 @@ public class Suppression {
     @JsonIgnore
     private LocalDateTime createdAt;
 
+    private String createdBy;
+
     @Pattern(regexp = "([A-Z0-9]{5}-[A-Z0-9]{5})|^$", message = "applicationReference format is invalid")
     private String applicationReference;
 
@@ -25,10 +27,11 @@ public class Suppression {
     private PaymentDetails paymentDetails;
 
     public Suppression() {
-        this(null, null, null, null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null, null, null, null);
     }
 
     public Suppression(LocalDateTime createdAt,
+                       String createdBy,
                        String applicationReference,
                        ApplicantDetails applicantDetails,
                        Address addressToRemove,
@@ -38,6 +41,7 @@ public class Suppression {
                        String etag,
                        PaymentDetails paymentDetails) {
         this.createdAt = createdAt;
+        this.createdBy = createdBy;
         this.applicationReference = applicationReference;
         this.applicantDetails = applicantDetails;
         this.addressToRemove = addressToRemove;
@@ -52,65 +56,41 @@ public class Suppression {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    public String getCreatedBy() { return createdBy; }
 
-    public String getApplicationReference() {
-        return applicationReference;
-    }
+    public String getApplicationReference() { return applicationReference; }
 
-    public void setApplicationReference(String applicationReference) {
-        this.applicationReference = applicationReference;
-    }
+    public ApplicantDetails getApplicantDetails() { return applicantDetails; }
 
-    public ApplicantDetails getApplicantDetails() {
-        return applicantDetails;
-    }
+    public Address getAddressToRemove() { return addressToRemove; }
 
-    public void setApplicantDetails(ApplicantDetails applicantDetails) {
-        this.applicantDetails = applicantDetails;
-    }
+    public Address getServiceAddress() { return serviceAddress; }
 
-    public Address getAddressToRemove() {
-        return addressToRemove;
-    }
-
-    public void setAddressToRemove(Address addressToRemove) {
-        this.addressToRemove = addressToRemove;
-    }
-
-    public Address getServiceAddress() {
-        return serviceAddress;
-    }
-
-    public void setServiceAddress(Address serviceAddress) {
-        this.serviceAddress = serviceAddress;
-    }
-
-    public DocumentDetails getDocumentDetails() {
-        return documentDetails;
-    }
-
-    public void setDocumentDetails(DocumentDetails documentDetails) {
-        this.documentDetails = documentDetails;
-    }
+    public DocumentDetails getDocumentDetails() { return documentDetails; }
 
     public Address getContactAddress() { return contactAddress; }
 
+    public String getEtag() { return etag; }
+
+    public PaymentDetails getPaymentDetails() { return paymentDetails; }
+
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
+
+    public void setApplicationReference(String applicationReference) { this.applicationReference = applicationReference; }
+
+    public void setApplicantDetails(ApplicantDetails applicantDetails) { this.applicantDetails = applicantDetails; }
+
+    public void setAddressToRemove(Address addressToRemove) { this.addressToRemove = addressToRemove; }
+
+    public void setServiceAddress(Address serviceAddress) { this.serviceAddress = serviceAddress; }
+
+    public void setDocumentDetails(DocumentDetails documentDetails) { this.documentDetails = documentDetails; }
+
     public void setContactAddress(Address contactAddress) { this.contactAddress = contactAddress; }
 
-    public String getEtag() {
-        return etag;
-    }
-
-    public void setEtag(String etag) {
-        this.etag = etag;
-    }
-
-    public PaymentDetails getPaymentDetails() {
-        return paymentDetails;
-    }
+    public void setEtag(String etag) { this.etag = etag; }
 
     public void setPaymentDetails(PaymentDetails paymentDetails) {
         this.paymentDetails = paymentDetails;
@@ -126,6 +106,7 @@ public class Suppression {
 
         return new EqualsBuilder()
             .append(createdAt, that.createdAt)
+            .append(createdBy, that.createdBy)
             .append(applicationReference, that.applicationReference)
             .append(applicantDetails, that.applicantDetails)
             .append(addressToRemove, that.addressToRemove)
@@ -141,6 +122,7 @@ public class Suppression {
     public int hashCode() {
         return new HashCodeBuilder()
             .append(createdAt)
+            .append(createdBy)
             .append(applicationReference)
             .append(applicantDetails)
             .append(addressToRemove)
@@ -156,6 +138,7 @@ public class Suppression {
     public String toString() {
         return new ToStringBuilder(this)
             .append("createdAt", createdAt)
+            .append("createdBy", createdBy)
             .append("applicationReference", applicationReference)
             .append("applicantDetails", applicantDetails)
             .append("addressToRemove", addressToRemove)

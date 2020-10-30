@@ -21,12 +21,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static uk.gov.companieshouse.JsonConverter.convertObjectToJsonString;
 import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
+import static uk.gov.companieshouse.TestData.Suppression.createdBy;
 
 @WebMvcTest(SuppressionController.class)
 class SuppressionControllerTest_POST {
 
     private static final String SUPPRESSION_URI = "/suppressions";
     private static final String IDENTITY_HEADER = "ERIC-identity";
+    private static final String AUTHORISED_USER_HEADER = "ERIC-Authorised-User";
     private static final String TEST_USER_ID = "1234";
 
     @MockBean
@@ -40,7 +42,8 @@ class SuppressionControllerTest_POST {
 
     @BeforeEach
     void setUp() {
-        when(suppressionService.saveSuppression(any(ApplicantDetails.class))).thenReturn(applicationReference);
+        when(suppressionService.saveSuppression(any(ApplicantDetails.class), any(String.class)))
+            .thenReturn(applicationReference);
     }
 
     @Test
@@ -94,7 +97,8 @@ class SuppressionControllerTest_POST {
     @Test
     void whenExceptionFromService_return500() throws Exception {
 
-        when(suppressionService.saveSuppression(any(ApplicantDetails.class))).thenThrow(new RuntimeException());
+        when(suppressionService.saveSuppression(any(ApplicantDetails.class), any(String.class)))
+            .thenThrow(new RuntimeException());
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -106,6 +110,7 @@ class SuppressionControllerTest_POST {
     private HttpHeaders createHttpHeaders(String testUserId) {
         final HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(IDENTITY_HEADER, testUserId);
+        httpHeaders.add(AUTHORISED_USER_HEADER, createdBy);
         return httpHeaders;
     }
 }
