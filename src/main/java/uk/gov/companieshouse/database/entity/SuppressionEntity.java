@@ -24,6 +24,7 @@ public class SuppressionEntity implements Serializable {
     private final DocumentDetailsEntity documentDetails;
     private final AddressEntity contactAddress;
     private final String etag;
+    private final PaymentDetailsEntity paymentDetails;
 
     public SuppressionEntity(String id,
                              LocalDateTime createdAt,
@@ -32,7 +33,8 @@ public class SuppressionEntity implements Serializable {
                              AddressEntity serviceAddress,
                              DocumentDetailsEntity documentDetails,
                              AddressEntity contactAddress,
-                             String etag) {
+                             String etag,
+                             PaymentDetailsEntity paymentDetails) {
         this.id = id;
         this.createdAt = createdAt;
         this.applicantDetails = applicantDetails;
@@ -41,6 +43,7 @@ public class SuppressionEntity implements Serializable {
         this.documentDetails = documentDetails;
         this.contactAddress = contactAddress;
         this.etag = etag;
+        this.paymentDetails = paymentDetails;
     }
 
     public String getId() { return this.id; }
@@ -52,7 +55,7 @@ public class SuppressionEntity implements Serializable {
     public AddressEntity getAddressToRemove() { return this.addressToRemove; }
 
     public AddressEntity getServiceAddress() {
-        return serviceAddress;
+        return this.serviceAddress;
     }
 
     public DocumentDetailsEntity getDocumentDetails() { return this.documentDetails; }
@@ -61,6 +64,10 @@ public class SuppressionEntity implements Serializable {
 
     public String getEtag() {
         return this.etag;
+    }
+
+    public PaymentDetailsEntity getPaymentDetails() {
+        return this.paymentDetails;
     }
 
     @Override
@@ -80,6 +87,7 @@ public class SuppressionEntity implements Serializable {
             .append(documentDetails, that.documentDetails)
             .append(contactAddress, that.contactAddress)
             .append(etag, that.etag)
+            .append(paymentDetails, that.paymentDetails)
             .isEquals();
     }
 
@@ -94,6 +102,7 @@ public class SuppressionEntity implements Serializable {
             .append(documentDetails)
             .append(contactAddress)
             .append(etag)
+            .append(paymentDetails)
             .toHashCode();
     }
 
@@ -108,6 +117,7 @@ public class SuppressionEntity implements Serializable {
             .append("documentDetails", documentDetails)
             .append("contactAddress", contactAddress)
             .append("etag", etag)
+            .append("paymentDetails", paymentDetails)
             .toString();
     }
 }

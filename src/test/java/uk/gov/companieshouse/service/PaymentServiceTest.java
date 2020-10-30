@@ -6,28 +6,32 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.TestPropertySource;
+import uk.gov.companieshouse.TestData;
 import uk.gov.companieshouse.config.PaymentConfig;
 import uk.gov.companieshouse.model.payment.PaymentItem;
 import uk.gov.companieshouse.model.payment.Links;
 import uk.gov.companieshouse.model.payment.Payment;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
+import static uk.gov.companieshouse.TestData.Payment.Links.self;
+import static uk.gov.companieshouse.TestData.Payment.PaymentItem.amount;
+import static uk.gov.companieshouse.TestData.Payment.PaymentItem.availablePaymentMethods;
+import static uk.gov.companieshouse.TestData.Payment.PaymentItem.classOfPayment;
+import static uk.gov.companieshouse.TestData.Payment.PaymentItem.description;
+import static uk.gov.companieshouse.TestData.Payment.PaymentItem.descriptionIdentifier;
+import static uk.gov.companieshouse.TestData.Payment.PaymentItem.descriptionValues;
+import static uk.gov.companieshouse.TestData.Payment.PaymentItem.kind;
+import static uk.gov.companieshouse.TestData.Payment.PaymentItem.productType;
+import static uk.gov.companieshouse.TestData.Payment.PaymentItem.resourceKind;
+import static uk.gov.companieshouse.TestData.Suppression.DocumentDetails.companyNumber;
+import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
+import static uk.gov.companieshouse.TestData.Suppression.etag;
 
 @TestPropertySource
 @ExtendWith(MockitoExtension.class)
-public class PaymentServiceTest {
-
-    private static final String TEST_SUPPRESSION_ID = "123";
-    private static final String PAYMENT_KIND = "suppression-request#payment";
-    private static final String PAYMENT_ITEM_KIND = "suppression-request#payment-details";
-    private static final String PAYMENT_RESOURCE_KIND = "suppression-request#suppression-request";
-    private static final String PAYMENT_DESCRIPTION = "Suppression application";
-    private static final String PAYMENT_AMOUNT = "32";
-    private static final String AVAILABLE_PAYMENT_METHOD = "credit-card";
-    private static final String CLASS_OF_PAYMENT = "data-maintenance";
+class PaymentServiceTest {
 
     @InjectMocks
     private PaymentService paymentService;
@@ -36,29 +40,29 @@ public class PaymentServiceTest {
     private PaymentConfig paymentConfig;
 
     @Test
-    public void testGetPaymentDetails_returnsPaymentDetails() {
+    void testGetPaymentDetails_returnsPaymentDetails() {
 
-        when(paymentConfig.getAmount()).thenReturn(PAYMENT_AMOUNT);
+        when(paymentConfig.getAmount()).thenReturn(amount);
         
-        Payment payment = paymentService.getPaymentDetails(TEST_SUPPRESSION_ID, "1");
+        Payment payment = paymentService.getPaymentDetails(applicationReference, etag, companyNumber);
 
         assertNotNull(payment.getEtag());
-        assertEquals(PAYMENT_KIND, payment.getKind());
+        assertEquals(TestData.Payment.kind, payment.getKind());
 
         PaymentItem paymentItem = payment.getItems().get(0);
         
-        assertEquals(PAYMENT_AMOUNT, paymentItem.getAmount());
-        assertEquals(AVAILABLE_PAYMENT_METHOD, paymentItem.getAvailablePaymentMethods().get(0));
-        assertEquals(CLASS_OF_PAYMENT, paymentItem.getClassOfPayment().get(0));
-        assertEquals(PAYMENT_DESCRIPTION, paymentItem.getDescription());
-        assertEquals(PAYMENT_DESCRIPTION, paymentItem.getDescriptionIdentifier());
-        assertEquals(Collections.emptyMap(), paymentItem.getDescriptionValues());
-        assertEquals(PAYMENT_ITEM_KIND, paymentItem.getKind());
-        assertEquals(PAYMENT_DESCRIPTION, paymentItem.getProductType());
-        assertEquals(PAYMENT_RESOURCE_KIND, paymentItem.getResourceKind());
+        assertEquals(amount, paymentItem.getAmount());
+        assertEquals(availablePaymentMethods, paymentItem.getAvailablePaymentMethods());
+        assertEquals(classOfPayment, paymentItem.getClassOfPayment());
+        assertEquals(description, paymentItem.getDescription());
+        assertEquals(descriptionIdentifier, paymentItem.getDescriptionIdentifier());
+        assertEquals(descriptionValues, paymentItem.getDescriptionValues());
+        assertEquals(kind, paymentItem.getKind());
+        assertEquals(productType, paymentItem.getProductType());
+        assertEquals(resourceKind, paymentItem.getResourceKind());
 
         Links links = payment.getLinks();
-        assertEquals("/suppressions/" + TEST_SUPPRESSION_ID + "/payment", links.getPayment());
-        assertEquals("/suppressions/" + TEST_SUPPRESSION_ID, links.getSelf());
+        assertEquals(TestData.Payment.Links.payment, links.getPayment());
+        assertEquals(self, links.getSelf());
     }
 }

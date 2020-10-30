@@ -5,12 +5,13 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public class ReferenceGeneratorTest {
+class ReferenceGeneratorTest {
 
     @Test
-    public void testGeneration_returnsRandomNumbers() {
+    void testGeneration_returnsRandomNumbers() {
 
         String sequence1 = ReferenceGenerator.generate();
         String sequence2 = ReferenceGenerator.generate();
@@ -22,7 +23,7 @@ public class ReferenceGeneratorTest {
     }
 
     @Test
-    public void testGeneration_returnsCorrectFormat() {
+    void testGeneration_returnsCorrectFormat() {
 
         String regexExpression = "[A-Z0-9]{5}-[A-Z0-9]{5}";
         ArrayList<Boolean> results = new ArrayList<>();
