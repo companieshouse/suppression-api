@@ -36,7 +36,9 @@ public class SuppressionMapper implements Mapper<SuppressionEntity, Suppression>
             applicantDetailsMapper.map(value.getApplicantDetails()),
             addressMapper.map(value.getAddressToRemove()),
             addressMapper.map(value.getServiceAddress()),
-            new DocumentDetailsEntity[]{ documentDetailsMapper.map(value.getDocumentDetails()) },
+            new DocumentDetailsEntity[] {
+                documentDetailsMapper.map(value.getDocumentDetails())
+            },
             addressMapper.map(value.getContactAddress()),
             value.getEtag(),
             paymentDetailsMapper.map(value.getPaymentDetails())

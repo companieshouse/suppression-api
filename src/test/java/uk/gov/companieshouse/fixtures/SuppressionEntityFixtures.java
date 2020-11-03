@@ -35,12 +35,14 @@ public class SuppressionEntityFixtures {
                 TestData.Suppression.Address.postcode,
                 TestData.Suppression.Address.country
             ),
-            new DocumentDetailsEntity[]{new DocumentDetailsEntity(
-                TestData.Suppression.DocumentDetails.companyName,
-                TestData.Suppression.DocumentDetails.companyNumber,
-                TestData.Suppression.DocumentDetails.description,
-                TestData.Suppression.DocumentDetails.date
-            )},
+            new DocumentDetailsEntity[]{
+                new DocumentDetailsEntity(
+                    TestData.Suppression.DocumentDetails.companyName,
+                    TestData.Suppression.DocumentDetails.companyNumber,
+                    TestData.Suppression.DocumentDetails.description,
+                    TestData.Suppression.DocumentDetails.date
+                )
+            },
             new AddressEntity(
                 TestData.Suppression.Address.line1,
                 TestData.Suppression.Address.line2,

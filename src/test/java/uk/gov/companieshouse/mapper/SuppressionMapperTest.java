@@ -119,7 +119,9 @@ public class SuppressionMapperTest {
                 new ApplicantDetailsEntity(fullName, previousName, emailAddress, dateOfBirth),
                 new AddressEntity(line1, line2, town, county, postcode, country),
                 new AddressEntity(line1, line2, town, county, postcode, country),
-                new DocumentDetailsEntity[]{new DocumentDetailsEntity(companyName, companyNumber, description, date)},
+                new DocumentDetailsEntity[]{
+                    new DocumentDetailsEntity(companyName, companyNumber, description, date)
+                },
                 new AddressEntity(line1, line2, town, county, postcode, country),
                 etag,
                 new PaymentDetailsEntity(reference, paidAt, status)
