@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.mapper;
 
 import org.springframework.stereotype.Component;
+import uk.gov.companieshouse.database.entity.DocumentDetailsEntity;
 import uk.gov.companieshouse.database.entity.SuppressionEntity;
 import uk.gov.companieshouse.mapper.base.Mapper;
 import uk.gov.companieshouse.model.Suppression;
@@ -35,7 +36,7 @@ public class SuppressionMapper implements Mapper<SuppressionEntity, Suppression>
             applicantDetailsMapper.map(value.getApplicantDetails()),
             addressMapper.map(value.getAddressToRemove()),
             addressMapper.map(value.getServiceAddress()),
-            documentDetailsMapper.map(value.getDocumentDetails()),
+            new DocumentDetailsEntity[]{ documentDetailsMapper.map(value.getDocumentDetails()) },
             addressMapper.map(value.getContactAddress()),
             value.getEtag(),
             paymentDetailsMapper.map(value.getPaymentDetails())
@@ -53,7 +54,7 @@ public class SuppressionMapper implements Mapper<SuppressionEntity, Suppression>
             applicantDetailsMapper.map(value.getApplicantDetails()),
             addressMapper.map(value.getAddressToRemove()),
             addressMapper.map(value.getServiceAddress()),
-            documentDetailsMapper.map(value.getDocumentDetails()),
+            documentDetailsMapper.map(value.getDocumentDetails()[0]),
             addressMapper.map(value.getContactAddress()),
             value.getEtag(),
             paymentDetailsMapper.map(value.getPaymentDetails())

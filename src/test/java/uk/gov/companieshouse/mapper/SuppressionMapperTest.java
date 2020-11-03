@@ -93,10 +93,10 @@ public class SuppressionMapperTest {
             assertEquals(postcode, mapped.getServiceAddress().getPostcode());
             assertEquals(country, mapped.getServiceAddress().getCountry());
 
-            assertEquals(companyName, mapped.getDocumentDetails().getCompanyName());
-            assertEquals(companyNumber, mapped.getDocumentDetails().getCompanyNumber());
-            assertEquals(description, mapped.getDocumentDetails().getDescription());
-            assertEquals(date, mapped.getDocumentDetails().getDate());
+            assertEquals(companyName, mapped.getDocumentDetails()[0].getCompanyName());
+            assertEquals(companyNumber, mapped.getDocumentDetails()[0].getCompanyNumber());
+            assertEquals(description, mapped.getDocumentDetails()[0].getDescription());
+            assertEquals(date, mapped.getDocumentDetails()[0].getDate());
 
             assertEquals(etag, mapped.getEtag());
 
@@ -119,7 +119,7 @@ public class SuppressionMapperTest {
                 new ApplicantDetailsEntity(fullName, previousName, emailAddress, dateOfBirth),
                 new AddressEntity(line1, line2, town, county, postcode, country),
                 new AddressEntity(line1, line2, town, county, postcode, country),
-                new DocumentDetailsEntity(companyName, companyNumber, description, date),
+                new DocumentDetailsEntity[]{new DocumentDetailsEntity(companyName, companyNumber, description, date)},
                 new AddressEntity(line1, line2, town, county, postcode, country),
                 etag,
                 new PaymentDetailsEntity(reference, paidAt, status)

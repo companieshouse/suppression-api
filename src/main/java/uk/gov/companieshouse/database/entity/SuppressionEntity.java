@@ -21,7 +21,7 @@ public class SuppressionEntity implements Serializable {
     private final ApplicantDetailsEntity applicantDetails;
     private final AddressEntity addressToRemove;
     private final AddressEntity serviceAddress;
-    private final DocumentDetailsEntity documentDetails;
+    private final DocumentDetailsEntity [] documentDetails;
     private final AddressEntity contactAddress;
     private final String etag;
     private final PaymentDetailsEntity paymentDetails;
@@ -31,7 +31,7 @@ public class SuppressionEntity implements Serializable {
                              ApplicantDetailsEntity applicantDetails,
                              AddressEntity addressToRemove,
                              AddressEntity serviceAddress,
-                             DocumentDetailsEntity documentDetails,
+                             DocumentDetailsEntity [] documentDetails,
                              AddressEntity contactAddress,
                              String etag,
                              PaymentDetailsEntity paymentDetails) {
@@ -58,7 +58,7 @@ public class SuppressionEntity implements Serializable {
         return this.serviceAddress;
     }
 
-    public DocumentDetailsEntity getDocumentDetails() { return this.documentDetails; }
+    public DocumentDetailsEntity [] getDocumentDetails() { return this.documentDetails; }
 
     public AddressEntity getContactAddress() { return this.contactAddress; }
 
