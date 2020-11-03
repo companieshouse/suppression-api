@@ -17,7 +17,6 @@ import uk.gov.companieshouse.model.Suppression;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -124,7 +123,7 @@ public class SuppressionMapperTest {
                 new ApplicantDetailsEntity(fullName, previousName, emailAddress, dateOfBirth),
                 new AddressEntity(line1, line2, town, county, postcode, country),
                 new AddressEntity(line1, line2, town, county, postcode, country),
-                new ArrayList<>(List.of(
+                new ArrayList<>(Arrays.asList(
                     new DocumentDetailsEntity(companyName, companyNumber, description, date)
                 )),
                 new AddressEntity(line1, line2, town, county, postcode, country),
