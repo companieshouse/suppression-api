@@ -13,6 +13,7 @@ public class Suppression {
     @JsonIgnore
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     private String createdBy;
 
     @Pattern(regexp = "([A-Z0-9]{5}-[A-Z0-9]{5})|^$", message = "applicationReference format is invalid")

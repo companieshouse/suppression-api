@@ -67,7 +67,7 @@ public class SuppressionController {
         }
 
         try {
-            final String createdBy = authorisedUser.split(";")[0];
+            final String createdBy = authorisedUser.split(" ")[0];
             final String id = suppressionService.saveSuppression(applicantDetails, createdBy);
             final URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
