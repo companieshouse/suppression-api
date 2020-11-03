@@ -15,6 +15,8 @@ import uk.gov.companieshouse.model.DocumentDetails;
 import uk.gov.companieshouse.model.PaymentDetails;
 import uk.gov.companieshouse.model.Suppression;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -93,10 +95,10 @@ public class SuppressionMapperTest {
             assertEquals(postcode, mapped.getServiceAddress().getPostcode());
             assertEquals(country, mapped.getServiceAddress().getCountry());
 
-            assertEquals(companyName, mapped.getDocumentDetails()[0].getCompanyName());
-            assertEquals(companyNumber, mapped.getDocumentDetails()[0].getCompanyNumber());
-            assertEquals(description, mapped.getDocumentDetails()[0].getDescription());
-            assertEquals(date, mapped.getDocumentDetails()[0].getDate());
+            Arrays.stream(mapped.getDocumentDetails()).forEach((document) -> assertEquals(companyName, document.getCompanyName()));
+            Arrays.stream(mapped.getDocumentDetails()).forEach((document) -> assertEquals(companyNumber, document.getCompanyNumber()));
+            Arrays.stream(mapped.getDocumentDetails()).forEach((document) -> assertEquals(description, document.getDescription()));
+            Arrays.stream(mapped.getDocumentDetails()).forEach((document) -> assertEquals(date, document.getDate()));
 
             assertEquals(etag, mapped.getEtag());
 
