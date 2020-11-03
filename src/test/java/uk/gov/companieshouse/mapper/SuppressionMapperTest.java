@@ -15,7 +15,9 @@ import uk.gov.companieshouse.model.DocumentDetails;
 import uk.gov.companieshouse.model.PaymentDetails;
 import uk.gov.companieshouse.model.Suppression;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -95,11 +97,11 @@ public class SuppressionMapperTest {
             assertEquals(postcode, mapped.getServiceAddress().getPostcode());
             assertEquals(country, mapped.getServiceAddress().getCountry());
 
-            assertEquals(1, mapped.getDocumentDetails().length);
-            Arrays.stream(mapped.getDocumentDetails()).forEach((document) -> assertEquals(companyName, document.getCompanyName()));
-            Arrays.stream(mapped.getDocumentDetails()).forEach((document) -> assertEquals(companyNumber, document.getCompanyNumber()));
-            Arrays.stream(mapped.getDocumentDetails()).forEach((document) -> assertEquals(description, document.getDescription()));
-            Arrays.stream(mapped.getDocumentDetails()).forEach((document) -> assertEquals(date, document.getDate()));
+            assertEquals(1, mapped.getDocumentDetails().size());
+            mapped.getDocumentDetails().forEach((document) -> assertEquals(companyName, document.getCompanyName()));
+            mapped.getDocumentDetails().forEach((document) -> assertEquals(companyNumber, document.getCompanyNumber()));
+            mapped.getDocumentDetails().forEach((document) -> assertEquals(description, document.getDescription()));
+            mapped.getDocumentDetails().forEach((document) -> assertEquals(date, document.getDate()));
 
             assertEquals(etag, mapped.getEtag());
 
@@ -122,9 +124,9 @@ public class SuppressionMapperTest {
                 new ApplicantDetailsEntity(fullName, previousName, emailAddress, dateOfBirth),
                 new AddressEntity(line1, line2, town, county, postcode, country),
                 new AddressEntity(line1, line2, town, county, postcode, country),
-                new DocumentDetailsEntity[]{
+                new ArrayList<>(List.of(
                     new DocumentDetailsEntity(companyName, companyNumber, description, date)
-                },
+                )),
                 new AddressEntity(line1, line2, town, county, postcode, country),
                 etag,
                 new PaymentDetailsEntity(reference, paidAt, status)
