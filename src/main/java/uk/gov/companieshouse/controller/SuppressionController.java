@@ -62,7 +62,7 @@ public class SuppressionController {
                                                     @RequestHeader("ERIC-Authorised-User") String authorisedUser,
                                                     @Valid @RequestBody final ApplicantDetails applicantDetails) {
 
-        if (StringUtils.isBlank(userId)) {
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(authorisedUser)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 

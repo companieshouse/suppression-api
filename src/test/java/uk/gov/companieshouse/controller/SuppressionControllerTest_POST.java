@@ -21,7 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static uk.gov.companieshouse.JsonConverter.convertObjectToJsonString;
 import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
-import static uk.gov.companieshouse.TestData.Suppression.createdBy;
 
 @WebMvcTest(SuppressionController.class)
 class SuppressionControllerTest_POST {
@@ -30,6 +29,8 @@ class SuppressionControllerTest_POST {
     private static final String IDENTITY_HEADER = "ERIC-identity";
     private static final String AUTHORISED_USER_HEADER = "ERIC-Authorised-User";
     private static final String TEST_USER_ID = "1234";
+    private static final String TEST_AUTHORISED_USER = "user@example.com";
+
 
     @MockBean
     private SuppressionService suppressionService;
@@ -51,7 +52,7 @@ class SuppressionControllerTest_POST {
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .headers(createHttpHeaders(TEST_USER_ID))
+            .headers(createHttpHeaders(TEST_USER_ID, TEST_AUTHORISED_USER))
             .content(convertObjectToJsonString(SuppressionFixtures.generateApplicantDetails())))
             .andExpect(status().isCreated())
             .andExpect(content().string(applicationReference))
@@ -63,17 +64,27 @@ class SuppressionControllerTest_POST {
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .headers(createHttpHeaders(TEST_USER_ID))
+            .headers(createHttpHeaders(TEST_USER_ID, TEST_AUTHORISED_USER))
             .content(""))
             .andExpect(status().isBadRequest());
     }
 
     @Test
-    void whenInvalidHeader_return401() throws Exception {
+    void whenInvalidIdentityHeader_return401() throws Exception {
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .headers(createHttpHeaders(" "))
+            .headers(createHttpHeaders(" ", TEST_AUTHORISED_USER))
+            .content(convertObjectToJsonString(SuppressionFixtures.generateApplicantDetails())))
+            .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void whenInvalidAuthorisedUserHeader_return401() throws Exception {
+
+        mockMvc.perform(post(SUPPRESSION_URI)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .headers(createHttpHeaders(TEST_USER_ID," "))
             .content(convertObjectToJsonString(SuppressionFixtures.generateApplicantDetails())))
             .andExpect(status().isUnauthorized());
     }
@@ -86,7 +97,7 @@ class SuppressionControllerTest_POST {
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .headers(createHttpHeaders(TEST_USER_ID))
+            .headers(createHttpHeaders(TEST_USER_ID, TEST_AUTHORISED_USER))
             .content(convertObjectToJsonString(invalid)))
             .andExpect(status().isUnprocessableEntity())
             .andExpect(
@@ -102,12 +113,12 @@ class SuppressionControllerTest_POST {
 
         mockMvc.perform(post(SUPPRESSION_URI)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .headers(createHttpHeaders(TEST_USER_ID))
+            .headers(createHttpHeaders(TEST_USER_ID, TEST_AUTHORISED_USER))
             .content(convertObjectToJsonString(SuppressionFixtures.generateApplicantDetails())))
             .andExpect(status().isInternalServerError());
     }
 
-    private HttpHeaders createHttpHeaders(String testUserId) {
+    private HttpHeaders createHttpHeaders(String testUserId, String createdBy) {
         final HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(IDENTITY_HEADER, testUserId);
         httpHeaders.add(AUTHORISED_USER_HEADER, createdBy);

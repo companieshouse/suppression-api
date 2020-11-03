@@ -61,7 +61,7 @@ public class SuppressionMapperTest {
         @Test
         void shouldMapValueWhenValueIsNotNull() {
 
-            SuppressionEntity mapped = mapper.map(new Suppression(null, "", applicationReference,
+            SuppressionEntity mapped = mapper.map(new Suppression(null, createdBy, applicationReference,
                 new ApplicantDetails(fullName, previousName, dateOfBirth),
                 new Address(line1, line2, town, county, postcode, country),
                 new Address(line1, line2, town, county, postcode, country),
@@ -72,6 +72,7 @@ public class SuppressionMapperTest {
             ));
 
             assertNull(mapped.getCreatedAt());
+            assertEquals(createdBy, mapped.getCreatedBy());
             assertEquals(applicationReference, mapped.getId());
 
             assertEquals(fullName, mapped.getApplicantDetails().getFullName());
@@ -125,6 +126,7 @@ public class SuppressionMapperTest {
             ));
             assertEquals(applicationReference, mapped.getApplicationReference());
             assertEquals(createdAt, mapped.getCreatedAt());
+            assertEquals(createdBy, mapped.getCreatedBy());
 
             assertEquals(fullName, mapped.getApplicantDetails().getFullName());
             assertEquals(previousName, mapped.getApplicantDetails().getPreviousName());
