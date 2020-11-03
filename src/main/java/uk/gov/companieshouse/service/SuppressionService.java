@@ -33,13 +33,14 @@ public class SuppressionService {
         this.logger = logger;
     }
 
-    public String saveSuppression(ApplicantDetails applicantDetails) {
+    public String saveSuppression(ApplicantDetails applicantDetails, String createdBy) {
 
         final Suppression suppression = new Suppression();
         suppression.setApplicantDetails(applicantDetails);
         suppression.setApplicationReference(generateUniqueSuppressionReference());
         suppression.setEtag(GenerateEtagUtil.generateEtag());
         suppression.setCreatedAt(LocalDateTime.now());
+        suppression.setCreatedBy(createdBy);
 
         return suppressionRepository.save(this.suppressionMapper.map(suppression)).getId();
     }

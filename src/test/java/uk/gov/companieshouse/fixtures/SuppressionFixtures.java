@@ -12,6 +12,7 @@ public class SuppressionFixtures {
     public static Suppression generateSuppression(String reference) {
         return new Suppression(
             TestData.Suppression.createdAt,
+            TestData.Suppression.createdBy,
             reference,
             generateApplicantDetails(),
             generateAddress(),
@@ -27,7 +28,6 @@ public class SuppressionFixtures {
         return new ApplicantDetails(
             TestData.Suppression.ApplicantDetails.fullName,
             TestData.Suppression.ApplicantDetails.previousName,
-            TestData.Suppression.ApplicantDetails.emailAddress,
             TestData.Suppression.ApplicantDetails.dateOfBirth
         );
     }

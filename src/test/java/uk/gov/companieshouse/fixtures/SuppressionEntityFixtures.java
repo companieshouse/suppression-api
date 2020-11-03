@@ -16,10 +16,10 @@ public class SuppressionEntityFixtures {
         return new SuppressionEntity(
             id,
             TestData.Suppression.createdAt,
+            TestData.Suppression.createdBy,
             new ApplicantDetailsEntity(
                 TestData.Suppression.ApplicantDetails.fullName,
                 TestData.Suppression.ApplicantDetails.previousName,
-                TestData.Suppression.ApplicantDetails.emailAddress,
                 TestData.Suppression.ApplicantDetails.dateOfBirth
             ),
             new AddressEntity(
