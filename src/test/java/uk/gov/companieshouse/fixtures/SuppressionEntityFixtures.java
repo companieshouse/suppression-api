@@ -9,7 +9,6 @@ import uk.gov.companieshouse.database.entity.SuppressionEntity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class SuppressionEntityFixtures {
 
