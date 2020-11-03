@@ -12,16 +12,18 @@ public class ApplicationReceivedEmailData extends EmailData {
     private Suppression suppression;
     private String applicantDateOfBirth;
     private String documentDate;
+    private String contactEmailAddress;
 
     public ApplicationReceivedEmailData() {
-        this(null, null, null);
+        this(null, null, null, null);
     }
 
-    public ApplicationReceivedEmailData(Suppression suppression, String applicantDateOfBirth, String documentDate) {
+    public ApplicationReceivedEmailData(Suppression suppression, String applicantDateOfBirth, String documentDate, String contactEmailAddress) {
     
         this.suppression = suppression;
         this.applicantDateOfBirth = applicantDateOfBirth;
         this.documentDate = documentDate;
+        this.contactEmailAddress = contactEmailAddress;
     }
 
     public Suppression getSuppression() { return suppression; }
@@ -30,11 +32,15 @@ public class ApplicationReceivedEmailData extends EmailData {
 
     public String getDocumentDate() { return documentDate; }
 
+    public String getContactEmailAddress() { return contactEmailAddress; }
+
     public void setSuppression(Suppression suppression) { this.suppression = suppression; }
 
     public void setApplicantDateOfBirth(String applicantDateOfBirth) { this.applicantDateOfBirth = applicantDateOfBirth; }
 
     public void setDocumentDate(String documentDate) { this.documentDate = documentDate; }
+
+    public void setContactEmailAddress(String contactEmailAddress) { this.contactEmailAddress = contactEmailAddress; }
 
     @Override
     public boolean equals(Object o) {
@@ -50,6 +56,7 @@ public class ApplicationReceivedEmailData extends EmailData {
             .append(suppression, that.suppression)
             .append(applicantDateOfBirth, that.applicantDateOfBirth)
             .append(documentDate, that.documentDate)
+            .append(contactEmailAddress, that.contactEmailAddress)
             .isEquals();
     }
 
@@ -61,6 +68,7 @@ public class ApplicationReceivedEmailData extends EmailData {
             .append(suppression)
             .append(applicantDateOfBirth)
             .append(documentDate)
+            .append(contactEmailAddress)
             .toHashCode();
     }
 
@@ -72,6 +80,7 @@ public class ApplicationReceivedEmailData extends EmailData {
             .append("suppression", suppression)
             .append("applicantDateOfBirth", applicantDateOfBirth)
             .append("documentDate", documentDate)
+            .append("contactEmailAddress", contactEmailAddress)
             .toString();
     }
 

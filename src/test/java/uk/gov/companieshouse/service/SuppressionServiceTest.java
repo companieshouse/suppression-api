@@ -32,6 +32,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 
 import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
+import static uk.gov.companieshouse.TestData.Suppression.createdBy;
 import static uk.gov.companieshouse.fixtures.SuppressionEntityFixtures.generateSuppressionEntity;
 import static uk.gov.companieshouse.fixtures.SuppressionFixtures.generateAddress;
 import static uk.gov.companieshouse.fixtures.SuppressionFixtures.generateSuppression;
@@ -102,7 +103,10 @@ class SuppressionServiceTest {
         when(suppressionMapper.map(any(Suppression.class))).thenReturn(generateSuppressionEntity(applicationReference));
         when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(generateSuppressionEntity(applicationReference));
 
-        assertEquals(applicationReference, suppressionService.saveSuppression(SuppressionFixtures.generateApplicantDetails()));
+        final String actualReference = suppressionService.saveSuppression(
+            SuppressionFixtures.generateApplicantDetails(), createdBy);
+
+        assertEquals(applicationReference, actualReference);
     }
 
     @Test
@@ -111,10 +115,11 @@ class SuppressionServiceTest {
         when(suppressionMapper.map(any(Suppression.class))).thenReturn(generateSuppressionEntity(applicationReference));
         when(suppressionRepository.save(any(SuppressionEntity.class))).thenReturn(generateSuppressionEntity(applicationReference));
 
-        String expectedReference = suppressionService.saveSuppression(SuppressionFixtures.generateApplicantDetails());
+        String actualReference = suppressionService.saveSuppression(
+            SuppressionFixtures.generateApplicantDetails(), createdBy);
 
         verify(suppressionRepository, times(1)).findById(any(String.class));
-        assertEquals(applicationReference, expectedReference);
+        assertEquals(applicationReference, actualReference);
     }
 
     @Test

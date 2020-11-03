@@ -10,12 +10,12 @@ import java.util.Map;
 public interface TestData {
     interface Suppression {
         LocalDateTime createdAt = LocalDateTime.of(2010, 12, 31, 23, 59);
+        String createdBy = "user@example.com";
         String applicationReference = "11111-11111";
 
         interface ApplicantDetails {
             String fullName = "USER#1";
             String previousName = "USER#2";
-            String emailAddress = "user@example.com";
             String dateOfBirth = "1980-05-01";
         }
 

@@ -32,6 +32,7 @@ public class SuppressionMapper implements Mapper<SuppressionEntity, Suppression>
         return new SuppressionEntity(
             value.getApplicationReference(),
             value.getCreatedAt(),
+            value.getCreatedBy(),
             applicantDetailsMapper.map(value.getApplicantDetails()),
             addressMapper.map(value.getAddressToRemove()),
             addressMapper.map(value.getServiceAddress()),
@@ -49,6 +50,7 @@ public class SuppressionMapper implements Mapper<SuppressionEntity, Suppression>
         }
         return new Suppression(
             value.getCreatedAt(),
+            value.getCreatedBy(),
             value.getId(),
             applicantDetailsMapper.map(value.getApplicantDetails()),
             addressMapper.map(value.getAddressToRemove()),

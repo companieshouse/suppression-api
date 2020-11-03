@@ -197,9 +197,9 @@ class SuppressionControllerTest_PATCH {
         doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(SuppressionPatchRequest.class));
 
         final Suppression updateSuppressionRequest = new Suppression();
-        updateSuppressionRequest.setApplicantDetails(new ApplicantDetails(TestData.Suppression.ApplicantDetails.fullName,
+        updateSuppressionRequest.setApplicantDetails(new ApplicantDetails(
+            TestData.Suppression.ApplicantDetails.fullName,
             TestData.Suppression.ApplicantDetails.previousName,
-            null,
             " "));
 
         mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)
