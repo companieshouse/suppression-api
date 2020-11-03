@@ -3,12 +3,9 @@ package uk.gov.companieshouse.mapper;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.database.entity.SuppressionEntity;
 import uk.gov.companieshouse.mapper.base.Mapper;
-import uk.gov.companieshouse.model.DocumentDetails;
 import uk.gov.companieshouse.model.Suppression;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 @Component
 public class SuppressionMapper implements Mapper<SuppressionEntity, Suppression> {
