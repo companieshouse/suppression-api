@@ -95,6 +95,7 @@ public class SuppressionMapperTest {
             assertEquals(postcode, mapped.getServiceAddress().getPostcode());
             assertEquals(country, mapped.getServiceAddress().getCountry());
 
+            assertEquals(1, mapped.getDocumentDetails().length);
             Arrays.stream(mapped.getDocumentDetails()).forEach((document) -> assertEquals(companyName, document.getCompanyName()));
             Arrays.stream(mapped.getDocumentDetails()).forEach((document) -> assertEquals(companyNumber, document.getCompanyNumber()));
             Arrays.stream(mapped.getDocumentDetails()).forEach((document) -> assertEquals(description, document.getDescription()));
