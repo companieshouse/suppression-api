@@ -15,6 +15,9 @@ import uk.gov.companieshouse.model.DocumentDetails;
 import uk.gov.companieshouse.model.PaymentDetails;
 import uk.gov.companieshouse.model.Suppression;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -93,10 +96,11 @@ public class SuppressionMapperTest {
             assertEquals(postcode, mapped.getServiceAddress().getPostcode());
             assertEquals(country, mapped.getServiceAddress().getCountry());
 
-            assertEquals(companyName, mapped.getDocumentDetails().getCompanyName());
-            assertEquals(companyNumber, mapped.getDocumentDetails().getCompanyNumber());
-            assertEquals(description, mapped.getDocumentDetails().getDescription());
-            assertEquals(date, mapped.getDocumentDetails().getDate());
+            assertEquals(1, mapped.getDocumentDetails().size());
+            assertEquals(companyName, mapped.getDocumentDetails().get(0).getCompanyName());
+            assertEquals(companyNumber, mapped.getDocumentDetails().get(0).getCompanyNumber());
+            assertEquals(description, mapped.getDocumentDetails().get(0).getDescription());
+            assertEquals(date, mapped.getDocumentDetails().get(0).getDate());
 
             assertEquals(etag, mapped.getEtag());
 
@@ -119,7 +123,9 @@ public class SuppressionMapperTest {
                 new ApplicantDetailsEntity(fullName, previousName, dateOfBirth),
                 new AddressEntity(line1, line2, town, county, postcode, country),
                 new AddressEntity(line1, line2, town, county, postcode, country),
-                new DocumentDetailsEntity(companyName, companyNumber, description, date),
+                new ArrayList<>(Collections.singletonList(
+                    new DocumentDetailsEntity(companyName, companyNumber, description, date)
+                )),
                 new AddressEntity(line1, line2, town, county, postcode, country),
                 etag,
                 new PaymentDetailsEntity(reference, paidAt, status)
