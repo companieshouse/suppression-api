@@ -16,7 +16,7 @@ import uk.gov.companieshouse.model.PaymentDetails;
 import uk.gov.companieshouse.model.Suppression;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -97,10 +97,10 @@ public class SuppressionMapperTest {
             assertEquals(country, mapped.getServiceAddress().getCountry());
 
             assertEquals(1, mapped.getDocumentDetails().size());
-            mapped.getDocumentDetails().forEach((document) -> assertEquals(companyName, document.getCompanyName()));
-            mapped.getDocumentDetails().forEach((document) -> assertEquals(companyNumber, document.getCompanyNumber()));
-            mapped.getDocumentDetails().forEach((document) -> assertEquals(description, document.getDescription()));
-            mapped.getDocumentDetails().forEach((document) -> assertEquals(date, document.getDate()));
+            assertEquals(companyName, mapped.getDocumentDetails().get(0).getCompanyName());
+            assertEquals(companyNumber, mapped.getDocumentDetails().get(0).getCompanyNumber());
+            assertEquals(description, mapped.getDocumentDetails().get(0).getDescription());
+            assertEquals(date, mapped.getDocumentDetails().get(0).getDate());
 
             assertEquals(etag, mapped.getEtag());
 
@@ -123,7 +123,7 @@ public class SuppressionMapperTest {
                 new ApplicantDetailsEntity(fullName, previousName, emailAddress, dateOfBirth),
                 new AddressEntity(line1, line2, town, county, postcode, country),
                 new AddressEntity(line1, line2, town, county, postcode, country),
-                new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Collections.singletonList(
                     new DocumentDetailsEntity(companyName, companyNumber, description, date)
                 )),
                 new AddressEntity(line1, line2, town, county, postcode, country),

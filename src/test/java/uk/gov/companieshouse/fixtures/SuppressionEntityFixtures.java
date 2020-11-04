@@ -8,7 +8,7 @@ import uk.gov.companieshouse.database.entity.PaymentDetailsEntity;
 import uk.gov.companieshouse.database.entity.SuppressionEntity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 public class SuppressionEntityFixtures {
 
@@ -38,7 +38,7 @@ public class SuppressionEntityFixtures {
                 TestData.Suppression.Address.postcode,
                 TestData.Suppression.Address.country
             ),
-            new ArrayList<>(Arrays.asList(
+            new ArrayList<>(Collections.singletonList(
                 new DocumentDetailsEntity(
                     TestData.Suppression.DocumentDetails.companyName,
                     TestData.Suppression.DocumentDetails.companyNumber,

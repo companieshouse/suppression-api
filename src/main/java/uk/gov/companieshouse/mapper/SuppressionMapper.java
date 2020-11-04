@@ -5,7 +5,7 @@ import uk.gov.companieshouse.database.entity.SuppressionEntity;
 import uk.gov.companieshouse.mapper.base.Mapper;
 import uk.gov.companieshouse.model.Suppression;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 @Component
 public class SuppressionMapper implements Mapper<SuppressionEntity, Suppression> {
@@ -37,7 +37,7 @@ public class SuppressionMapper implements Mapper<SuppressionEntity, Suppression>
             applicantDetailsMapper.map(value.getApplicantDetails()),
             addressMapper.map(value.getAddressToRemove()),
             addressMapper.map(value.getServiceAddress()),
-            Arrays.asList(
+            Collections.singletonList(
                 documentDetailsMapper.map(value.getDocumentDetails())
             ),
             addressMapper.map(value.getContactAddress()),
