@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.companieshouse.TestData;
 import uk.gov.companieshouse.fixtures.SuppressionFixtures;
+import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.model.Address;
 import uk.gov.companieshouse.model.ApplicantDetails;
 import uk.gov.companieshouse.model.Suppression;
@@ -39,6 +40,9 @@ class SuppressionControllerTest_PATCH {
 
     @MockBean
     private SuppressionService suppressionService;
+
+    @MockBean
+    private Logger logger;
 
     @Test
     void whenPartiallyUpdateSuppression_applicantDetails_return204() throws Exception {
@@ -193,9 +197,9 @@ class SuppressionControllerTest_PATCH {
         doNothing().when(suppressionService).patchSuppressionResource(any(Suppression.class), any(SuppressionPatchRequest.class));
 
         final Suppression updateSuppressionRequest = new Suppression();
-        updateSuppressionRequest.setApplicantDetails(new ApplicantDetails(TestData.Suppression.ApplicantDetails.fullName,
+        updateSuppressionRequest.setApplicantDetails(new ApplicantDetails(
+            TestData.Suppression.ApplicantDetails.fullName,
             TestData.Suppression.ApplicantDetails.previousName,
-            null,
             " "));
 
         mockMvc.perform(patch(SUPPRESSION_URI, applicationReference)

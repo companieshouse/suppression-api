@@ -8,8 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.Optional;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,20 +26,20 @@ import uk.gov.companieshouse.model.payment.PaymentStatus;
 import uk.gov.companieshouse.service.PaymentService;
 import uk.gov.companieshouse.service.SuppressionService;
 import uk.gov.companieshouse.email_producer.EmailSendingException;
-
+import uk.gov.companieshouse.logging.Logger;
 
 @RestController
 @RequestMapping("/suppressions/{suppression-id}/payment")
 public class PaymentController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PaymentController.class);
-
     private final PaymentService paymentService;
     private final SuppressionService suppressionService;
-    
-    public PaymentController(final PaymentService paymentService, final SuppressionService suppressionService) {
+    private final Logger logger;
+
+    public PaymentController(PaymentService paymentService, SuppressionService suppressionService, Logger logger) {
         this.paymentService = paymentService;
         this.suppressionService = suppressionService;
+        this.logger = logger;
     }
 
     @Operation(summary = "Get suppression payment details by ID", tags = "Payment")
@@ -91,9 +89,9 @@ public class PaymentController {
 
         if (paymentDetails != null && paymentDetails.getStatus() == PaymentStatus.PAID) {
 
-            LOGGER.error("Unable to update payment details for suppression application ref. {}, payment status is {} " +
-                    "(payment ref. {})", suppressionResource.getApplicationReference(), PaymentStatus.PAID,
-                paymentPatchRequest.getPaymentReference());
+            logger.error(String.format("Unable to update payment details for suppression application ref. %s, payment " +
+                    "status is %s (payment ref. %s)", suppressionResource.getApplicationReference(), PaymentStatus.PAID,
+                paymentPatchRequest.getPaymentReference()));
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

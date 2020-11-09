@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
+import static uk.gov.companieshouse.TestData.Suppression.createdBy;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +21,7 @@ import uk.gov.companieshouse.email_producer.EmailProducer;
 import uk.gov.companieshouse.email_producer.EmailSendingException;
 import uk.gov.companieshouse.config.EmailConfig;
 import uk.gov.companieshouse.config.PaymentConfig;
+import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.email.ApplicationConfirmationEmailData;
 import uk.gov.companieshouse.model.email.ApplicationReceivedEmailData;
@@ -42,6 +44,9 @@ class EmailServiceTest {
     @Mock
     private PaymentConfig paymentConfig;
 
+    @Mock
+    private Logger logger;
+
     @Test
     void sendToStaff__ok() throws EmailSendingException {
         when(emailConfig.getChEmail()).thenReturn(TEST_CH_EMAIL);
@@ -56,6 +61,7 @@ class EmailServiceTest {
         assertEquals(applicationReference, sentEmailData.getSuppression().getApplicationReference());
         assertEquals("1 May 1980", sentEmailData.getApplicantDateOfBirth());
         assertEquals("1 January 2000", sentEmailData.getDocumentDate());
+        assertEquals(createdBy, sentEmailData.getContactEmailAddress());
     }
 
     @Test

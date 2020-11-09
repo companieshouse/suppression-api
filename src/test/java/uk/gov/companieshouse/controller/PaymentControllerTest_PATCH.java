@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import uk.gov.companieshouse.email_producer.EmailSendingException;
 import uk.gov.companieshouse.fixtures.SuppressionFixtures;
+import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.payment.PaymentPatchRequest;
 import uk.gov.companieshouse.model.payment.PaymentStatus;
@@ -41,6 +42,10 @@ class PaymentControllerTest_PATCH {
 
     @MockBean
     private SuppressionService suppressionService;
+
+
+    @MockBean
+    private Logger logger;
 
     @Test
     void whenSuppressionExistsWithPaymentStatusPaid_return400() throws Exception {
