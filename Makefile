@@ -19,8 +19,8 @@ build:
 test: clean
 	mvn verify
 
-.PHONY: owasp-dependency
-owasp-dependency:
+.PHONY: security-check
+security-check:
 	mvn org.owasp:dependency-check-maven:purge
 	mvn org.owasp:dependency-check-maven:check
 
