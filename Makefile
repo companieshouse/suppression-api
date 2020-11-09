@@ -19,6 +19,11 @@ build:
 test: clean
 	mvn verify
 
+.PHONY: owasp-dependency
+owasp-dependency:
+    mvn org.owasp:dependency-check-maven:purge
+    mvn org.owasp:dependency-check-maven:check
+
 .PHONY: test-unit
 test-unit: clean
 	mvn test
