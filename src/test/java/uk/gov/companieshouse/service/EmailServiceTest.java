@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.companieshouse.TestData.Suppression.applicationReference;
+import static uk.gov.companieshouse.TestData.Suppression.createdBy;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,6 +61,7 @@ class EmailServiceTest {
         assertEquals(applicationReference, sentEmailData.getSuppression().getApplicationReference());
         assertEquals("1 May 1980", sentEmailData.getApplicantDateOfBirth());
         assertEquals("1 January 2000", sentEmailData.getDocumentDate());
+        assertEquals(createdBy, sentEmailData.getContactEmailAddress());
     }
 
     @Test

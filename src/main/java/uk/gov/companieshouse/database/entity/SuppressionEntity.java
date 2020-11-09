@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Document(collection = "suppression")
 @AccessType(AccessType.Type.PROPERTY)
@@ -18,25 +19,28 @@ public class SuppressionEntity implements Serializable {
     @SuppressWarnings("FieldMayBeFinal") // Non final field is required by Spring Data
     private final String id;
     private final LocalDateTime createdAt;
+    private final String createdBy;
     private final ApplicantDetailsEntity applicantDetails;
     private final AddressEntity addressToRemove;
     private final AddressEntity serviceAddress;
-    private final DocumentDetailsEntity documentDetails;
+    private final List<DocumentDetailsEntity> documentDetails;
     private final AddressEntity contactAddress;
     private final String etag;
     private final PaymentDetailsEntity paymentDetails;
 
     public SuppressionEntity(String id,
                              LocalDateTime createdAt,
+                             String createdBy,
                              ApplicantDetailsEntity applicantDetails,
                              AddressEntity addressToRemove,
                              AddressEntity serviceAddress,
-                             DocumentDetailsEntity documentDetails,
+                             List<DocumentDetailsEntity> documentDetails,
                              AddressEntity contactAddress,
                              String etag,
                              PaymentDetailsEntity paymentDetails) {
         this.id = id;
         this.createdAt = createdAt;
+        this.createdBy = createdBy;
         this.applicantDetails = applicantDetails;
         this.addressToRemove = addressToRemove;
         this.serviceAddress = serviceAddress;
@@ -50,6 +54,8 @@ public class SuppressionEntity implements Serializable {
 
     public LocalDateTime getCreatedAt() { return this.createdAt; }
 
+    public String getCreatedBy() { return this.createdBy; }
+
     public ApplicantDetailsEntity getApplicantDetails() { return this.applicantDetails; }
 
     public AddressEntity getAddressToRemove() { return this.addressToRemove; }
@@ -58,7 +64,7 @@ public class SuppressionEntity implements Serializable {
         return this.serviceAddress;
     }
 
-    public DocumentDetailsEntity getDocumentDetails() { return this.documentDetails; }
+    public List<DocumentDetailsEntity> getDocumentDetails() { return this.documentDetails; }
 
     public AddressEntity getContactAddress() { return this.contactAddress; }
 
@@ -81,6 +87,7 @@ public class SuppressionEntity implements Serializable {
         return new EqualsBuilder()
             .append(id, that.id)
             .append(createdAt, that.createdAt)
+            .append(createdBy, that.createdBy)
             .append(applicantDetails, that.applicantDetails)
             .append(addressToRemove, that.addressToRemove)
             .append(serviceAddress, that.serviceAddress)
@@ -96,6 +103,7 @@ public class SuppressionEntity implements Serializable {
         return new HashCodeBuilder()
             .append(id)
             .append(createdAt)
+            .append(createdBy)
             .append(applicantDetails)
             .append(addressToRemove)
             .append(serviceAddress)
@@ -111,6 +119,7 @@ public class SuppressionEntity implements Serializable {
         return new ToStringBuilder(this)
             .append("id", id)
             .append("createdAt", createdAt)
+            .append("createdAt", createdBy)
             .append("applicantDetails", applicantDetails)
             .append("addressToRemove", addressToRemove)
             .append("serviceAddress", serviceAddress)

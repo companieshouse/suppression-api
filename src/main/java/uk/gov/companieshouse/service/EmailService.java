@@ -48,6 +48,7 @@ public class EmailService {
         emailData.setSuppression(suppression);
         emailData.setApplicantDateOfBirth(applicantDateOfBirth);
         emailData.setDocumentDate(documentDate);
+        emailData.setContactEmailAddress(suppression.getCreatedBy());
 
         logger.debug(String.format("Sending Submission email for #%s to staff", emailData.getSuppression().getApplicationReference()));
         this.sendEmail(emailData, APPLICATION_RECEIVED_MESSAGE_TYPE);
@@ -60,7 +61,7 @@ public class EmailService {
         String documentDate = convertDateToHumanReadableFormat(documentDetails.getDate());
 
         final ApplicationConfirmationEmailData emailData = new ApplicationConfirmationEmailData();
-        emailData.setTo(suppression.getApplicantDetails().getEmailAddress());
+        emailData.setTo(suppression.getCreatedBy());
         emailData.setSubject(subject);
         emailData.setSuppressionReference(applicationReference);
         emailData.setDocumentDetails(documentDetails);
