@@ -135,6 +135,12 @@
             <groupId>uk.gov.companieshouse</groupId>
             <artifactId>email-producer-java</artifactId>
             <version>${version.email-producer-java}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Testing -->
@@ -143,13 +149,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <version>${version.spring.boot}</version>
             <scope>test</scope>
-            <exclusions>
-                <!-- exclude JUnit4 support -->
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 	</dependencies>
 
