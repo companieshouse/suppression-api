@@ -30,6 +30,9 @@
         <version.api-helper-java>1.4.3</version.api-helper-java>
         <version.email-producer-java>1.0.4</version.email-producer-java>
         <version.structured-logging>1.9.4</version.structured-logging>
+        <version.sonar-maven-plugin>3.7.0.1746</version.sonar-maven-plugin>
+        <version.avro>1.10.0</version.avro>
+        <version.kafka-clients>0.10.2.2</version.kafka-clients>
     </properties>
 
     <repositories>
@@ -108,7 +111,16 @@
                     <groupId>com.fasterxml.jackson.core</groupId>
                     <artifactId>jackson-core</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>${version.sonar-maven-plugin}</version>
         </dependency>
         <dependency>
             <groupId>uk.gov.companieshouse</groupId>
@@ -140,7 +152,26 @@
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-context</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.apache.avro</groupId>
+                    <artifactId>avro</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.kafka</groupId>
+                    <artifactId>kafka-clients</artifactId>
+                </exclusion>
+
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>${version.avro}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${version.kafka-clients}</version>
         </dependency>
 
         <!-- Testing -->
