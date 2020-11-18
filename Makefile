@@ -21,7 +21,7 @@ test: clean
 
 .PHONY: security-check
 security-check:
-	mvn org.owasp:dependency-check-maven:check -DfailBuildOnCVSS=0 -DsuppressionFiles=suppressed-security-checks.xml
+	mvn org.owasp:dependency-check-maven:check -DassemblyAnalyzerEnabled=false -DfailBuildOnCVSS=0 -DsuppressionFiles=suppressed-security-checks.xml
 
 .PHONY: test-unit
 test-unit: clean
