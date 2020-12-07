@@ -32,7 +32,7 @@
         <version.structured-logging>1.9.4</version.structured-logging>
         <version.sonar-maven-plugin>3.7.0.1746</version.sonar-maven-plugin>
         <version.avro>1.10.0</version.avro>
-        <version.kafka-clients>0.10.2.2</version.kafka-clients>
+        <version.kafka-clients>2.6.0</version.kafka-clients>
     </properties>
 
     <repositories>
