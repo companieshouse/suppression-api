@@ -31,7 +31,7 @@
         <version.email-producer-java>1.0.4</version.email-producer-java>
         <version.structured-logging>1.9.4</version.structured-logging>
         <version.sonar-maven-plugin>3.7.0.1746</version.sonar-maven-plugin>
-        <version.avro>1.10.0</version.avro>
+        <version.avro>1.10.1</version.avro>
         <version.kafka-clients>2.6.0</version.kafka-clients>
     </properties>
 
