@@ -33,6 +33,8 @@
         <version.sonar-maven-plugin>3.7.0.1746</version.sonar-maven-plugin>
         <version.avro>1.10.0</version.avro>
         <version.kafka-clients>2.6.0</version.kafka-clients>
+        <version.tomcat-embed-websocket>9.0.40</version.tomcat-embed-websocket>
+        <version.tomcat-embed-core>9.0.40</version.tomcat-embed-core>
     </properties>
 
     <repositories>
@@ -64,6 +66,14 @@
                 <exclusion>
                     <groupId>ch.qos.logback</groupId>
                     <artifactId>logback-classic</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                    <artifactId>tomcat-embed-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                    <artifactId>tomcat-embed-websocket</artifactId>
                 </exclusion>
             </exclusions>
 		</dependency>
@@ -107,6 +117,10 @@
             <version>${version.api-helper-java}</version>
             <exclusions>
                 <!-- exclude conflicting jackson core library -->
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                </exclusion>
                 <exclusion>
                     <groupId>com.fasterxml.jackson.core</groupId>
                     <artifactId>jackson-core</artifactId>
@@ -172,6 +186,16 @@
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
             <version>${version.kafka-clients}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${version.tomcat-embed-core}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-websocket</artifactId>
+            <version>${version.tomcat-embed-websocket}</version>
         </dependency>
 
         <!-- Testing -->
