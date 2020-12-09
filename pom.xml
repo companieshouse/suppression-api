@@ -45,7 +45,7 @@
     </repositories>
 
 	<dependencies>
-        
+
         <!-- Spring/SpringBoot -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -252,6 +252,7 @@
                 <version>2.7.0</version>
                 <configuration>
                     <container>
+                        <expandClasspathDependencies>true</expandClasspathDependencies>
                         <jvmFlags>
                             <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
                         </jvmFlags>
