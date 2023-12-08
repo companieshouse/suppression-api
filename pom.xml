@@ -197,6 +197,12 @@
             <artifactId>tomcat-embed-websocket</artifactId>
             <version>${version.tomcat-embed-websocket}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.yaml/snakeyaml -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.2</version>
+        </dependency>
 
         <!-- Testing -->
         <dependency>
