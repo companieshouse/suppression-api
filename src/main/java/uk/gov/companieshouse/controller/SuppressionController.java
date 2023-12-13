@@ -29,7 +29,7 @@ import uk.gov.companieshouse.model.Suppression;
 import uk.gov.companieshouse.model.SuppressionPatchRequest;
 import uk.gov.companieshouse.service.SuppressionService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
