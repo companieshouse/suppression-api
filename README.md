@@ -2,7 +2,7 @@
 API for the 'Suppress My Details' service
 
 ## Technologies
-- [OpenJDK 11](https://jdk.java.net/archive/)
+- [OpenJDK 21](https://jdk.java.net/archive/)
 - [Maven](https://maven.apache.org/download.cgi)
 - [Spring Boot](https://spring.io/projects/spring-boot)
 - [Swagger OpenAPI](https://swagger.io/docs/specification/about/)
