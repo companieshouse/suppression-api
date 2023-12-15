@@ -62,3 +62,7 @@ sonar-pr-analysis:
 security-check:
 	mvn org.owasp:dependency-check-maven:update-only
 	mvn org.owasp:dependency-check-maven:check -DfailBuildOnCVSS=4 -DassemblyAnalyzerEnabled=false
+
+.PHONY: build-image
+build-image:
+    mvn compile jib:buildTar -f ./pom.xml
