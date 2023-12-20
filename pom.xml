@@ -17,7 +17,6 @@
 	<properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-<!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
         <sonar.coverage.exclusions>
             **/database/entity/*,
             **/database/entity/**/*,
@@ -35,18 +34,8 @@
         <version.sonar-maven-plugin>3.7.0.1746</version.sonar-maven-plugin>
         <version.avro>1.10.1</version.avro>
         <version.kafka-clients>3.6.0</version.kafka-clients>
-<!--        <version.tomcat-embed-websocket>11.0.0-M15-->
-<!--        </version.tomcat-embed-websocket>-->
-<!--        <version.tomcat-embed-core>11.0.0-M15</version.tomcat-embed-core>-->
         <jib-maven-plugin.version>3.4.0</jib-maven-plugin.version>
     </properties>
-
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>Companies House</id>-->
-<!--            <url>http://repository.aws.chdev.org:8081/artifactory/virtual-release</url>-->
-<!--        </repository>-->
-<!--    </repositories>-->
 
     <dependencyManagement>
         <dependencies>
@@ -68,7 +57,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
-           <!--<version>${version.spring.boot}</version> -->
             <exclusions>
                 <exclusion>
                     <groupId>ch.qos.logback</groupId>
@@ -79,7 +67,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-           <!--<version>${version.spring.boot}</version> -->
             <exclusions>
                 <exclusion>
                     <groupId>ch.qos.logback</groupId>
@@ -90,19 +77,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
-           <!--<version>${version.spring.boot}</version> -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-           <!--<version>${version.spring.boot}</version> -->
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-tomcat</artifactId>-->
-<!--            <version>${version.spring.boot}</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
         <!-- Swagger documentation -->
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -202,16 +181,6 @@
             <artifactId>kafka-clients</artifactId>
             <version>${version.kafka-clients}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.apache.tomcat.embed</groupId>-->
-<!--            <artifactId>tomcat-embed-core</artifactId>-->
-<!--            <version>${version.tomcat-embed-core}</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.tomcat.embed</groupId>-->
-<!--            <artifactId>tomcat-embed-websocket</artifactId>-->
-<!--            <version>${version.tomcat-embed-websocket}</version>-->
-<!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/org.yaml/snakeyaml -->
         <dependency>
             <groupId>org.yaml</groupId>
